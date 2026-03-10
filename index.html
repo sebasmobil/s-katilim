@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -148,12 +147,6 @@ body{padding:20px 14px 60px}
     </div>
   </div>
 
-  <div class="upload-row">
-    <input type="file" id="fileIn" accept=".csv" style="display:none">
-    <button class="btn-upload" id="btnDosya">Dosya Yükle</button>
-    <div class="upload-hint"><b>CSV</b> &mdash; Excel&apos;de Farklı Kaydet &rarr; CSV (UTF-8)</div>
-  </div>
-
   <div class="card">
     <div class="lbl">Seçim Modu</div>
     <div class="mode-row">
@@ -197,7 +190,7 @@ body{padding:20px 14px 60px}
     </div>
   </div>
 
-<button class="btn-pick" id="btnSec">Öğrenci Seç</button>
+  <button class="btn-pick" id="btnSec">Öğrenci Seç</button>
 
   <div class="card">
     <div class="lbl">Geçmiş <span id="histLbl" style="color:var(--ac);margin-left:4px"></span></div>
@@ -216,7 +209,14 @@ body{padding:20px 14px 60px}
       <span id="mgrArrow">&#9660;</span>
     </div>
     <div class="mgr-body" id="mgrBody">
-      <div class="lbl" style="padding-top:4px">Öğrenci Ekle</div>
+      <input type="file" id="fileIn" accept=".csv" style="display:none">
+      <div class="lbl" style="padding-top:4px">CSV Yükle</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <button class="btn-s primary" id="btnDosya">Dosya Seç</button>
+        <span style="font-family:'Courier New',monospace;font-size:12px;color:var(--t2)"><b style="color:var(--t1)">CSV</b> &mdash; Excel&apos;de Farklı Kaydet &rarr; CSV (UTF-8)</span>
+      </div>
+      <div class="sep"></div>
+      <div class="lbl">Öğrenci Ekle</div>
       <div class="add-form">
         <div class="fg"><span class="fg-lbl">No</span><input class="inp" id="iNo" inputmode="numeric" placeholder="101"></div>
         <div class="fg"><span class="fg-lbl">Sınıf</span><input class="inp" id="iSinif" placeholder="5"></div>
@@ -740,6 +740,5 @@ else baslikGuncelle();
 
 })();
 </script>
-
 </body>
 </html>
