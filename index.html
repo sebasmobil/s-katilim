@@ -1006,13 +1006,17 @@ function kaydet(){
   depo.yaz('gec',JSON.stringify(gecmis));
   depo.yaz('kul',JSON.stringify(u));
   depo.yaz('puan',JSON.stringify(puanlar));
+  depo.yaz('mod',mod);
+  if(seciliSinif) depo.yaz('seciliSinif',seciliSinif);
 }
 function yukle(){
   try{
     var d=depo.al('ogr'); if(d){ var p=JSON.parse(d); if(Array.isArray(p)&&p.length) ogr=p; }
     var h=depo.al('gec'); if(h){ var ph=JSON.parse(h); if(Array.isArray(ph)) gecmis=ph; }
     var u=depo.al('kul'); if(u){ var pu=JSON.parse(u); Object.keys(pu).forEach(function(k){ kullanilan[k]=new Set(pu[k]); }); }
-    var pn=depo.al('puan'); if(pn){ var pp=JSON.parse(pn); if(typeof pp==='object') puanlar=pp; }
+    var pn=depo.al('puan'); if(pn){ var pp=JSON.parse(pn); if(typeof pp==='object'&&pp!==null) puanlar=pp; }
+    var sm=depo.al('mod'); if(sm) mod=sm;
+    var ss=depo.al('seciliSinif'); if(ss) seciliSinif=ss;
   }catch(e){}
   return ogr.length>0;
 }
@@ -1288,7 +1292,9 @@ function siniflariOlustur(){
   el.querySelectorAll('.pill').forEach(function(d){d.addEventListener('click',function(){sinifSec(this.dataset.c);});});
 }
 function sinifSec(c){
-  seciliSinif=c; siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster();
+  seciliSinif=c;
+  depo.yaz('seciliSinif',c||'');
+  siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster();
   document.getElementById('histLbl').innerHTML=c?'&#8212; '+c:'';
 }
 
@@ -1299,6 +1305,7 @@ function modAyarla(m){
   document.getElementById('mUnique').classList.toggle('on',m==='unique');
   document.getElementById('progRow').style.display=m==='unique'?'flex':'none';
   ilerlemeGuncelle();
+  depo.yaz('mod',m);
 }
 function sinifOgr(){
   return ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
@@ -2119,9 +2126,22 @@ temauygula(depo.al('tema')||'gece');
 var kayitliAnimTip=depo.al('animTip');
 if(kayitliAnimTip) animTipSec(kayitliAnimTip);
 if(depo.al('anim')==='0') animAyarla(false);
-if(yukle()){ siniflariOlustur(); baslikGuncelle(); listeyiGoster(); gecmisiGoster(); srchPuanGoster(); puanOzetGoster(); hizliPuanGoster(); }
-else baslikGuncelle();
-modAyarla('unique');
+if(yukle()){
+  siniflariOlustur();
+  baslikGuncelle();
+  listeyiGoster();
+  gecmisiGoster();
+  srchPuanGoster();
+  puanOzetGoster();
+  hizliPuanGoster();
+  // Kayıtlı modu uygula
+  modAyarla(mod);
+  // Kayıtlı sınıf seçimini uygula
+  if(seciliSinif) sinifSec(seciliSinif);
+} else {
+  baslikGuncelle();
+  modAyarla('unique');
+}
 yedekListesiGoster();
 
 
