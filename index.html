@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 1.2</title>
+<title>S-Seçim Pro 1.3</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -498,6 +498,34 @@ body{padding:0 0 72px}
 .yedek-sil-btn{font-size:14px;background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s}
 .yedek-sil-btn:hover{color:var(--err)}
 
+/* ── YOKLAMA ── */
+.yok-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)}
+.yok-row:last-child{border-bottom:none}
+.yok-ad{flex:1;font-size:13px;font-weight:700;color:var(--t1)}
+.yok-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2)}
+.yok-btn{font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px;border:1.5px solid;cursor:pointer;background:none;font-family:'Nunito',sans-serif;transition:all .15s}
+.yok-btn-kaldir{border-color:var(--err);color:var(--err)}
+.yok-btn-kaldir:active{background:var(--errbg)}
+.yok-btn-getir{border-color:var(--ok);color:var(--ok)}
+.yok-btn-getir:active{background:var(--okb)}
+
+/* ── KATEGORİ BUTONLARI ── */
+.kat-btn{font-size:11px;font-weight:800;padding:4px 9px;border-radius:20px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t2);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap}
+.kat-btn.aktif{background:var(--ac);border-color:var(--ac);color:#fff}
+.kat-btn:not(.aktif):active{border-color:var(--ac);color:var(--ac)}
+
+/* ── PROJEKTöR MODU ── */
+.proj-overlay{display:none;position:fixed;inset:0;background:#000;z-index:9800;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.proj-overlay.acik{display:flex}
+.proj-sinif{font-family:'JetBrains Mono',monospace;font-size:clamp(18px,4vw,28px);font-weight:700;color:#6b8aff;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.proj-num{font-family:'JetBrains Mono',monospace;font-size:clamp(16px,3vw,22px);font-weight:700;color:#fff;opacity:.6;margin-bottom:16px;background:rgba(255,255,255,.1);padding:4px 20px;border-radius:100px}
+.proj-ad{font-size:clamp(42px,12vw,96px);font-weight:900;color:#fff;text-align:center;line-height:1.1;word-break:break-word;padding:0 24px;letter-spacing:-1px;text-shadow:0 4px 32px rgba(107,138,255,.4)}
+.proj-hint{position:absolute;bottom:24px;font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(255,255,255,.25);letter-spacing:1px}
+.proj-puan{margin-top:24px;display:flex;gap:16px;align-items:center}
+.proj-puan-badge{font-family:'JetBrains Mono',monospace;font-size:clamp(20px,5vw,36px);font-weight:800;padding:8px 24px;border-radius:12px}
+.proj-puan-plus{background:rgba(29,201,154,.15);color:#1dc99a}
+.proj-puan-minus{background:rgba(255,82,82,.15);color:#ff5252}
+
 /* ── UYARI ── */
 .topwarn{position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--err);color:#fff;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;text-align:center;padding:14px;pointer-events:none;display:none;letter-spacing:.5px}
 .topwarn.show{display:block}
@@ -516,6 +544,10 @@ body{padding:0 0 72px}
   <div class="puan-edit-box">
     <div class="puan-edit-name" id="puanEditAd"></div>
     <div class="puan-edit-meta" id="puanEditMeta"></div>
+    <div style="margin-bottom:12px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Kategori</div>
+      <select id="peKatSec" style="width:100%;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:8px 10px;font-size:14px;color:var(--t1);font-family:'Nunito',sans-serif;outline:none"></select>
+    </div>
     <div class="puan-edit-row">
       <span class="puan-edit-lbl lbl-plus">✅ Doğru</span>
       <div class="puan-edit-stepper">
@@ -565,9 +597,10 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.2</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.3</span></div>
     </div>
     <div class="hdr-right">
+      <div class="ticon" id="projBtn" title="Projektör Modu" onclick="projektorAc()">🖥️</div>
       <div class="ticon" id="temaBtn" title="Tema değiştir">☀️</div>
     </div>
   </div>
@@ -632,6 +665,13 @@ body{padding:0 0 72px}
         <div class="pills" id="pills">
           <span style="font-size:13px;color:var(--t3)">Önce veri yükleyin</span>
         </div>
+        <div id="yoklamaRow" style="display:none;margin-top:10px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
+            <span>📋 Yoklama</span>
+            <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px">Hepsini Getir</button>
+          </div>
+          <div id="yoklamaList" style="max-height:180px;overflow-y:auto"></div>
+        </div>
         <div class="prog-row" id="progRow" style="display:none;margin-top:12px;margin-bottom:0">
           <span class="prog-lbl" id="progLbl">0 / 0</span>
           <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
@@ -668,7 +708,8 @@ body{padding:0 0 72px}
         <div class="r-puan-toggle-row" id="rPuanToggleRow">
           <div class="r-puan-toggle-left">
             <span class="r-puan-toggle-icon">📊</span>
-            <span class="r-puan-toggle-hint">Puan Detayı</span>
+            <span class="r-puan-toggle-hint">Puan</span>
+            <span id="rAktifKat" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ac);background:var(--ac2);padding:2px 7px;border-radius:4px;margin-left:4px">⭐ Genel</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
             <div class="r-puan-toggle-scores">
@@ -701,6 +742,7 @@ body{padding:0 0 72px}
               <button class="r-puan-btn r-puan-btn-minus" id="btnPuanMinus" title="Bilmedi (−)">−</button>
             </div>
           </div>
+          <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap" id="rKatBtns"></div>
         </div>
       </div>
     </div>
@@ -875,6 +917,18 @@ body{padding:0 0 72px}
 </div><!-- end .page -->
 
 
+<!-- PROJEKTöR MODU -->
+<div class="proj-overlay" id="projOverlay">
+  <div class="proj-sinif" id="projSinif"></div>
+  <div class="proj-num" id="projNum" style="display:none"></div>
+  <div class="proj-ad" id="projAd">—</div>
+  <div class="proj-puan" id="projPuan" style="display:none">
+    <div class="proj-puan-badge proj-puan-plus" id="projPlus">+0</div>
+    <div class="proj-puan-badge proj-puan-minus" id="projMinus">−0</div>
+  </div>
+  <div class="proj-hint">Ekrana dokun / Esc ile kapat</div>
+</div>
+
 <!-- YENİLİKLER MODALI ──────────────────────── -->
 <div id="yenilikOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9500;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)">
   <div id="yenilikBox" style="background:var(--bg);width:100%;max-width:680px;max-height:88vh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(0,0,0,.18);overflow:hidden;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,1,.36,1)">
@@ -886,7 +940,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.2</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.3</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -933,7 +987,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 1.2</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 1.3</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -975,9 +1029,20 @@ var depo = (function(){
 var ogr=[], seciliSinif=null, mod='unique', kullanilan={}, gecmis=[], seciliyor=false, animAcik=true, animTip='karistir';
 var _secBtnRect=null, _secScrollBefore=0;
 var modalSatirlar=[], uyariTimer=null;
-// puanlar: {ogrIdx: {plus: N, minus: N}}
+// puanlar: {ogrIdx: {kat: {plus:N, minus:N}, ...}}  kat = kategori id
 var puanlar = {};
-var secilenOgrIdx = null; // şu an seçili olan öğrencinin ogr dizisindeki index'i
+var secilenOgrIdx = null;
+// Yoklama: {sinif: Set(ogrIdx)} — bugün yoklama ile çıkarılanlar
+var yoklama = {};
+// Puan kategorileri
+var PUAN_KATS = [
+  {id:'genel', ad:'Genel', emoji:'⭐'},
+  {id:'katilim', ad:'Katılım', emoji:'🙋'},
+  {id:'odev', ad:'Ödev', emoji:'📝'},
+  {id:'sinav', ad:'Sınav', emoji:'📋'},
+  {id:'davranis', ad:'Davranış', emoji:'😊'},
+];
+var aktifKat = 'genel'; // seçili kategori
 var GITHUB_URL='https://raw.githubusercontent.com/s-sari/ogrenci-secici/main/ogrenciler.csv';
 
 /* ===================== Türkçe Normalize ===================== */
@@ -1002,10 +1067,14 @@ function trIcerir(metin, aranan){
 function kaydet(){
   var u={};
   Object.keys(kullanilan).forEach(function(k){ u[k]=Array.from(kullanilan[k]); });
+  var yok={};
+  Object.keys(yoklama).forEach(function(k){ yok[k]=Array.from(yoklama[k]); });
   depo.yaz('ogr',JSON.stringify(ogr));
   depo.yaz('gec',JSON.stringify(gecmis));
   depo.yaz('kul',JSON.stringify(u));
   depo.yaz('puan',JSON.stringify(puanlar));
+  depo.yaz('yoklama',JSON.stringify(yok));
+  depo.yaz('aktifKat',aktifKat);
   depo.yaz('mod',mod);
   if(seciliSinif) depo.yaz('seciliSinif',seciliSinif);
 }
@@ -1015,6 +1084,8 @@ function yukle(){
     var h=depo.al('gec'); if(h){ var ph=JSON.parse(h); if(Array.isArray(ph)) gecmis=ph; }
     var u=depo.al('kul'); if(u){ var pu=JSON.parse(u); Object.keys(pu).forEach(function(k){ kullanilan[k]=new Set(pu[k]); }); }
     var pn=depo.al('puan'); if(pn){ var pp=JSON.parse(pn); if(typeof pp==='object'&&pp!==null) puanlar=pp; }
+    var yk=depo.al('yoklama'); if(yk){ var py=JSON.parse(yk); Object.keys(py).forEach(function(k){ yoklama[k]=new Set(py[k]); }); }
+    var ak=depo.al('aktifKat'); if(ak) aktifKat=ak;
     var sm=depo.al('mod'); if(sm) mod=sm;
     var ss=depo.al('seciliSinif'); if(ss) seciliSinif=ss;
   }catch(e){}
@@ -1294,7 +1365,7 @@ function siniflariOlustur(){
 function sinifSec(c){
   seciliSinif=c;
   depo.yaz('seciliSinif',c||'');
-  siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster();
+  siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster(); yoklamaGoster();
   document.getElementById('histLbl').innerHTML=c?'&#8212; '+c:'';
 }
 
@@ -1308,44 +1379,150 @@ function modAyarla(m){
   depo.yaz('mod',m);
 }
 function sinifOgr(){
+  var yok=yoklama[seciliSinif]||new Set();
+  return ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
+            .filter(function(s){return s.sinif===seciliSinif && !yok.has(s._i);});
+}
+function sinifOgrTum(){
   return ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
             .filter(function(s){return s.sinif===seciliSinif;});
 }
 function ilerlemeGuncelle(){
   if(mod!=='unique'||!seciliSinif) return;
-  var cls=sinifOgr(), kul=kullanilan[seciliSinif]?kullanilan[seciliSinif].size:0, top=cls.length;
-  document.getElementById('progLbl').textContent=kul+' / '+top;
+  var cls=sinifOgr();
+  var kul=0;
+  if(kullanilan[seciliSinif]){
+    var yok=yoklama[seciliSinif]||new Set();
+    kullanilan[seciliSinif].forEach(function(i){ if(!yok.has(i)) kul++; });
+  }
+  var top=cls.length;
+  var yokSayisi=(yoklama[seciliSinif]||new Set()).size;
+  document.getElementById('progLbl').textContent=kul+' / '+top+(yokSayisi?' ('+yokSayisi+' yok)':'');
   document.getElementById('progFill').style.width=top>0?Math.round(kul/top*100)+'%':'0%';
 }
+
+/* ===================== YOKlAMA ===================== */
+function yoklamaGoster(){
+  var row=document.getElementById('yoklamaRow');
+  if(!row) return;
+  if(!seciliSinif||!ogr.length){row.style.display='none';return;}
+  row.style.display='block';
+  var liste=document.getElementById('yoklamaList');
+  var tumSinif=sinifOgrTum();
+  var yok=yoklama[seciliSinif]||new Set();
+  var h='';
+  tumSinif.forEach(function(s){
+    var isYok=yok.has(s._i);
+    h+='<div class="yok-row">';
+    h+='<div>';
+    h+='<div class="yok-ad">'+(isYok?'<span style="color:var(--err);margin-right:4px">✕</span>':'')+s.ad+'</div>';
+    h+='<div class="yok-meta">'+s.sinif+(s.numara?' · No: '+s.numara:'')+'</div>';
+    h+='</div>';
+    if(isYok){
+      h+='<button class="yok-btn yok-btn-getir" data-idx="'+s._i+'" title="Bugün getir">Getir</button>';
+    } else {
+      h+='<button class="yok-btn yok-btn-kaldir" data-idx="'+s._i+'" title="Bugün yok">Yok</button>';
+    }
+    h+='</div>';
+  });
+  if(!tumSinif.length) h='<div class="tbl-empty">Sınıf boş</div>';
+  liste.innerHTML=h;
+  liste.querySelectorAll('.yok-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var idx=parseInt(this.dataset.idx);
+      if(!yoklama[seciliSinif]) yoklama[seciliSinif]=new Set();
+      if(yoklama[seciliSinif].has(idx)){
+        yoklama[seciliSinif].delete(idx);
+      } else {
+        yoklama[seciliSinif].add(idx);
+        // Seçilmişse kullanılandan da çıkar
+        if(kullanilan[seciliSinif]) kullanilan[seciliSinif].delete(idx);
+      }
+      kaydet();
+      yoklamaGoster();
+      ilerlemeGuncelle();
+      siniflariOlustur();
+    });
+  });
+}
+
+function yoklamaSifirla(){
+  if(!seciliSinif) return;
+  yoklama[seciliSinif]=new Set();
+  kaydet();
+  yoklamaGoster();
+  ilerlemeGuncelle();
+  bildir('✅ Tüm öğrenciler getirildi');
+}
+
 function sifirla(){ if(seciliSinif) kullanilan[seciliSinif]=new Set(); kaydet(); ilerlemeGuncelle(); kalanlariGoster(); }
 
-/* ===================== PUAN SİSTEMİ ===================== */
-function puanAl(idx){
-  if(!puanlar[idx]) puanlar[idx]={plus:0,minus:0};
-  return puanlar[idx];
+/* ===================== KATEGORİ BUTONLARI ===================== */
+function katButonlariGoster(){
+  var wrap=document.getElementById('rKatBtns');
+  if(!wrap) return;
+  var h='';
+  PUAN_KATS.forEach(function(k){
+    h+='<button class="kat-btn'+(k.id===aktifKat?' aktif':'')+'" data-kat="'+k.id+'" title="'+k.ad+'">'+k.emoji+' '+k.ad+'</button>';
+  });
+  wrap.innerHTML=h;
+  wrap.querySelectorAll('.kat-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      aktifKat=this.dataset.kat;
+      depo.yaz('aktifKat',aktifKat);
+      katButonlariGoster();
+      rPuanGuncelle();
+    });
+  });
 }
-function puanVer(idx, tip){
-  if(!puanlar[idx]) puanlar[idx]={plus:0,minus:0};
-  if(tip==='+') puanlar[idx].plus++; else puanlar[idx].minus++;
+
+
+/* ===================== PUAN SİSTEMİ ===================== */
+function puanAl(idx, kat){
+  kat = kat || 'genel';
+  if(!puanlar[idx]) puanlar[idx]={};
+  if(!puanlar[idx][kat]) puanlar[idx][kat]={plus:0,minus:0};
+  return puanlar[idx][kat];
+}
+function puanAlToplam(idx){
+  // Tüm kategorilerin toplamını döndür
+  if(!puanlar[idx]) return {plus:0,minus:0};
+  var tp=0,tm=0;
+  Object.keys(puanlar[idx]).forEach(function(k){ tp+=puanlar[idx][k].plus; tm+=puanlar[idx][k].minus; });
+  return {plus:tp,minus:tm};
+}
+function puanVer(idx, tip, kat){
+  kat = kat || aktifKat;
+  if(!puanlar[idx]) puanlar[idx]={};
+  if(!puanlar[idx][kat]) puanlar[idx][kat]={plus:0,minus:0};
+  if(tip==='+') puanlar[idx][kat].plus++; else puanlar[idx][kat].minus++;
   kaydet();
   rPuanGuncelle();
   puanOzetGoster();
   gecmisiGoster();
   srchPuanGoster();
   hizliPuanGoster();
-  bildir(tip==='+' ? '✅ +1 Doğru' : '❌ -1 Yanlış');
+  var katObj=PUAN_KATS.find(function(k){return k.id===kat;})||{emoji:'⭐',ad:'Genel'};
+  bildir(tip==='+' ? katObj.emoji+' +1 '+katObj.ad : '❌ -1 '+katObj.ad);
 }
 function rPuanGuncelle(){
   if(secilenOgrIdx===null) return;
-  var p=puanAl(secilenOgrIdx);
+  var p=puanAl(secilenOgrIdx, aktifKat);
+  var pt=puanAlToplam(secilenOgrIdx);
   var fark=p.plus-p.minus;
   document.getElementById('rPuanPlus').textContent=p.plus;
   document.getElementById('rPuanMinus').textContent=p.minus;
-  document.getElementById('rTogP').textContent='+'+p.plus;
-  document.getElementById('rTogM').textContent='−'+p.minus;
+  document.getElementById('rTogP').textContent='+'+pt.plus;
+  document.getElementById('rTogM').textContent='−'+pt.minus;
   var farkEl=document.getElementById('rPuanFark');
   farkEl.textContent=(fark>0?'+':'')+fark;
   farkEl.style.color=fark>0?'var(--plus)':fark<0?'var(--minus)':'var(--t1)';
+  // Aktif kategori etiketi güncelle
+  var katEl=document.getElementById('rAktifKat');
+  if(katEl){
+    var katObj=PUAN_KATS.find(function(k){return k.id===aktifKat;})||PUAN_KATS[0];
+    katEl.textContent=katObj.emoji+' '+katObj.ad;
+  }
 }
 function puanOzetGoster(){
   var kart=document.getElementById('puanOzetCard');
@@ -1353,18 +1530,21 @@ function puanOzetGoster(){
   var wrap=document.getElementById('puanOzetWrap');
   // puanı olan öğrencileri göster
   var liste=ogr.map(function(s,i){return{ad:s.ad,sinif:s.sinif,numara:s.numara,_i:i};})
-    .filter(function(s){ var p=puanlar[s._i]; return p&&(p.plus>0||p.minus>0); })
-    .filter(function(s){ return !seciliSinif||s.sinif===seciliSinif; });
+    .filter(function(s){
+      if(seciliSinif && s.sinif!==seciliSinif) return false;
+      var pt=puanAlToplam(s._i);
+      return pt.plus>0||pt.minus>0;
+    });
   if(!liste.length){kart.style.display='none';return;}
   kart.style.display='block';
   meta.textContent='('+liste.length+' öğrenci)';
   liste.sort(function(a,b){
-    var pa=puanAl(a._i), pb=puanAl(b._i);
+    var pa=puanAlToplam(a._i), pb=puanAlToplam(b._i);
     return (pb.plus-pb.minus)-(pa.plus-pa.minus);
   });
   var h='<table class="tbl puan-ozet-tbl"><thead><tr><th>Ad Soyad</th><th>Sınıf</th><th>+</th><th>−</th><th>Fark</th><th></th></tr></thead><tbody>';
   liste.forEach(function(s){
-    var p=puanAl(s._i), fark=p.plus-p.minus;
+    var p=puanAlToplam(s._i), fark=p.plus-p.minus;
     h+='<tr>';
     h+='<td class="td-name">'+s.ad+(s.numara?'<span class="badge">'+s.numara+'</span>':'')+'</td>';
     h+='<td class="td-c">'+s.sinif+'</td>';
@@ -1383,12 +1563,29 @@ function puanOzetGoster(){
 
 /* ===================== PUAN DÜZENLEME MODAL ===================== */
 var puanEditIdx = null;
-function puanDuzenleAc(idx){
+function puanDuzenleAc(idx, kat){
   if(idx===null||idx===undefined||!ogr[idx]) return;
+  kat = kat || aktifKat;
   puanEditIdx=idx;
-  var s=ogr[idx], p=puanAl(idx);
+  var s=ogr[idx], p=puanAl(idx,kat);
   document.getElementById('puanEditAd').textContent=s.ad;
   document.getElementById('puanEditMeta').textContent=s.sinif+(s.numara?' · No: '+s.numara:'');
+  // Kategori seçici doldur
+  var katSec=document.getElementById('peKatSec');
+  if(katSec){
+    katSec.innerHTML='';
+    PUAN_KATS.forEach(function(k){
+      var opt=document.createElement('option');
+      opt.value=k.id; opt.textContent=k.emoji+' '+k.ad;
+      if(k.id===kat) opt.selected=true;
+      katSec.appendChild(opt);
+    });
+    katSec.onchange=function(){
+      var np=puanAl(idx,this.value);
+      document.getElementById('peInpP').value=np.plus;
+      document.getElementById('peInpM').value=np.minus;
+    };
+  }
   document.getElementById('peInpP').value=p.plus;
   document.getElementById('peInpM').value=p.minus;
   document.getElementById('puanEditOverlay').style.display='flex';
@@ -1402,9 +1599,11 @@ function puanDuzenleKaydet(){
   if(puanEditIdx===null) return;
   var yp=Math.max(0,parseInt(document.getElementById('peInpP').value)||0);
   var ym=Math.max(0,parseInt(document.getElementById('peInpM').value)||0);
-  if(!puanlar[puanEditIdx]) puanlar[puanEditIdx]={plus:0,minus:0};
-  puanlar[puanEditIdx].plus=yp;
-  puanlar[puanEditIdx].minus=ym;
+  var kat=document.getElementById('peKatSec')?document.getElementById('peKatSec').value:aktifKat;
+  if(!puanlar[puanEditIdx]) puanlar[puanEditIdx]={};
+  if(!puanlar[puanEditIdx][kat]) puanlar[puanEditIdx][kat]={plus:0,minus:0};
+  puanlar[puanEditIdx][kat].plus=yp;
+  puanlar[puanEditIdx][kat].minus=ym;
   kaydet();
   rPuanGuncelle();
   puanOzetGoster();
@@ -1600,6 +1799,8 @@ function bitir(s){
   toggleRow.classList.toggle('open', puanAcik);
   arrow.classList.toggle('open', puanAcik);
   kalanlariGoster();
+  katButonlariGoster();
+  projektorGuncelle();
   // Butonu görünürde tut - scroll pozisyonunu koru
   if(_secBtnRect!==null){
     var btnEl2=document.getElementById('btnSec');
@@ -1735,7 +1936,7 @@ function srchPuanGoster(){
   if(!f.length){liste.innerHTML='<div class="tbl-empty">Bulunamadı</div>';return;}
   var h='';
   f.forEach(function(s){
-    var p=puanAl(s._i);
+    var p=puanAlToplam(s._i);
     var fark=p.plus-p.minus;
     h+='<div class="srch-puan-row">';
     h+='<div class="srch-puan-info"><span class="smeta">'+s.sinif+'</span><span class="smeta">'+(s.numara||'—')+'</span><span>'+s.ad+'</span></div>';
@@ -1771,7 +1972,7 @@ function hizliPuanGoster(){
   if(!f.length){liste.innerHTML='<div class="tbl-empty">Bulunamadı</div>';return;}
   var h='';
   f.forEach(function(s){
-    var p=puanAl(s._i);
+    var p=puanAlToplam(s._i);
     h+='<div class="hizli-puan-row">';
     h+='<div class="hizli-puan-info">';
     h+='<div class="hizli-puan-ad">'+s.ad+'</div>';
@@ -2115,11 +2316,18 @@ document.getElementById('srchPuan').addEventListener('input',srchPuanGoster);
 
 // Klavye
 document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    var pr=document.getElementById('projOverlay');
+    if(pr && pr.classList.contains('acik')){ projektorKapat(); return; }
+  }
   if((e.key===' '||e.key==='Enter')&&!seciliyor
     &&e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON'&&e.target.tagName!=='SELECT'&&!e.target.isContentEditable){
     e.preventDefault(); sec();
   }
 });
+
+// Projektör overlay click
+document.getElementById('projOverlay').addEventListener('click', projektorKapat);
 
 /* ===================== BAŞLANGIÇ ===================== */
 temauygula(depo.al('tema')||'gece');
@@ -2134,31 +2342,31 @@ if(yukle()){
   srchPuanGoster();
   puanOzetGoster();
   hizliPuanGoster();
-  // Kayıtlı modu uygula
   modAyarla(mod);
-  // Kayıtlı sınıf seçimini uygula
-  if(seciliSinif) sinifSec(seciliSinif);
+  if(seciliSinif){ sinifSec(seciliSinif); yoklamaGoster(); }
+  katButonlariGoster();
 } else {
   baslikGuncelle();
   modAyarla('unique');
+  katButonlariGoster();
 }
 yedekListesiGoster();
 
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro1.2';
+var YENILIK_VER = 'Pro1.3';
 var YENILIKLER = [
-  { emoji:'⚡', baslik:'Hızlı Puan Ver taşındı', aciklama:'Hızlı Puan Ver kartı artık Sınıflar klasörünün hemen altında, çok daha kolay erişilebilir.' },
-  { emoji:'🔍', baslik:'Öğrenci arama kaldırıldı', aciklama:'Anasayfadaki ayrı Öğrenci Ara bölümü kaldırıldı, Hızlı Puan üzerinden tüm işlemler yapılabilir.' },
-  { emoji:'📊', baslik:'Puan kartı kompakt hale getirildi', aciklama:'Seçilen öğrencinin puan detayı artık tek satırda — sayılar ve butonlar yan yana görünür.' },
-  { emoji:'🎯', baslik:'Scroll sorunu giderildi', aciklama:'Öğrenci Seç butonuna basıldığında sayfa artık yukarı kaymıyor, buton her zaman görünür kalıyor.' },
-  { emoji:'📋', baslik:'Veri Yönetimi sadeleştirildi', aciklama:'Veri Yönetimi sekmesinde klasör yapısı kaldırıldı, tüm içerik doğrudan görünür.' },
-  { emoji:'🏷️', baslik:'Lisans bilgisi alt çubukta', aciklama:'S-Seçim Pro 1.2 · ©sebasmobil · AGPL V3.0 lisans bilgisi alt navigasyon çubuğunda yer alıyor.' },
-  { emoji:'📁', baslik:'Dosya adı versiyonlandı', aciklama:'İndirilen HTML dosyası artık sürüm numarasını içeriyor: S-Secim-Pro-1.2.html' },
-  { emoji:'🌙', baslik:'Tek tuş tema geçişi', aciklama:'Üst bardaki tek simgeye tıklayarak gece ve gündüz teması arasında geçiş yapılabilir.' },
-  { emoji:'📱', baslik:'Dar ve sade üst bar', aciklama:'Üst barda yalnızca uygulama adı ve tema simgesi yer alıyor, daha fazla içerik alanı.' },
-  { emoji:'🔔', baslik:'Açılış yenilikleri ekranı', aciklama:'Her yeni sürümde yenilikler listesi açılışta gösterilir. Bir daha gösterme seçeneği mevcuttur.' },
+  { emoji:'📋', baslik:'Yoklama modu', aciklama:'Sınıflar klasöründe her öğrenciyi bugün yok olarak işaretleyebilirsiniz. Yok olan öğrenciler seçim havuzundan çıkar.' },
+  { emoji:'🗂️', baslik:'Puan kategorileri', aciklama:'Puanlar artık Genel, Katılım, Ödev, Sınav ve Davranış kategorilerine ayrılıyor. Her kategori ayrı takip edilir.' },
+  { emoji:'🖥️', baslik:'Projektör modu', aciklama:'Üst bardaki 🖥️ butonuyla tam ekran seçim sonucu gösterilir. Sınıfa yansıtmak için idealdir. Esc veya dokunuşla kapanır.' },
+  { emoji:'⭐', baslik:'Kategori butonları', aciklama:'Seçilen öğrencinin puan kartında kategori butonları gösterilir, tek dokunuşla kategori değiştirilir.' },
+  { emoji:'💾', baslik:'Tüm seçimler kalıcı', aciklama:'Seçim modu, sınıf seçimi, puan kategorisi, tema ve animasyon tercihleri uygulama kapatılıp açıldığında hatırlanır.' },
+  { emoji:'📊', baslik:'Toplam puan gösterimi', aciklama:'Puan özetleri ve listeler artık tüm kategorilerin toplamını gösterir.' },
+  { emoji:'🔢', baslik:'Yoklama sayacı', aciklama:'İlerleme çubuğunda kaç öğrencinin yok olduğu parantez içinde gösterilir.' },
+  { emoji:'🌙', baslik:'Karanlık tema iyileştirmeleri', aciklama:'Yoklama ve projektör bileşenleri gece temasıyla tam uyumlu.' },
+  { emoji:'🔔', baslik:'Kategori bazlı bildirim', aciklama:'Puan verildiğinde hangi kategoriye eklendiği toast bildiriminde gösterilir.' },
+  { emoji:'⌨️', baslik:'Esc ile projektör kapatma', aciklama:'Projektör modundayken Escape tuşuna basarak veya ekrana dokunarak çıkabilirsiniz.' },
 ];
 
 function yenilikIcerikOlustur(){
@@ -2251,6 +2459,46 @@ function ogrAraGoster(){
   });
 }
 
+
+/* ===================== PROJEKTöR MODU ===================== */
+function projektorAc(){
+  var overlay=document.getElementById('projOverlay');
+  if(!overlay) return;
+  // Seçili öğrenci varsa göster
+  if(secilenOgrIdx!==null && ogr[secilenOgrIdx]){
+    var s=ogr[secilenOgrIdx];
+    var pt=puanAlToplam(secilenOgrIdx);
+    document.getElementById('projSinif').textContent=s.sinif||'';
+    var numEl=document.getElementById('projNum');
+    if(s.numara){ numEl.textContent='No: '+s.numara; numEl.style.display='block'; }
+    else numEl.style.display='none';
+    document.getElementById('projAd').textContent=s.ad;
+    var puanEl=document.getElementById('projPuan');
+    if(pt.plus>0||pt.minus>0){
+      document.getElementById('projPlus').textContent='+'+pt.plus;
+      document.getElementById('projMinus').textContent='−'+pt.minus;
+      puanEl.style.display='flex';
+    } else puanEl.style.display='none';
+  } else {
+    document.getElementById('projSinif').textContent='';
+    document.getElementById('projNum').style.display='none';
+    document.getElementById('projAd').textContent='Önce öğrenci seçin';
+    document.getElementById('projPuan').style.display='none';
+  }
+  overlay.classList.add('acik');
+  // Tam ekran dene
+  try{ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }catch(e){}
+}
+function projektorKapat(){
+  var overlay=document.getElementById('projOverlay');
+  if(overlay) overlay.classList.remove('acik');
+  try{ if(document.exitFullscreen && document.fullscreenElement) document.exitFullscreen(); }catch(e){}
+}
+function projektorGuncelle(){
+  if(!document.getElementById('projOverlay').classList.contains('acik')) return;
+  projektorAc();
+}
+
 /* ===================== FOLDER TOGGLE ===================== */
 var folderIds = ['Secim','Anim','Sinif','Hizli','Geri'];
 function folderToggle(id){
@@ -2277,12 +2525,11 @@ function folderInit(){
 }
 folderInit();
 
-// Öğrenci arama - ana sayfa
-var ogrAraEl = document.getElementById('ogrAraInp');
-if(ogrAraEl){
-  ogrAraEl.addEventListener('input', ogrAraGoster);
-  ogrAraEl.addEventListener('focus', function(){ this.select(); });
-}
+// Öğrenci arama - ana sayfa (kaldırıldı)
+
+// Yoklama sıfırla
+var yokSfrl=document.getElementById('btnYoklamaSifirla');
+if(yokSfrl) yokSfrl.addEventListener('click', yoklamaSifirla);
 
 
 </script>
