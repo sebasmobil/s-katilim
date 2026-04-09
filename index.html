@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 1.4</title>
+<title>S-Seçim Pro 1.6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -280,6 +280,7 @@ body{padding:0 0 72px}
 .pill{font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;padding:7px 14px;border-radius:100px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t2);cursor:pointer;user-select:none;transition:all .15s}
 @media(min-width:480px){.pill{font-size:13px;padding:8px 18px}}
 .pill:hover{border-color:var(--bd2)}
+.pill.aktif-coklu{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:800}
 .pill.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .pill .n{opacity:.65;font-size:10px;margin-left:3px}
 
@@ -600,7 +601,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.4</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.6</span></div>
     </div>
     <div class="hdr-right">
       <div class="ticon" id="projBtn" title="Projektör Modu" onclick="projektorAc()">🖥️</div>
@@ -674,6 +675,19 @@ body{padding:0 0 72px}
             <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px">Hepsini Getir</button>
           </div>
           <div id="yoklamaList" style="max-height:180px;overflow-y:auto"></div>
+        </div>
+        <div id="gruplamaRow" style="display:none;margin-top:10px">
+          <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
+            <span>👥 Otomatik Gruplama</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+            <button class="btn-s" onclick="gruplamaYap(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2 Grup</button>
+            <button class="btn-s" onclick="gruplamaYap(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3 Grup</button>
+            <button class="btn-s" onclick="gruplamaYap(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4 Grup</button>
+            <button class="btn-s" onclick="gruplamaYap(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5 Grup</button>
+            <button class="btn-s" onclick="gruplamaYap(seciliSinif,6)" style="font-size:12px;padding:5px 10px">6 Grup</button>
+          </div>
+          <div id="grupWrap"></div>
         </div>
         <div class="prog-row" id="progRow" style="display:none;margin-top:12px;margin-bottom:0">
           <span class="prog-lbl" id="progLbl">0 / 0</span>
@@ -761,6 +775,7 @@ body{padding:0 0 72px}
     </div>
     <div class="folder-body" id="folderGeriBody">
   <div class="sc-card" style="border:none;padding:10px 0 0;margin-bottom:0;background:none">
+    <div id="timerProfilList"></div>
     <div class="sc-row">
       <span class="sc-lbl">Geri Sayım</span>
       <div class="sc-btns" id="scBtnGrup">
@@ -796,6 +811,7 @@ body{padding:0 0 72px}
       </div>
       <div class="sc-toplam" id="scToplam">1 dakika</div>
       <button class="sc-baslat" id="scBaslatBtn">▶ Başlat</button>
+      <button class="btn-s" onclick="timerProfilKaydetDialog()" style="margin-top:6px;width:100%;font-size:12px">💾 Bu süreyi profil olarak kaydet</button>
     </div>
     <div class="sc-ekran" id="scEkran">
       <div class="sc-ring">
@@ -932,9 +948,19 @@ body{padding:0 0 72px}
       <div class="srch-puan-list" id="srchPuanList"></div>
     </div>
     <div class="sep"></div>
+    <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Dışa Aktar</div>
+    <div class="btn-row" style="margin-top:0">
+      <button class="btn-s primary" id="btnExport">CSV</button>
+      <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel</button>
+      <button class="btn-s" onclick="pdfRaporIndir()" style="color:#e53935;border-color:#e53935">📄 PDF Rapor</button>
+    </div>
     <div class="btn-row">
-      <button class="btn-s primary" id="btnExport">CSV İndir</button>
-      <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel İndir</button>
+      <button class="btn-s" onclick="qrModalAc()" style="color:#7c3aed;border-color:#7c3aed">📱 QR Aktar</button>
+      <button class="btn-s" onclick="sifreliAktar()" style="color:#b45309;border-color:#b45309">🔒 Şifreli İndir</button>
+      <button class="btn-s" onclick="document.getElementById('sifreliFileIn').click()" style="color:#b45309;border-color:#b45309">🔓 Şifreli Yükle</button>
+      <input type="file" id="sifreliFileIn" accept=".ssenc,.json" style="display:none">
+    </div>
+    <div class="btn-row">
       <button class="btn-s danger" id="btnSilHep">Tüm Veriyi Sil</button>
     </div>
     <div class="yedek-section">
@@ -952,6 +978,28 @@ body{padding:0 0 72px}
 
 </div><!-- end .page -->
 
+
+<!-- QR KOD MODALI -->
+<div id="qrOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9700;align-items:center;justify-content:center;padding:16px">
+  <div id="qrBox" style="background:var(--bg);width:100%;max-width:360px;border-radius:var(--r);padding:24px;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(20px);transition:transform .3s">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div>
+        <div style="font-size:16px;font-weight:900;color:var(--t1)">📱 QR ile Aktar</div>
+        <div id="qrBilgi" style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px"></div>
+      </div>
+      <button onclick="qrModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button>
+    </div>
+    <div id="qrCanvas" style="display:flex;justify-content:center;align-items:center;padding:16px;background:#fff;border-radius:var(--r-sm);margin-bottom:14px;min-height:220px"></div>
+    <div style="font-size:12px;color:var(--t2);text-align:center;margin-bottom:12px;line-height:1.5">Diğer cihazda S-Seçim açık olmalı.<br>QR kodu taratınca veri otomatik aktarılır.</div>
+    <div style="display:flex;gap:8px">
+      <label style="flex:1;cursor:pointer">
+        <div class="btn-s" style="text-align:center;cursor:pointer;color:var(--ac);border-color:var(--ac)">📂 JSON ile Yükle</div>
+        <input type="file" id="qrFileIn" accept=".json" style="display:none">
+      </label>
+      <button onclick="qrModalKapat()" class="btn-s" style="flex:1">Kapat</button>
+    </div>
+  </div>
+</div>
 
 <!-- ÖĞRENCİ PROFİL KARTI -->
 <div id="profilOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9600;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)">
@@ -997,7 +1045,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.4</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.6</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1044,7 +1092,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 1.4</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 1.6</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1089,6 +1137,18 @@ var modalSatirlar=[], uyariTimer=null;
 // puanlar: {ogrIdx: {kat: {plus:N, minus:N}, ...}}  kat = kategori id
 var puanlar = {};
 var secilenOgrIdx = null;
+// Çoklu sınıf seçimi
+var seciliSiniflar = []; // birden fazla seçili sınıf listesi
+var cokluMod = false;    // çoklu sınıf modu açık mı
+// Gruplama
+var gruplar = {};        // {sinif: [{ad, uyeler:[_i,...]}]}
+var aktifGrup = null;    // {sinif, grupIdx}
+// Zamanlayıcı profilleri
+var timerProfiller = [
+  {ad:'Kısa Aktivite', sure:300},
+  {ad:'Sınav', sure:2400},
+  {ad:'Ders', sure:2700},
+];
 // Puan geçmişi: [{ts, idx, kat, tip, ad, sinif}]
 var puanGecmis = [];
 // Yoklama: {sinif: Set(ogrIdx)} — bugün yoklama ile çıkarılanlar
@@ -1138,6 +1198,10 @@ function kaydet(){
   depo.yaz('puanGecmis',JSON.stringify(puanGecmis.slice(0,500)));
   depo.yaz('mod',mod);
   if(seciliSinif) depo.yaz('seciliSinif',seciliSinif);
+  depo.yaz('seciliSiniflar',JSON.stringify(seciliSiniflar));
+  depo.yaz('cokluMod',cokluMod?'1':'0');
+  depo.yaz('gruplar',JSON.stringify(gruplar));
+  depo.yaz('timerProfiller',JSON.stringify(timerProfiller));
 }
 function yukle(){
   try{
@@ -1150,6 +1214,10 @@ function yukle(){
     var sm=depo.al('mod'); if(sm) mod=sm;
     var ss=depo.al('seciliSinif'); if(ss) seciliSinif=ss;
     var pg=depo.al('puanGecmis'); if(pg){ var ppg=JSON.parse(pg); if(Array.isArray(ppg)) puanGecmis=ppg; }
+    var ssl=depo.al('seciliSiniflar'); if(ssl){ var pssl=JSON.parse(ssl); if(Array.isArray(pssl)) seciliSiniflar=pssl; }
+    var cm=depo.al('cokluMod'); if(cm) cokluMod=(cm==='1');
+    var gr=depo.al('gruplar'); if(gr){ var pgr=JSON.parse(gr); if(typeof pgr==='object') gruplar=pgr; }
+    var tp=depo.al('timerProfiller'); if(tp){ var ptp=JSON.parse(tp); if(Array.isArray(ptp)&&ptp.length) timerProfiller=ptp; }
   }catch(e){}
   return ogr.length>0;
 }
@@ -1420,9 +1488,20 @@ function siniflariOlustur(){
   var el=document.getElementById('pills'), cls=siniflariAl();
   if(!cls.length){el.innerHTML='<span style="font-size:13px;color:var(--t3)">Önce veri yükleyin</span>';return;}
   var h='';
-  cls.forEach(function(c){h+='<div class="pill'+(seciliSinif===c[0]?' on':'')+'" data-c="'+c[0]+'">'+c[0]+'<span class="n">'+c[1]+'</span></div>';});
+  // Çoklu mod toggle butonu
+  h+='<div class="pill'+(cokluMod?' aktif-coklu':'')+'" id="btnCokluMod" style="background:'+(cokluMod?'var(--ac)':'var(--bg2)')+';border-color:'+(cokluMod?'var(--ac)':'var(--bd)')+';color:'+(cokluMod?'#fff':'var(--t2)')+'">⊕ Çoklu</div>';
+  cls.forEach(function(sf){
+    var isSecili = cokluMod ? seciliSiniflar.indexOf(sf[0])!==-1 : seciliSinif===sf[0];
+    h+='<div class="pill'+(isSecili?' on':'')+'" data-c="'+sf[0]+'">'+sf[0]+'<span class="n">'+sf[1]+'</span></div>';
+  });
   el.innerHTML=h;
-  el.querySelectorAll('.pill').forEach(function(d){d.addEventListener('click',function(){sinifSec(this.dataset.c);});});
+  document.getElementById('btnCokluMod').addEventListener('click',function(){ cokluModAyarla(!cokluMod); });
+  el.querySelectorAll('.pill[data-c]').forEach(function(d){
+    d.addEventListener('click',function(){
+      if(cokluMod){ cokluSinifToggle(this.dataset.c); }
+      else { sinifSec(this.dataset.c); }
+    });
+  });
 }
 function sinifSec(c){
   seciliSinif=c;
@@ -1430,6 +1509,10 @@ function sinifSec(c){
   siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster(); yoklamaGoster();
   document.getElementById('histLbl').innerHTML=c?'&#8212; '+c:'';
   if(mevcutSayfa==='gecmis') guncelleSiralamaUI();
+  // Gruplama satırını göster
+  var gr=document.getElementById('gruplamaRow');
+  if(gr) gr.style.display=c?'block':'none';
+  gruplamaGoster(c);
 }
 
 /* ===================== MOD ===================== */
@@ -1451,17 +1534,24 @@ function sinifOgrTum(){
             .filter(function(s){return s.sinif===seciliSinif;});
 }
 function ilerlemeGuncelle(){
-  if(mod!=='unique'||!seciliSinif) return;
-  var cls=sinifOgr();
-  var kul=0;
-  if(kullanilan[seciliSinif]){
-    var yok=yoklama[seciliSinif]||new Set();
-    kullanilan[seciliSinif].forEach(function(i){ if(!yok.has(i)) kul++; });
-  }
-  var top=cls.length;
-  var yokSayisi=(yoklama[seciliSinif]||new Set()).size;
-  document.getElementById('progLbl').textContent=kul+' / '+top+(yokSayisi?' ('+yokSayisi+' yok)':'');
-  document.getElementById('progFill').style.width=top>0?Math.round(kul/top*100)+'%':'0%';
+  if(mod!=='unique') return;
+  var siniflar = cokluMod && seciliSiniflar.length>0 ? seciliSiniflar : (seciliSinif?[seciliSinif]:[]);
+  if(!siniflar.length) return;
+  var topToplam=0, kulToplam=0, yokToplam=0;
+  siniflar.forEach(function(sf){
+    var yok=yoklama[sf]||new Set();
+    var sfOgr=ogr.filter(function(s){return s.sinif===sf;});
+    var sfTop=sfOgr.length-yok.size;
+    var sfKul=0;
+    if(kullanilan[sf]){
+      var sfKulSet=kullanilan[sf];
+      sfKulSet.forEach(function(i){ if(!yok.has(i)) sfKul++; });
+    }
+    topToplam+=sfTop; kulToplam+=sfKul; yokToplam+=yok.size;
+  });
+  var label = (cokluMod&&siniflar.length>1?siniflar.length+' sınıf: ':'') + kulToplam+' / '+topToplam+(yokToplam?' ('+yokToplam+' yok)':'');
+  document.getElementById('progLbl').textContent=label;
+  document.getElementById('progFill').style.width=topToplam>0?Math.round(kulToplam/topToplam*100)+'%':'0%';
 }
 
 /* ===================== YOKlAMA ===================== */
@@ -1777,6 +1867,162 @@ function yedekListesiGoster(){
 }
 
 /* ===================== SEÇİM ===================== */
+
+/* ===================== ÇOKLU SINIF SEÇİMİ ===================== */
+function cokluModAyarla(acik){
+  cokluMod = acik;
+  if(!acik){
+    seciliSiniflar = [];
+    // Tek sınıf moduna dön
+    siniflariOlustur();
+  } else {
+    // Mevcut seçili sınıfı listeye ekle
+    if(seciliSinif && seciliSiniflar.indexOf(seciliSinif)===-1){
+      seciliSiniflar = [seciliSinif];
+    }
+    siniflariOlustur();
+  }
+  var btn = document.getElementById('btnCokluMod');
+  if(btn) btn.classList.toggle('aktif', acik);
+  kaydet();
+}
+
+function cokluSinifToggle(sinif){
+  var idx = seciliSiniflar.indexOf(sinif);
+  if(idx===-1){
+    seciliSiniflar.push(sinif);
+  } else {
+    seciliSiniflar.splice(idx,1);
+  }
+  // Ana seciliSinif = son seçilen veya ilk
+  if(seciliSiniflar.length>0){
+    seciliSinif = seciliSiniflar[seciliSiniflar.length-1];
+    depo.yaz('seciliSinif', seciliSinif);
+  }
+  siniflariOlustur();
+  ilerlemeGuncelle();
+  kaydet();
+}
+
+function sinifOgrCoklu(){
+  // Tüm seçili sınıflardan öğrencileri birleştir
+  var liste = [];
+  var siniflar = cokluMod && seciliSiniflar.length>0 ? seciliSiniflar : (seciliSinif ? [seciliSinif] : []);
+  siniflar.forEach(function(sf){
+    var yok = yoklama[sf] || new Set();
+    ogr.forEach(function(s,i){
+      if(s.sinif===sf && !yok.has(i)) liste.push({sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i});
+    });
+  });
+  return liste;
+}
+
+/* ===================== OTOMATİK GRUPLAMA ===================== */
+function gruplamaYap(sinif, grupSayisi){
+  if(!sinif||!grupSayisi||grupSayisi<2) return;
+  var tumOgr = sinifOgrTum();
+  if(!tumOgr.length){ bildir('Öğrenci yok'); return; }
+  // Karıştır
+  var karisik = tumOgr.slice().sort(function(){ return Math.random()-0.5; });
+  var grps = [];
+  for(var i=0;i<grupSayisi;i++) grps.push({ad:'Grup '+(i+1), uyeler:[]});
+  karisik.forEach(function(s,i){ grps[i%grupSayisi].uyeler.push(s._i); });
+  if(!gruplar[sinif]) gruplar[sinif]=[];
+  gruplar[sinif] = grps;
+  kaydet();
+  gruplamaGoster(sinif);
+  bildir('✅ '+grupSayisi+' grup oluşturuldu');
+}
+
+function gruplamaGoster(sinif){
+  var wrap = document.getElementById('grupWrap');
+  if(!wrap) return;
+  var grps = gruplar[sinif]||[];
+  if(!grps.length){
+    wrap.innerHTML='<div class="tbl-empty">Henüz grup oluşturulmadı</div>';
+    return;
+  }
+  var h='';
+  grps.forEach(function(g,gi){
+    var uyeAdlar = g.uyeler.map(function(idx){return ogr[idx]?ogr[idx].ad:'?';});
+    h+='<div style="margin-bottom:12px;padding:10px 12px;background:var(--bg2);border-radius:var(--r-sm);border:1.5px solid var(--bd)">';
+    h+='<div style="font-size:13px;font-weight:800;color:var(--ac);margin-bottom:6px">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">('+g.uyeler.length+' kişi)</span></div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
+    uyeAdlar.forEach(function(ad){
+      h+='<span style="font-size:11px;font-weight:700;padding:3px 8px;background:var(--bg);border:1.5px solid var(--bd);border-radius:20px;color:var(--t1)">'+ad+'</span>';
+    });
+    h+='</div></div>';
+  });
+  wrap.innerHTML=h;
+}
+
+/* ===================== ZAMANLAYıCı PROFİLLERİ ===================== */
+function timerProfilKaydet(ad, sure){
+  if(!ad||!sure) return;
+  // Aynı ad varsa güncelle
+  var idx = timerProfiller.findIndex(function(p){return p.ad===ad;});
+  if(idx!==-1){
+    timerProfiller[idx].sure=sure;
+  } else {
+    if(timerProfiller.length>=8) timerProfiller.shift(); // max 8
+    timerProfiller.push({ad:ad,sure:sure});
+  }
+  kaydet();
+  timerProfillerGoster();
+  bildir('💾 Profil kaydedildi');
+}
+
+function timerProfilSil(idx){
+  timerProfiller.splice(idx,1);
+  kaydet();
+  timerProfillerGoster();
+}
+
+function timerProfilUygula(sure){
+  scBtnSec(0); // önce sıfırla
+  SC.sure = sure;
+  // Özel wrap'ı göster ve slider'ları ayarla
+  var sa=Math.floor(sure/3600), dk=Math.floor((sure%3600)/60), sn=sure%60;
+  document.getElementById('slSa').value=sa; document.getElementById('numSa').textContent=sa;
+  document.getElementById('slDk').value=dk; document.getElementById('numDk').textContent=dk;
+  document.getElementById('slSn').value=sn; document.getElementById('numSn').textContent=sn;
+  document.getElementById('scOzelWrap').style.display='block';
+  SC.ozel=true;
+  spToplamGoster();
+  // Aktif butonu kaldır
+  document.querySelectorAll('#scBtnGrup .sc-btn').forEach(function(b){ b.classList.remove('aktif'); });
+  scBaslat();
+  // Geri sayım klasörünü aç
+  var fb=document.getElementById('folderGeriBody');
+  var fa=document.getElementById('folderGeriArrow');
+  if(fb&&!fb.classList.contains('open')){ fb.classList.add('open'); if(fa) fa.classList.add('open'); }
+}
+
+function timerProfillerGoster(){
+  var wrap = document.getElementById('timerProfilList');
+  if(!wrap) return;
+  if(!timerProfiller.length){ wrap.innerHTML=''; return; }
+  var h='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">';
+  timerProfiller.forEach(function(p,i){
+    var sa=Math.floor(p.sure/3600), dk=Math.floor((p.sure%3600)/60), sn=p.sure%60;
+    var sureTxt = sa>0?(sa+'s '+(dk>0?dk+'dk':'')):(dk>0?dk+'dk '+(sn>0?sn+'sn':''):sn+'sn');
+    h+='<div style="display:flex;align-items:center;gap:0;background:var(--bg2);border:1.5px solid var(--bd);border-radius:8px;overflow:hidden">';
+    h+='<button onclick="timerProfilUygula('+p.sure+')" style="border:none;background:none;cursor:pointer;padding:6px 10px;font-size:12px;font-weight:800;color:var(--t1);font-family:Nunito,sans-serif;white-space:nowrap">⏱ '+p.ad+' <span style=\"font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)\">'+sureTxt+'</span></button>';
+    h+='<button onclick="timerProfilSil('+i+')" style="border:none;border-left:1.5px solid var(--bd);background:none;cursor:pointer;padding:6px 8px;color:var(--t3);font-size:13px" title="Sil">✕</button>';
+    h+='</div>';
+  });
+  h+='</div>';
+  wrap.innerHTML=h;
+}
+
+function timerProfilKaydetDialog(){
+  var ad = prompt('Profil adı:', 'Yeni Profil');
+  if(!ad) return;
+  var sure = spToplamSaniye();
+  if(sure<=0){ bildir('Önce süre ayarlayın'); return; }
+  timerProfilKaydet(ad.trim(), sure);
+}
+
 function sec(){
   if(!seciliSinif){uyari('Önce bir sınıf seçin');return;}
   if(seciliyor) return;
@@ -1784,12 +2030,24 @@ function sec(){
   var btnEl=document.getElementById('btnSec');
   _secBtnRect=btnEl?btnEl.getBoundingClientRect():null;
   _secScrollBefore=window.pageYOffset||document.documentElement.scrollTop;
-  var havuz=sinifOgr();
+  // Havuz: çoklu mod veya tek sınıf
+  var havuz = cokluMod && seciliSiniflar.length>0 ? sinifOgrCoklu() : sinifOgr();
+  // Aktif grup varsa sadece o gruptan seç
+  if(aktifGrup && gruplar[aktifGrup.sinif] && gruplar[aktifGrup.sinif][aktifGrup.idx]){
+    var grpUyeler = gruplar[aktifGrup.sinif][aktifGrup.idx].uyeler;
+    var yok = yoklama[aktifGrup.sinif]||new Set();
+    havuz = havuz.filter(function(s){ return grpUyeler.indexOf(s._i)!==-1 && !yok.has(s._i); });
+  }
   if(mod==='unique'){
-    if(!kullanilan[seciliSinif]) kullanilan[seciliSinif]=new Set();
-    var mev=havuz.filter(function(s){return !kullanilan[seciliSinif].has(s._i);});
-    if(!mev.length){kullanilan[seciliSinif]=new Set();bildir('Tüm öğrenciler seçildi — sıfırlandı');}
-    else havuz=mev;
+    // Çoklu modda tüm seçili sınıflar için kontrol
+    var siniflar = cokluMod && seciliSiniflar.length>0 ? seciliSiniflar : (seciliSinif?[seciliSinif]:[]);
+    var mev = havuz.filter(function(s){
+      return !(kullanilan[s.sinif]&&kullanilan[s.sinif].has(s._i));
+    });
+    if(!mev.length){
+      siniflar.forEach(function(sf){ kullanilan[sf]=new Set(); });
+      bildir('Tüm öğrenciler seçildi — sıfırlandı');
+    } else havuz=mev;
   }
   var secilen=havuz[Math.floor(Math.random()*havuz.length)];
   seciliyor=true;
@@ -1844,7 +2102,11 @@ function sec(){
 }
 
 function bitir(s){
-  if(mod==='unique'){kullanilan[seciliSinif].add(s._i);ilerlemeGuncelle();}
+  if(mod==='unique'){
+    if(!kullanilan[s.sinif]) kullanilan[s.sinif]=new Set();
+    kullanilan[s.sinif].add(s._i);
+    ilerlemeGuncelle();
+  }
   var ne=document.getElementById('rNum');
   if(s.numara){ne.textContent='No: '+s.numara;ne.style.display='inline-block';} else ne.style.display='none';
   gecmiseEkle(s); baslikGuncelle();
@@ -2120,6 +2382,324 @@ function tumunuSil(){
   bildir('Tüm veri silindi');
 }
 
+
+
+
+/* ===================== ŞİFRELİ DIŞA AKTARMA ===================== */
+function sifreliAktar(){
+  if(!ogr.length){ bildir('Veri yok'); return; }
+  var sifre=prompt('Şifre belirleyin (en az 4 karakter):','');
+  if(!sifre||sifre.length<4){ bildir('Şifre çok kısa'); return; }
+  var veri={
+    v:'enc1',
+    ogr:ogr, gec:gecmis, puan:puanlar, yoklama:serializeYok(),
+    ts:Date.now(), ogrSayisi:ogr.length
+  };
+  var json=JSON.stringify(veri);
+  // XOR tabanlı basit şifreleme (tarayıcı uyumlu, hafif)
+  var sifreli=xorSifrele(json, sifre);
+  var sonuc=JSON.stringify({v:'senc1',d:sifreli,hint:sifre.length+' karakter',ts:Date.now()});
+  var tarih=new Date();
+  var dosyaAd='sSecim-sifrel-'+tarih.getFullYear()+'-'+String(tarih.getMonth()+1).padStart(2,'0')+'-'+String(tarih.getDate()).padStart(2,'0')+'.ssenc';
+  dosyaIndir(sonuc,'application/json',dosyaAd);
+  bildir('🔒 Şifreli dosya indirildi');
+}
+
+function sifreliYukle(dosya){
+  var r=new FileReader();
+  r.onload=function(e){
+    try{
+      var wrapper=JSON.parse(e.target.result);
+      if(wrapper.v!=='senc1'){ bildir('Şifreli dosya değil'); return; }
+      var sifre=prompt('Şifreyi girin ('+wrapper.hint+'):','');
+      if(!sifre){ return; }
+      var json=xorSifrele(wrapper.d, sifre);
+      var veri=JSON.parse(json);
+      if(!veri.ogr) throw new Error('Hatalı şifre');
+      if(!confirm(veri.ogrSayisi+' ogrenci yuklensin mi?')) return;
+      ogr=veri.ogr;
+      if(veri.gec&&Array.isArray(veri.gec)) gecmis=veri.gec;
+      if(veri.puan&&typeof veri.puan==='object') puanlar=veri.puan;
+      if(veri.yoklama) deserializeYok(veri.yoklama);
+      kaydet();
+      siniflariOlustur(); baslikGuncelle(); listeyiGoster(); gecmisiGoster();
+      srchPuanGoster(); puanOzetGoster(); hizliPuanGoster();
+      bildir('🔓 Şifreli veri yüklendi: '+ogr.length+' öğrenci');
+    }catch(err){ bildir('❌ Yanlış şifre veya bozuk dosya'); }
+  };
+  r.readAsText(dosya,'UTF-8');
+}
+
+function xorSifrele(metin, anahtar){
+  var sonuc='';
+  for(var i=0;i<metin.length;i++){
+    sonuc+=String.fromCharCode(metin.charCodeAt(i)^anahtar.charCodeAt(i%anahtar.length));
+  }
+  // base64 encode/decode için btoa/atob kulllan
+  try{ return btoa(unescape(encodeURIComponent(sonuc))); }
+  catch(e){ return btoa(sonuc); }
+}
+
+function xorSifreCoz(sifreli, anahtar){
+  try{
+    var decoded=decodeURIComponent(escape(atob(sifreli)));
+    var sonuc='';
+    for(var i=0;i<decoded.length;i++){
+      sonuc+=String.fromCharCode(decoded.charCodeAt(i)^anahtar.charCodeAt(i%anahtar.length));
+    }
+    return sonuc;
+  }catch(e){
+    // eski format dene
+    var decoded2=atob(sifreli);
+    var sonuc2='';
+    for(var i=0;i<decoded2.length;i++){
+      sonuc2+=String.fromCharCode(decoded2.charCodeAt(i)^anahtar.charCodeAt(i%anahtar.length));
+    }
+    return sonuc2;
+  }
+}
+
+// xorSifrele artık encode ediyor, çözmek için ayrı fn
+// sifreliYukle'yi düzelt: xorSifrele yerine xorSifreCoz kullan
+function sifreliYukle(dosya){
+  var r=new FileReader();
+  r.onload=function(e){
+    try{
+      var wrapper=JSON.parse(e.target.result);
+      if(wrapper.v!=='senc1'){ bildir('Şifreli dosya değil'); return; }
+      var sifre=prompt('Şifreyi girin ('+wrapper.hint+'):','');
+      if(!sifre){ return; }
+      var json=xorSifreCoz(wrapper.d, sifre);
+      var veri=JSON.parse(json);
+      if(!veri.ogr) throw new Error('Hatalı şifre');
+      if(!confirm(veri.ogrSayisi+' ogrenci yuklensin mi?')) return;
+      ogr=veri.ogr;
+      if(veri.gec&&Array.isArray(veri.gec)) gecmis=veri.gec;
+      if(veri.puan&&typeof veri.puan==='object') puanlar=veri.puan;
+      if(veri.yoklama) deserializeYok(veri.yoklama);
+      kaydet();
+      siniflariOlustur(); baslikGuncelle(); listeyiGoster(); gecmisiGoster();
+      srchPuanGoster(); puanOzetGoster(); hizliPuanGoster();
+      bildir('🔓 Şifreli veri yüklendi: '+ogr.length+' öğrenci');
+    }catch(err){ bildir('❌ Yanlış şifre veya bozuk dosya'); }
+  };
+  r.readAsText(dosya,'UTF-8');
+}
+
+function serializeYok(){
+  var obj={};
+  Object.keys(yoklama).forEach(function(k){ obj[k]=Array.from(yoklama[k]); });
+  return obj;
+}
+function deserializeYok(obj){
+  yoklama={};
+  Object.keys(obj).forEach(function(k){ yoklama[k]=new Set(obj[k]); });
+}
+
+function dosyaIndir(icerik, tip, ad){
+  try{
+    var blob=new Blob([icerik],{type:tip});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=url; a.download=ad; a.style.display='none';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},100);
+  }catch(e){ bildir('İndirme desteklenmiyor'); }
+}
+
+/* ===================== QR KOD AKTARIMI ===================== */
+function qrVerisiOlustur(){
+  // Sadece öğrenciler + puanlar (gecmis çok büyük olabilir)
+  var veri={
+    v:'qr1',
+    ogr:ogr,
+    puan:puanlar,
+    ts:Date.now()
+  };
+  return JSON.stringify(veri);
+}
+
+function qrModalAc(){
+  var overlay=document.getElementById('qrOverlay');
+  if(!overlay) return;
+  if(!ogr.length){ bildir('Aktarılacak veri yok'); return; }
+
+  var veriStr=qrVerisiOlustur();
+  var boyut=new Blob([veriStr]).size;
+  document.getElementById('qrBilgi').textContent=ogr.length+' öğrenci · '+Math.round(boyut/1024*10)/10+' KB';
+
+  // QR kütüphanesi yükle
+  var wrap=document.getElementById('qrCanvas');
+  wrap.innerHTML='';
+  var script=document.getElementById('qrScript');
+  if(!script){
+    script=document.createElement('script');
+    script.id='qrScript';
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    script.onload=function(){ qrOlustur(veriStr, wrap); };
+    document.head.appendChild(script);
+  } else {
+    qrOlustur(veriStr, wrap);
+  }
+  overlay.style.display='flex';
+  setTimeout(function(){document.getElementById('qrBox').style.transform='translateY(0)';},20);
+}
+
+function qrOlustur(veriStr, wrap){
+  try{
+    // veri çok büyükse URL encode ile kısalt
+    if(veriStr.length>2000){
+      wrap.innerHTML='<div style="padding:20px;text-align:center;font-size:13px;color:var(--err)">Veri çok büyük QR için.<br>Yedek Al ile aktarın.</div>';
+      return;
+    }
+    new QRCode(wrap,{text:veriStr,width:220,height:220,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+  }catch(e){
+    wrap.innerHTML='<div style="padding:20px;text-align:center;font-size:12px;color:var(--err)">QR oluşturulamadı.<br>'+e.message+'</div>';
+  }
+}
+
+function qrModalKapat(){
+  var overlay=document.getElementById('qrOverlay');
+  if(!overlay) return;
+  document.getElementById('qrBox').style.transform='translateY(100%)';
+  setTimeout(function(){overlay.style.display='none';},300);
+}
+
+function qrDosyaOku(dosya){
+  var r=new FileReader();
+  r.onload=function(e){
+    try{
+      var veri=JSON.parse(e.target.result);
+      if(veri.v==='qr1'&&veri.ogr){
+        if(!confirm(veri.ogr.length+' ogrenci yuklensin mi? Mevcut veri silinir.')) return;
+        ogr=veri.ogr;
+        if(veri.puan&&typeof veri.puan==='object') puanlar=veri.puan;
+        gecmis=[]; kullanilan={}; yoklama={};
+        kaydet();
+        siniflariOlustur(); baslikGuncelle(); listeyiGoster(); gecmisiGoster();
+        srchPuanGoster(); puanOzetGoster(); hizliPuanGoster();
+        bildir('✅ QR verisi yüklendi: '+ogr.length+' öğrenci');
+      } else bildir('Geçersiz QR verisi');
+    }catch(err){ bildir('Dosya okunamadı'); }
+  };
+  r.readAsText(dosya,'UTF-8');
+}
+
+/* ===================== PDF RAPOR ===================== */
+function pdfRaporIndir(){
+  if(!ogr.length){ bildir('Öğrenci yok'); return; }
+  var tarih = new Date().toLocaleDateString('tr-TR');
+  var sinifFiltre = seciliSinif ? seciliSinif : 'Tüm Sınıflar';
+
+  // Sıralı liste
+  var sirali = ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};});
+  sirali.sort(function(a,b){
+    var sc=a.sinif.localeCompare(b.sinif,'tr');
+    return sc!==0?sc:a.ad.localeCompare(b.ad,'tr');
+  });
+  if(seciliSinif) sirali=sirali.filter(function(s){return s.sinif===seciliSinif;});
+
+  // Sınıf istatistikleri
+  var sinifIstat={};
+  sirali.forEach(function(s){
+    if(!sinifIstat[s.sinif]) sinifIstat[s.sinif]={sayi:0,topP:0,topM:0};
+    var pt=puanAlToplam(s._i);
+    sinifIstat[s.sinif].sayi++;
+    sinifIstat[s.sinif].topP+=pt.plus;
+    sinifIstat[s.sinif].topM+=pt.minus;
+  });
+
+  var html='<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8">';
+  html+='<title>S-Secim Raporu '+tarih+'</title>';
+  html+='<style>';
+  html+='body{font-family:Arial,sans-serif;font-size:11pt;color:#111;margin:0;padding:20px}';
+  html+='h1{font-size:18pt;color:#4f6ef7;margin:0 0 4px}';
+  html+='.meta{font-size:9pt;color:#666;margin-bottom:20px;font-family:monospace}';
+  html+='.sinif-baslik{font-size:13pt;font-weight:bold;color:#4f6ef7;margin:18px 0 6px;padding:6px 10px;background:#eef0fe;border-left:4px solid #4f6ef7;border-radius:4px}';
+  html+='table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:10pt}';
+  html+='th{background:#4f6ef7;color:#fff;padding:6px 8px;text-align:left;font-size:9pt}';
+  html+='td{padding:5px 8px;border-bottom:1px solid #e0e0e0}';
+  html+='tr:nth-child(even){background:#f7f9ff}';
+  html+='.plus{color:#16a97e;font-weight:bold}';
+  html+='.minus{color:#e53935;font-weight:bold}';
+  html+='.fark-pos{color:#16a97e;font-weight:900}';
+  html+='.fark-neg{color:#e53935;font-weight:900}';
+  html+='.ozet{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}';
+  html+='.ozet-kart{background:#f0f2ff;border:1px solid #c7cdfb;border-radius:8px;padding:10px 16px;min-width:120px}';
+  html+='.ozet-sayi{font-size:22pt;font-weight:900;color:#4f6ef7}';
+  html+='.ozet-lbl{font-size:8pt;color:#666;font-family:monospace;text-transform:uppercase}';
+  html+='@media print{body{padding:10px}.no-print{display:none}}';
+  html+='</style></head><body>';
+
+  html+='<h1>S-Secim Pro Raporu</h1>';
+  html+='<div class="meta">'+sinifFiltre+' &nbsp;|&nbsp; '+tarih+' &nbsp;|&nbsp; '+sirali.length+' öğrenci &nbsp;|&nbsp; '+gecmis.length+' seçim</div>';
+
+  // Özet kartlar
+  var topP=0,topM=0;
+  sirali.forEach(function(s){var pt=puanAlToplam(s._i);topP+=pt.plus;topM+=pt.minus;});
+  html+='<div class="ozet">';
+  html+='<div class="ozet-kart"><div class="ozet-sayi">'+sirali.length+'</div><div class="ozet-lbl">Öğrenci</div></div>';
+  html+='<div class="ozet-kart"><div class="ozet-sayi">'+gecmis.filter(function(g){return !seciliSinif||g.sinif===seciliSinif;}).length+'</div><div class="ozet-lbl">Seçim</div></div>';
+  html+='<div class="ozet-kart"><div class="ozet-sayi" style="color:#16a97e">+'+topP+'</div><div class="ozet-lbl">Toplam +</div></div>';
+  html+='<div class="ozet-kart"><div class="ozet-sayi" style="color:#e53935">−'+topM+'</div><div class="ozet-lbl">Toplam −</div></div>';
+  html+='<div class="ozet-kart"><div class="ozet-sayi" style="color:'+(topP-topM>=0?'#16a97e':'#e53935')+'">'+((topP-topM)>0?'+':'')+(topP-topM)+'</div><div class="ozet-lbl">Fark</div></div>';
+  html+='</div>';
+
+  // Sınıflara göre grupla
+  var siniflar=Object.keys(sinifIstat).sort();
+  siniflar.forEach(function(sf){
+    var ist=sinifIstat[sf];
+    html+='<div class="sinif-baslik">'+sf+' &mdash; '+ist.sayi+' öğrenci';
+    html+=' &nbsp; <span style="font-size:10pt;font-weight:normal">';
+    html+='<span style="color:#16a97e">+'+ist.topP+'</span>';
+    html+=' <span style="color:#e53935">−'+ist.topM+'</span>';
+    var f=ist.topP-ist.topM;
+    html+=' <strong style="color:'+(f>=0?'#16a97e':'#e53935')+'">'+(f>0?'+':'')+f+'</strong>';
+    html+='</span></div>';
+
+    html+='<table><thead><tr><th>#</th><th>Okul No</th><th>Ad Soyad</th><th>Seç</th>';
+    PUAN_KATS.forEach(function(k){ html+='<th>'+k.emoji+' '+k.ad+'</th>'; });
+    html+='<th>Top+</th><th>Top−</th><th>Fark</th></tr></thead><tbody>';
+
+    var sfOgr=sirali.filter(function(s){return s.sinif===sf;});
+    sfOgr.sort(function(a,b){
+      var pa=puanAlToplam(a._i),pb=puanAlToplam(b._i);
+      return (pb.plus-pb.minus)-(pa.plus-pa.minus);
+    });
+    sfOgr.forEach(function(s,i){
+      var pt=puanAlToplam(s._i);
+      var secSayisi=gecmis.filter(function(g){return g._i===s._i;}).length;
+      var f=pt.plus-pt.minus;
+      html+='<tr>';
+      html+='<td>'+( i+1)+'</td>';
+      html+='<td style="font-family:monospace">'+( s.numara||'—')+'</td>';
+      html+='<td><strong>'+s.ad+'</strong></td>';
+      html+='<td style="font-family:monospace">'+secSayisi+'</td>';
+      PUAN_KATS.forEach(function(k){
+        var p=puanAl(s._i,k.id);
+        var fk=p.plus-p.minus;
+        html+='<td style="font-size:9pt"><span class="plus">+'+p.plus+'</span> <span class="minus">−'+p.minus+'</span> <strong style="color:'+(fk>0?'#16a97e':fk<0?'#e53935':'#666')+'">'+( fk>0?'+':'')+fk+'</strong></td>';
+      });
+      html+='<td class="plus">+'+pt.plus+'</td>';
+      html+='<td class="minus">−'+pt.minus+'</td>';
+      html+='<td class="'+(f>0?'fark-pos':f<0?'fark-neg':'')+'">'+(f>0?'+':'')+f+'</td>';
+      html+='</tr>';
+    });
+    html+='</tbody></table>';
+  });
+
+  html+='<div class="meta no-print" style="margin-top:30px;text-align:center">S-Secim Pro &copy;sebasmobil &mdash; AGPL V3.0 2026</div>';
+  html+='</body></html>';
+
+  // Yeni pencerede aç ve yazdır
+  var win=window.open('','_blank','width=900,height=700');
+  if(!win){ bildir('Popup engellendi — tarayıcı ayarlarını kontrol edin'); return; }
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(function(){ win.print(); },600);
+  bildir('📄 PDF rapor hazırlanıyor...');
+}
+
 function csvIndir(){
   if(!ogr.length){bildir('Öğrenci yok');return;}
   var rows=[['Okul No','Sinif','Sube','Ad Soyad']];
@@ -2138,20 +2718,27 @@ function csvIndir(){
 
 function xlsxIndir(){
   if(!ogr.length){bildir('Öğrenci yok');return;}
-  // Sınıfa göre sırala, sonra ada göre
   var sirali=ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};});
   sirali.sort(function(a,b){
     var sc=a.sinif.localeCompare(b.sinif,'tr');
     if(sc!==0) return sc;
     return a.ad.localeCompare(b.ad,'tr');
   });
-  // Başlık satırı
-  var baslik=['Sınıf','Okul No','Ad Soyad','+ Doğru','− Yanlış','Fark'];
+  // Başlık: temel + her kategori için + ve −
+  var baslik=['Sınıf','Okul No','Ad Soyad','Seç Sayısı'];
+  PUAN_KATS.forEach(function(k){ baslik.push(k.emoji+' '+k.ad+' +'); baslik.push(k.emoji+' '+k.ad+' −'); });
+  baslik.push('Toplam +'); baslik.push('Toplam −'); baslik.push('Fark');
   var satirlar=[baslik];
   sirali.forEach(function(s){
-    var p=puanAl(s._i);
-    var fark=p.plus-p.minus;
-    satirlar.push([s.sinif,s.numara||'',s.ad,p.plus,p.minus,fark]);
+    var pt=puanAlToplam(s._i);
+    var secSayisi=gecmis.filter(function(g){return g._i===s._i;}).length;
+    var satir=[s.sinif,s.numara||'',s.ad,secSayisi];
+    PUAN_KATS.forEach(function(k){
+      var p=puanAl(s._i,k.id);
+      satir.push(p.plus); satir.push(p.minus);
+    });
+    satir.push(pt.plus); satir.push(pt.minus); satir.push(pt.plus-pt.minus);
+    satirlar.push(satir);
   });
   // XML tabanlı Excel (XLSX yerine XLS/XML — ek kütüphane gerektirmez)
   var xml='<?xml version="1.0" encoding="UTF-8"?>'
@@ -2410,31 +2997,33 @@ if(yukle()){
   puanOzetGoster();
   hizliPuanGoster();
   modAyarla(mod);
-  if(seciliSinif){ sinifSec(seciliSinif); yoklamaGoster(); }
+  if(seciliSinif){ sinifSec(seciliSinif); yoklamaGoster(); gruplamaGoster(seciliSinif); }
   katButonlariGoster();
+  if(cokluMod&&seciliSiniflar.length>0) ilerlemeGuncelle();
 } else {
   baslikGuncelle();
   modAyarla('unique');
   katButonlariGoster();
 }
 puanGecmisGoster();
+timerProfillerGoster();
 yedekListesiGoster();
 
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro1.4';
+var YENILIK_VER = 'Pro1.6';
 var YENILIKLER = [
-  { emoji:'👤', baslik:'Öğrenci profil kartı', aciklama:'Her öğrencinin kategoriye göre puan dökümü ve puan geçmişi. Ada tıklayarak açılır.' },
-  { emoji:'🏆', baslik:'Sınıf sıralaması', aciklama:'Geçmiş sekmesinde sınıf bazında puan sıralaması. İlk 3 kişiye madalya verilir.' },
-  { emoji:'📈', baslik:'Puan geçmişi', aciklama:'Verilen tüm puanlar tarih ve saatle birlikte kaydedilir, Geçmiş sekmesinden görülebilir.' },
-  { emoji:'💾', baslik:'Geçmiş kalıcı', aciklama:'Puan geçmişi son 500 kayıt olarak yerel depolamada saklanır.' },
-  { emoji:'📋', baslik:'Yoklama modu (1.3)', aciklama:'Sınıflar klasöründen öğrencileri yoklama ile geçici olarak seçim dışı bırakın.' },
-  { emoji:'🗂️', baslik:'Puan kategorileri (1.3)', aciklama:'Genel, Katılım, Ödev, Sınav, Davranış — her kategori ayrı puanlanır.' },
-  { emoji:'🖥️', baslik:'Projektör modu (1.3)', aciklama:'Tam ekran seçim sonucu gösterimi. Sınıfa yansıtmak için idealdir.' },
-  { emoji:'🔢', baslik:'Yoklama sayacı (1.3)', aciklama:'İlerleme çubuğunda kaç öğrencinin yok olduğu gösterilir.' },
-  { emoji:'⭐', baslik:'Kategori butonları (1.3)', aciklama:'Puan kartında kategori seçimi — tek dokunuşla değiştirilir.' },
-  { emoji:'🔔', baslik:'Kategori bildirimi', aciklama:'Puan verince hangi kategoriye eklendiği toast bildiriminde görünür.' },
+  { emoji:'📄', baslik:'PDF Rapor', aciklama:'Veri Yönetimi sekmesinde PDF Rapor butonu. Sinifa göre sirali, kategorili puan tablosu. Yazici dostu tasarim.' },
+  { emoji:'📱', baslik:'QR Kod ile Aktarım', aciklama:'QR Aktar butonu ile verinizi QR koda cevirin. Diger cihazda S-Secim acikken taratinca veri aktarilir.' },
+  { emoji:'🔒', baslik:'Sifreli Disa Aktarma', aciklama:'Sifreli Indir ile verinizi sifre korumasıyla .ssenc dosyasina kaydedin. Sifreli Yukle ile geri yukleyin.' },
+  { emoji:'📊', baslik:'Gelismis Excel', aciklama:'Excel raporu artik kategori bazli puan sutunlari ve secilme sayisi iceriyor.' },
+  { emoji:'🏫', baslik:'Coklu sinif secimi (1.5)', aciklama:'Coklu butonu ile birden fazla sinifi ayni anda secin.' },
+  { emoji:'👥', baslik:'Otomatik gruplama (1.5)', aciklama:'2-6 arasinda grup olusturun, ogrenciler karistirilarak bolunur.' },
+  { emoji:'⏱️', baslik:'Zamanlayici profilleri (1.5)', aciklama:'Sureyi isimle kaydedip tek dokunusla baslatin.' },
+  { emoji:'👤', baslik:'Ogrenci profil karti (1.4)', aciklama:'Puan dokumu ve gecmisi. Ada tiklayarak acilir.' },
+  { emoji:'🏆', baslik:'Sinif siralama (1.4)', aciklama:'Gecmis sekmesinde puana gore siralama.' },
+  { emoji:'📈', baslik:'Puan gecmisi (1.4)', aciklama:'Tum puanlar tarih ve saatle kaydedilir.' },
 ];
 
 function yenilikIcerikOlustur(){
@@ -2736,6 +3325,18 @@ folderInit();
 // Yoklama sıfırla
 var yokSfrl=document.getElementById('btnYoklamaSifirla');
 if(yokSfrl) yokSfrl.addEventListener('click', yoklamaSifirla);
+
+// Şifreli dosya
+var sifreliInp=document.getElementById('sifreliFileIn');
+if(sifreliInp) sifreliInp.addEventListener('change',function(){
+  if(this.files&&this.files[0]){ sifreliYukle(this.files[0]); this.value=''; }
+});
+
+// QR dosya yükle
+var qrFileInp=document.getElementById('qrFileIn');
+if(qrFileInp) qrFileInp.addEventListener('change',function(){
+  if(this.files&&this.files[0]){ qrDosyaOku(this.files[0]); this.value=''; qrModalKapat(); }
+});
 
 function guncelleSiralamaUI(){
   var kart=document.getElementById('siralamaCard');
