@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 1.6</title>
+<title>S-Seçim Pro 1.8</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -77,6 +77,21 @@
   --r:14px;
   --r-sm:10px;
 }
+/* Tema: İndigo (varsayılan) */
+body.tema-indigo,:root{ --ac:#4f6ef7;--ac2:#eef0fe;--ac3:#c7cdfb;--btn:#4f6ef7;--rb:#f0f2ff; }
+body.tema-indigo.gece{ --ac:#6b8aff;--ac2:#111c3a;--ac3:#1d2e5a;--btn:#4f6ef7;--rb:#101528; }
+/* Tema: Mor */
+body.tema-mor{ --ac:#7c3aed;--ac2:#f3effe;--ac3:#ddd6fe;--btn:#7c3aed;--rb:#f3effe; }
+body.tema-mor.gece{ --ac:#a78bfa;--ac2:#1e1040;--ac3:#2e1a6e;--btn:#7c3aed;--rb:#140d2a; }
+/* Tema: Yeşil */
+body.tema-yesil{ --ac:#059669;--ac2:#ecfdf5;--ac3:#a7f3d0;--btn:#059669;--rb:#ecfdf5; }
+body.tema-yesil.gece{ --ac:#34d399;--ac2:#052e1e;--ac3:#064e3b;--btn:#059669;--rb:#03160e; }
+/* Tema: Turuncu */
+body.tema-turuncu{ --ac:#d97706;--ac2:#fffbeb;--ac3:#fde68a;--btn:#d97706;--rb:#fffbeb; }
+body.tema-turuncu.gece{ --ac:#fbbf24;--ac2:#1c1200;--ac3:#3d2c00;--btn:#d97706;--rb:#120d00; }
+/* Tema: Kırmızı */
+body.tema-kirmizi{ --ac:#dc2626;--ac2:#fef2f2;--ac3:#fecaca;--btn:#dc2626;--rb:#fef2f2; }
+body.tema-kirmizi.gece{ --ac:#f87171;--ac2:#1a0505;--ac3:#3b0d0d;--btn:#dc2626;--rb:#100202; }
 body.gece{
   --pg:#0b0f1a;
   --bg:#111827;
@@ -112,6 +127,19 @@ body{padding:0 0 72px}
 #sayfaAnasayfa,#sayfaGecmis,#sayfaVeri{padding-bottom:16px}
 @media(min-width:480px){.page{padding:14px 16px 0}}
 @media(min-width:768px){.page{padding:16px 24px 0}}
+
+/* ── GENIŞ EKRAN (tablet/masaüstü) ── */
+@media(min-width:900px){
+  body{padding:0 0 80px}
+  .page{max-width:1200px;padding:16px 24px 0}
+  #sayfaAnasayfa{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+  .ana-sol{grid-column:1;display:flex;flex-direction:column;gap:10px}
+  .ana-sag{grid-column:2;display:flex;flex-direction:column;gap:10px}
+  /* sol sütun: seçim modu, animasyon, sınıflar, hızlı puan */
+  /* sağ sütun: arama, rcard, sec butonu, geri sayım */
+  .bottom-nav{max-width:1200px;left:50%;transform:translateX(-50%);border-radius:var(--r) var(--r) 0 0;border:1.5px solid var(--bd);border-bottom:none}
+  .header{max-width:1200px;left:50%;transform:translateX(-50%);border-radius:0 0 var(--r) var(--r);border-left:1.5px solid var(--bd);border-right:1.5px solid var(--bd)}
+}
 
 /* ── HEADER ── */
 .header{background:var(--bg);border-bottom:1.5px solid var(--bd);padding:6px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:500;box-shadow:var(--shadow);min-height:0}
@@ -499,6 +527,13 @@ body{padding:0 0 72px}
 .yedek-sil-btn{font-size:14px;background:none;border:none;color:var(--t3);cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s}
 .yedek-sil-btn:hover{color:var(--err)}
 
+/* ── FOTOĞRAF ── */
+.ogr-foto{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0;cursor:pointer;transition:transform .15s}
+.ogr-foto:hover{transform:scale(1.08);border-color:var(--ac)}
+.ogr-avatar{width:44px;height:44px;border-radius:50%;background:var(--ac2);border:2px solid var(--ac3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--ac);flex-shrink:0;cursor:pointer;user-select:none;transition:all .15s}
+.ogr-avatar:hover{transform:scale(1.08);border-color:var(--ac)}
+/* Projektör foto */
+.proj-foto{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid rgba(255,255,255,.3);margin-bottom:16px}
 /* ── YOKLAMA ── */
 .yok-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)}
 .yok-row:last-child{border-bottom:none}
@@ -600,15 +635,18 @@ body{padding:0 0 72px}
 
   <!-- BAŞLIK -->
   <div class="header">
-    <div class="hdr-left">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.6</span></div>
+    <div class="hdr-left" style="display:flex;flex-direction:column">
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.8</span></div>
+      <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
     </div>
     <div class="hdr-right">
       <div class="ticon" id="projBtn" title="Projektör Modu" onclick="projektorAc()">🖥️</div>
-      <div class="ticon" id="temaBtn" title="Tema değiştir">☀️</div>
+      <div class="ticon" id="paletBtn" title="Renk teması" onclick="renkTemaModalAc()">🎨</div>
+      <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
     </div>
   </div>
 
+  <div class="ana-sol">
   <!-- SEÇİM MODU * (folder) -->
   <div class="folder-card">
     <div class="folder-head" id="folderSecimHead">
@@ -713,6 +751,8 @@ body{padding:0 0 72px}
   </div>
 
 
+  </div><!-- end .ana-sol -->
+  <div class="ana-sag">
   <!-- SONUÇ -->
   <div class="rcard" id="rCard">
     <div class="r-empty" id="rEmpty">← sınıf seç ve butona bas</div>
@@ -835,6 +875,7 @@ body{padding:0 0 72px}
     </div><!-- end folderGeriBody -->
   </div><!-- end folder-card geri -->
 
+  </div><!-- end .ana-sag -->
 </div><!-- end sayfaAnasayfa -->
 <div id="sayfaGecmis" style="display:none"><div style="padding:12px 0 6px;font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3)">Geçmiş & İstatistikler</div>
   <div class="acc-card">
@@ -979,6 +1020,42 @@ body{padding:0 0 72px}
 </div><!-- end .page -->
 
 
+<!-- ÖĞRETMEN PROFİL MODALI -->
+<div id="profilModalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9800;align-items:flex-end;justify-content:center">
+  <div style="background:var(--bg);width:100%;max-width:680px;max-height:85vh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(0,0,0,.2);overflow:hidden">
+    <div style="display:flex;justify-content:center;padding:10px 0 4px"><div style="width:40px;height:4px;border-radius:2px;background:var(--bd2)"></div></div>
+    <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:16px;font-weight:900;color:var(--t1)">👥 Öğretmen Profilleri</div>
+      <button onclick="profilModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding:14px 20px">
+      <div id="profilListeWrap"></div>
+      <button onclick="profilEkle()" class="btn-s primary" style="width:100%;text-align:center;margin-top:14px">+ Yeni Profil Ekle</button>
+    </div>
+    <div style="padding:12px 20px;border-top:1.5px solid var(--bd)">
+      <button onclick="profilModalKapat()" class="btn-s" style="width:100%;text-align:center">Kapat</button>
+    </div>
+  </div>
+</div>
+
+<!-- RENK TEMA MODALI -->
+<div id="renkTemaOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9750;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--bg);border-radius:var(--r);padding:20px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-size:15px;font-weight:900;color:var(--t1)">🎨 Renk Teması</div>
+      <button onclick="renkTemaModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div id="renkTemaWrap" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
+      <button data-tema="indigo" onclick="renkTemaUygula('indigo')" style="width:48px;height:48px;border-radius:50%;background:#4f6ef7;border:3px solid #fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="İndigo"></button>
+      <button data-tema="mor" onclick="renkTemaUygula('mor')" style="width:48px;height:48px;border-radius:50%;background:#7c3aed;border:3px solid #fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Mor"></button>
+      <button data-tema="yesil" onclick="renkTemaUygula('yesil')" style="width:48px;height:48px;border-radius:50%;background:#059669;border:3px solid #fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Yeşil"></button>
+      <button data-tema="turuncu" onclick="renkTemaUygula('turuncu')" style="width:48px;height:48px;border-radius:50%;background:#d97706;border:3px solid #fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Turuncu"></button>
+      <button data-tema="kirmizi" onclick="renkTemaUygula('kirmizi')" style="width:48px;height:48px;border-radius:50%;background:#dc2626;border:3px solid #fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Kırmızı"></button>
+    </div>
+    <button onclick="renkTemaModalKapat()" class="btn-s" style="width:100%;text-align:center">Tamam</button>
+  </div>
+</div>
+
 <!-- QR KOD MODALI -->
 <div id="qrOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9700;align-items:center;justify-content:center;padding:16px">
   <div id="qrBox" style="background:var(--bg);width:100%;max-width:360px;border-radius:var(--r);padding:24px;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(20px);transition:transform .3s">
@@ -1005,8 +1082,9 @@ body{padding:0 0 72px}
 <div id="profilOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9600;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)">
   <div class="profil-box" style="background:var(--bg);width:100%;max-width:680px;max-height:90vh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(0,0,0,.2);overflow:hidden;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1)">
     <div style="display:flex;justify-content:center;padding:10px 0 4px"><div style="width:40px;height:4px;border-radius:2px;background:var(--bd2)"></div></div>
-    <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
-      <div>
+    <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div id="profilFotoWrap"></div>
+      <div style="flex:1">
         <div id="profilAd" style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px"></div>
         <div id="profilMeta" style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--t2);margin-top:2px"></div>
         <div id="profilSecSayisi" style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px"></div>
@@ -1024,6 +1102,7 @@ body{padding:0 0 72px}
 
 <!-- PROJEKTöR MODU -->
 <div class="proj-overlay" id="projOverlay">
+  <img id="projFotoEl" class="proj-foto" src="" style="display:none">
   <div class="proj-sinif" id="projSinif"></div>
   <div class="proj-num" id="projNum" style="display:none"></div>
   <div class="proj-ad" id="projAd">—</div>
@@ -1045,7 +1124,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.6</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.8</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1092,7 +1171,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 1.6</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 1.8</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1202,6 +1281,7 @@ function kaydet(){
   depo.yaz('cokluMod',cokluMod?'1':'0');
   depo.yaz('gruplar',JSON.stringify(gruplar));
   depo.yaz('timerProfiller',JSON.stringify(timerProfiller));
+  depo.yaz('renkTema',aktifRenkTema);
 }
 function yukle(){
   try{
@@ -1317,7 +1397,9 @@ function scDurdur(){ if(SC.timer){ clearInterval(SC.timer); SC.timer=null; } }
 
 /* ===================== TEMA ===================== */
 function temauygula(t){
-  document.body.className=t==='gece'?'gece':'';
+  // className yerine classList kullan — diğer sınıfları (tema-xxx) koru
+  document.body.classList.remove('gece');
+  if(t==='gece') document.body.classList.add('gece');
   var btn=document.getElementById('temaBtn');
   if(btn) btn.textContent=t==='gece'?'🌙':'☀️';
   depo.yaz('tema',t);
@@ -2303,10 +2385,12 @@ function hizliPuanGoster(){
   f.forEach(function(s){
     var p=puanAlToplam(s._i);
     h+='<div class="hizli-puan-row">';
+    h+='<div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">';
+    h+=ogrAvatarHTML(s._i,34);
     h+='<div class="hizli-puan-info">';
     h+='<div class="hizli-puan-ad" style="cursor:pointer" onclick="profilKartAc('+s._i+')">'+s.ad+'</div>';
     h+='<div class="hizli-puan-meta">'+s.sinif+(s.numara?' · '+s.numara:'')+'</div>';
-    h+='</div>';
+    h+='</div></div>';
     h+='<div class="hizli-puan-sag">';
     h+='<div class="hizli-puan-badge-wrap"><span class="hizli-p">+'+p.plus+'</span><span class="hizli-m">−'+p.minus+'</span></div>';
     h+='<button class="hizli-btn hizli-btn-plus" data-idx="'+s._i+'" data-tip="+" title="Doğru (+)">+</button>';
@@ -2984,6 +3068,9 @@ document.addEventListener('keydown',function(e){
 document.getElementById('projOverlay').addEventListener('click', projektorKapat);
 
 /* ===================== BAŞLANGIÇ ===================== */
+// Profil sistemi — en önce yükle ve etkinleştir
+profilListesiYukle();
+profilSistemiEtkinlestir();
 temauygula(depo.al('tema')||'gece');
 var kayitliAnimTip=depo.al('animTip');
 if(kayitliAnimTip) animTipSec(kayitliAnimTip);
@@ -3007,23 +3094,28 @@ if(yukle()){
 }
 puanGecmisGoster();
 timerProfillerGoster();
+// Renk teması
+fotografyukle();
+renkTemaUygula(aktifRenkTema);
+// Profil göstergesini güncelle
+profilHeaderGuncelle();
 yedekListesiGoster();
 
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro1.6';
+var YENILIK_VER = 'Pro1.8';
 var YENILIKLER = [
-  { emoji:'📄', baslik:'PDF Rapor', aciklama:'Veri Yönetimi sekmesinde PDF Rapor butonu. Sinifa göre sirali, kategorili puan tablosu. Yazici dostu tasarim.' },
-  { emoji:'📱', baslik:'QR Kod ile Aktarım', aciklama:'QR Aktar butonu ile verinizi QR koda cevirin. Diger cihazda S-Secim acikken taratinca veri aktarilir.' },
-  { emoji:'🔒', baslik:'Sifreli Disa Aktarma', aciklama:'Sifreli Indir ile verinizi sifre korumasıyla .ssenc dosyasina kaydedin. Sifreli Yukle ile geri yukleyin.' },
-  { emoji:'📊', baslik:'Gelismis Excel', aciklama:'Excel raporu artik kategori bazli puan sutunlari ve secilme sayisi iceriyor.' },
-  { emoji:'🏫', baslik:'Coklu sinif secimi (1.5)', aciklama:'Coklu butonu ile birden fazla sinifi ayni anda secin.' },
-  { emoji:'👥', baslik:'Otomatik gruplama (1.5)', aciklama:'2-6 arasinda grup olusturun, ogrenciler karistirilarak bolunur.' },
-  { emoji:'⏱️', baslik:'Zamanlayici profilleri (1.5)', aciklama:'Sureyi isimle kaydedip tek dokunusla baslatin.' },
-  { emoji:'👤', baslik:'Ogrenci profil karti (1.4)', aciklama:'Puan dokumu ve gecmisi. Ada tiklayarak acilir.' },
-  { emoji:'🏆', baslik:'Sinif siralama (1.4)', aciklama:'Gecmis sekmesinde puana gore siralama.' },
-  { emoji:'📈', baslik:'Puan gecmisi (1.4)', aciklama:'Tum puanlar tarih ve saatle kaydedilir.' },
+  { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
+  { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
+  { emoji:'🔄', baslik:'Anlik profil gecisi', aciklama:'Profil degisince tum veri (ogrenciler, puanlar, gecmis, tercihler) aninda o profile ait veriye gecer.' },
+  { emoji:'📸', baslik:'Ogrenci fotograflari (1.7)', aciklama:'Hizli Puan listesinde avatara tiklayarak fotograf yuklenebilir.' },
+  { emoji:'🎨', baslik:'5 renk temasi (1.7)', aciklama:'Indigo, Mor, Yesil, Turuncu, Kirmizi renk temaları.' },
+  { emoji:'📱', baslik:'Tablet duzeni (1.7)', aciklama:'Genis ekranda iki sutunlu duzen.' },
+  { emoji:'📄', baslik:'PDF Rapor (1.6)', aciklama:'Kategori bazli puan tablosu iceren PDF raporu.' },
+  { emoji:'📱', baslik:'QR Aktarim (1.6)', aciklama:'QR kod ile cihazlar arasi veri aktarimi.' },
+  { emoji:'🔒', baslik:'Sifreli Aktarma (1.6)', aciklama:'Sifre korumasıyla .ssenc yedekleme.' },
+  { emoji:'🏫', baslik:'Coklu sinif ve gruplama (1.5)', aciklama:'Birden fazla sinif, otomatik gruplama, zamanlayici profilleri.' },
 ];
 
 function yenilikIcerikOlustur(){
@@ -3126,6 +3218,13 @@ function projektorAc(){
     var s=ogr[secilenOgrIdx];
     var pt=puanAlToplam(secilenOgrIdx);
     document.getElementById('projSinif').textContent=s.sinif||'';
+    // Fotoğraf
+    var projFoto=document.getElementById('projFotoEl');
+    if(projFoto){
+      var foto=fotograflar[secilenOgrIdx];
+      if(foto){ projFoto.src=foto; projFoto.style.display='block'; }
+      else projFoto.style.display='none';
+    }
     var numEl=document.getElementById('projNum');
     if(s.numara){ numEl.textContent='No: '+s.numara; numEl.style.display='block'; }
     else numEl.style.display='none';
@@ -3292,6 +3391,308 @@ function puanGecmisGoster(){
   if(filtre.length>50) h+='<tr><td colspan="4" style="text-align:center;padding:8px;font-size:11px;color:var(--t3);font-family:JetBrains Mono,monospace">...ve '+(filtre.length-50)+' kayıt daha</td></tr>';
   h+='</tbody></table>';
   wrap.innerHTML=h;
+}
+
+
+
+/* ===================== RENK TEMASı ===================== */
+var RENKTEMALAR = [
+  {id:'indigo', ad:'İndigo', renk:'#4f6ef7'},
+  {id:'mor',    ad:'Mor',    renk:'#7c3aed'},
+  {id:'yesil',  ad:'Yeşil',  renk:'#059669'},
+  {id:'turuncu',ad:'Turuncu',renk:'#d97706'},
+  {id:'kirmizi',ad:'Kırmızı',renk:'#dc2626'},
+];
+var aktifRenkTema = 'indigo';
+
+function renkTemaUygula(temaId){
+  RENKTEMALAR.forEach(function(t){ document.body.classList.remove('tema-'+t.id); });
+  if(temaId && temaId!=='indigo') document.body.classList.add('tema-'+temaId);
+  aktifRenkTema=temaId||'indigo';
+  depo.yaz('renkTema',aktifRenkTema);
+  renkTemaButonlariGuncelle();
+}
+
+function renkTemaButonlariGuncelle(){
+  var wrap=document.getElementById('renkTemaWrap');
+  if(!wrap) return;
+  RENKTEMALAR.forEach(function(t){
+    var btn=wrap.querySelector('[data-tema="'+t.id+'"]');
+    if(btn){
+      btn.style.outline=t.id===aktifRenkTema?'3px solid '+t.renk+' ':' none';
+      btn.style.outlineOffset='2px';
+    }
+  });
+}
+
+function renkTemaModalAc(){
+  var overlay=document.getElementById('renkTemaOverlay');
+  if(overlay){ overlay.style.display='flex'; renkTemaButonlariGuncelle(); }
+}
+function renkTemaModalKapat(){
+  var overlay=document.getElementById('renkTemaOverlay');
+  if(overlay) overlay.style.display='none';
+}
+
+/* ===================== FOTOĞRAF SİSTEMİ ===================== */
+// fotoğraflar ayrı saklanır: {idx: dataURL}
+var fotograflar = {};
+
+function fotografYukle(idx, callback){
+  var inp=document.createElement('input');
+  inp.type='file'; inp.accept='image/*'; inp.style.display='none';
+  inp.onchange=function(){
+    if(!inp.files||!inp.files[0]) return;
+    var dosya=inp.files[0];
+    if(dosya.size>500*1024){ bildir('Fotoğraf max 500KB olmalı'); return; }
+    var r=new FileReader();
+    r.onload=function(e){
+      fotograflar[idx]=e.target.result;
+      depo.yaz('fotograflar',JSON.stringify(fotograflar));
+      if(callback) callback(e.target.result);
+      bildir('📸 Fotoğraf yüklendi');
+    };
+    r.readAsDataURL(dosya);
+  };
+  document.body.appendChild(inp);
+  inp.click();
+  setTimeout(function(){document.body.removeChild(inp);},5000);
+}
+
+function fotografSil(idx){
+  delete fotograflar[idx];
+  depo.yaz('fotograflar',JSON.stringify(fotograflar));
+}
+
+function fotografyukle(){
+  try{
+    var f=depo.al('fotograflar');
+    if(f){ var pf=JSON.parse(f); if(typeof pf==='object') fotograflar=pf; }
+  }catch(e){}
+}
+
+function ogrAvatarHTML(idx, boyut){
+  boyut=boyut||44;
+  var foto=fotograflar[idx];
+  if(foto){
+    return '<img class="ogr-foto" src="'+foto+'" style="width:'+boyut+'px;height:'+boyut+'px" data-fotoidx="'+idx+'" title="Fotoğrafı değiştir">';
+  }
+  var s=ogr[idx]||{ad:'?'};
+  var harf=(s.ad||'?').charAt(0).toUpperCase();
+  return '<div class="ogr-avatar" style="width:'+boyut+'px;height:'+boyut+'px;font-size:'+(boyut*0.36)+'px" data-fotoidx="'+idx+'" title="Fotoğraf ekle">'+harf+'</div>';
+}
+
+// Fotoğraf click'leri event delegation ile yönet
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-fotoidx]');
+  if(!el) return;
+  var idx=parseInt(el.dataset.fotoidx);
+  fotografYukle(idx, function(url){
+    profilFotoGuncelle(idx);
+    // listeyi yenile
+    if(mevcutSayfa==='anasayfa') hizliPuanGoster();
+  });
+});
+
+function profilFotoGuncelle(idx){
+  // Profil kartı açıksa fotoğrafı güncelle
+  var el=document.getElementById('profilFotoWrap');
+  if(el) el.innerHTML=ogrAvatarHTML(idx,72);
+}
+
+
+/* ===================== ÖĞRETMEN PROFİLLERİ ===================== */
+// Her profil kendi localStorage key'ine sahip
+// Aktif profil: 'aktifProfil' key'inde saklanır
+// Profil listesi: 'profilListesi' key'inde saklanır
+
+var AKTIF_PROFIL_KEY = 'profil_varsayilan';
+var profilListesi = []; // [{id, ad, emoji, olusturma}]
+var aktifProfilId = 'profil_varsayilan';
+
+function profilListesiYukle(){
+  try{
+    var pl=depo.al('profilListesi');
+    if(pl) profilListesi=JSON.parse(pl);
+    var ap=depo.al('aktifProfilId');
+    if(ap) aktifProfilId=ap;
+    // Varsayılan profil yoksa ekle
+    if(!profilListesi.length){
+      profilListesi=[{id:'profil_varsayilan',ad:'Öğretmen 1',emoji:'👨‍🏫',olusturma:Date.now()}];
+      depo.yaz('profilListesi',JSON.stringify(profilListesi));
+    }
+  }catch(e){
+    profilListesi=[{id:'profil_varsayilan',ad:'Öğretmen 1',emoji:'👨‍🏫',olusturma:Date.now()}];
+  }
+}
+
+function profilKeyOlustur(profilId, dataKey){
+  return profilId+'_'+dataKey;
+}
+
+// Tüm veriyi aktif profile ait key'lere kaydet
+var _orijinalDepoYaz = depo.yaz.bind(depo);
+var _orijinalDepoAl = depo.al.bind(depo);
+
+var PROFIL_VERI_KEYLER = ['ogr','gec','kul','puan','yoklama','aktifKat','mod','seciliSinif',
+  'seciliSiniflar','cokluMod','gruplar','timerProfiller','renkTema','fotograflar','puanGecmis',
+  'yedekler','anim','animTip','tema','puanDetay'];
+
+function profilDepoYaz(k,v){
+  if(PROFIL_VERI_KEYLER.indexOf(k)!==-1){
+    _orijinalDepoYaz(aktifProfilId+'_'+k, v);
+  } else {
+    _orijinalDepoYaz(k, v);
+  }
+}
+function profilDepoAl(k){
+  if(PROFIL_VERI_KEYLER.indexOf(k)!==-1){
+    var profVal=_orijinalDepoAl(aktifProfilId+'_'+k);
+    if(profVal!==null) return profVal;
+    // Geriye dönük uyumluluk: eski key'leri kontrol et
+    return _orijinalDepoAl(k);
+  }
+  return _orijinalDepoAl(k);
+}
+
+function profilSistemiEtkinlestir(){
+  depo.yaz = profilDepoYaz;
+  depo.al  = profilDepoAl;
+}
+
+function profilDegistir(profilId){
+  // Mevcut veriyi kaydet (zaten kaydedilmiş olmalı)
+  aktifProfilId=profilId;
+  _orijinalDepoYaz('aktifProfilId', profilId);
+  // Uygulamayı yeniden başlat
+  uygulamaYenidenBaslat();
+}
+
+function uygulamaYenidenBaslat(){
+  // Tüm veriyi sıfırla ve yeniden yükle
+  ogr=[]; gecmis=[]; kullanilan={}; puanlar={}; yoklama={}; puanGecmis=[];
+  seciliSinif=null; seciliSiniflar=[]; cokluMod=false; gruplar={};
+  fotograflar={}; aktifKat='genel'; mod='unique';
+  timerProfiller=[
+    {ad:'Kısa Aktivite',sure:300},
+    {ad:'Sınav',sure:2400},
+    {ad:'Ders',sure:2700},
+  ];
+
+  if(yukle()){
+    siniflariOlustur(); baslikGuncelle(); listeyiGoster();
+    gecmisiGoster(); srchPuanGoster(); puanOzetGoster();
+    hizliPuanGoster(); modAyarla(mod);
+    if(seciliSinif){ sinifSec(seciliSinif); yoklamaGoster(); gruplamaGoster(seciliSinif); }
+    katButonlariGoster();
+  } else {
+    siniflariOlustur(); baslikGuncelle(); bosGoster();
+  }
+  fotografyukle();
+  var rt=depo.al('renkTema')||'indigo';
+  aktifRenkTema=rt;
+  renkTemaUygula(rt);
+  temauygula(depo.al('tema')||'gece');
+  var kat=depo.al('animTip'); if(kat) animTipSec(kat);
+  if(depo.al('anim')==='0') animAyarla(false);
+  timerProfillerGoster();
+  puanGecmisGoster();
+  profilModalGuncelle();
+  bildir('👤 '+aktifProfilAdBul()+' profili yüklendi');
+}
+
+function aktifProfilAdBul(){
+  var p=profilListesi.find(function(p){return p.id===aktifProfilId;});
+  return p?p.emoji+' '+p.ad:'Profil';
+}
+
+function profilEkle(){
+  var ad=prompt('Öğretmen adı:','');
+  if(!ad||!ad.trim()) return;
+  var emojiler=['👩‍🏫','👨‍🏫','🧑‍🏫','👩‍💼','👨‍💼','🎓','📚','✏️'];
+  var emoji=emojiler[profilListesi.length%emojiler.length];
+  var yeni={id:'profil_'+Date.now(),ad:ad.trim(),emoji:emoji,olusturma:Date.now()};
+  profilListesi.push(yeni);
+  _orijinalDepoYaz('profilListesi',JSON.stringify(profilListesi));
+  profilModalGuncelle();
+  bildir('✅ '+emoji+' '+ad.trim()+' profili oluşturuldu');
+}
+
+function profilSil(profilId){
+  if(profilListesi.length<=1){ bildir('En az 1 profil olmalı'); return; }
+  if(profilId===aktifProfilId){ bildir('Aktif profil silinemez'); return; }
+  if(!confirm('Bu profil ve tüm verisi silinsin mi?')) return;
+  // Profil verilerini temizle
+  PROFIL_VERI_KEYLER.forEach(function(k){ _orijinalDepoYaz(profilId+'_'+k,null); });
+  profilListesi=profilListesi.filter(function(p){return p.id!==profilId;});
+  _orijinalDepoYaz('profilListesi',JSON.stringify(profilListesi));
+  profilModalGuncelle();
+  bildir('🗑️ Profil silindi');
+}
+
+function profilAdDuzenle(profilId){
+  var p=profilListesi.find(function(x){return x.id===profilId;});
+  if(!p) return;
+  var yeniAd=prompt('Yeni ad:',p.ad);
+  if(!yeniAd||!yeniAd.trim()) return;
+  p.ad=yeniAd.trim();
+  _orijinalDepoYaz('profilListesi',JSON.stringify(profilListesi));
+  profilModalGuncelle();
+  if(profilId===aktifProfilId) profilHeaderGuncelle();
+}
+
+function profilHeaderGuncelle(){
+  var el=document.getElementById('aktifProfilGoster');
+  if(el) el.textContent=aktifProfilAdBul();
+}
+
+function profilModalAc(){
+  var overlay=document.getElementById('profilModalOverlay');
+  if(overlay){ overlay.style.display='flex'; profilModalGuncelle(); }
+}
+function profilModalKapat(){
+  var overlay=document.getElementById('profilModalOverlay');
+  if(overlay) overlay.style.display='none';
+}
+
+function profilModalGuncelle(){
+  var wrap=document.getElementById('profilListeWrap');
+  if(!wrap) return;
+  var h='';
+  profilListesi.forEach(function(p){
+    var isAktif=p.id===aktifProfilId;
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)">';
+    h+='<div style="width:40px;height:40px;border-radius:50%;background:'+(isAktif?'var(--ac)':'var(--bg2)')+';border:2px solid '+(isAktif?'var(--ac)':'var(--bd)')+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+p.emoji+'</div>';
+    h+='<div style="flex:1">';
+    h+='<div style="font-size:14px;font-weight:800;color:var(--t1)">'+p.ad+(isAktif?' <span style=\"font-family:JetBrains Mono,monospace;font-size:9px;background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px\">AKTİF</span>':'')+'</div>';
+    var tarih=new Date(p.olusturma).toLocaleDateString('tr-TR');
+    // Profil veri sayısı
+    var profOgr=_orijinalDepoAl(p.id+'_ogr');
+    var ogrSayi=0;
+    try{ if(profOgr){ var po=JSON.parse(profOgr); ogrSayi=Array.isArray(po)?po.length:0; } }catch(e){}
+    h+='<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)">'+tarih+' · '+ogrSayi+' öğrenci</div>';
+    h+='</div>';
+    if(!isAktif){
+      h+='<button class="btn-s prf-gec" data-pid="'+p.id+'" style="font-size:11px;padding:5px 10px;color:var(--ac);border-color:var(--ac)">Geç</button>';
+    }
+    h+='<button class="btn-s prf-duzenle" data-pid="'+p.id+'" style="font-size:11px;padding:5px 8px" title="Düzenle">✏️</button>';
+    if(!isAktif){
+      h+='<button class="btn-s danger prf-sil" data-pid="'+p.id+'" style="font-size:11px;padding:5px 8px" title="Sil">🗑️</button>';
+    }
+    h+='</div>';
+  });
+  wrap.innerHTML=h;
+  profilHeaderGuncelle();
+  // Event delegation
+  wrap.querySelectorAll('.prf-gec').forEach(function(btn){
+    btn.addEventListener('click',function(){ profilDegistir(this.dataset.pid); profilModalKapat(); });
+  });
+  wrap.querySelectorAll('.prf-duzenle').forEach(function(btn){
+    btn.addEventListener('click',function(){ profilAdDuzenle(this.dataset.pid); });
+  });
+  wrap.querySelectorAll('.prf-sil').forEach(function(btn){
+    btn.addEventListener('click',function(){ profilSil(this.dataset.pid); });
+  });
 }
 
 /* ===================== FOLDER TOGGLE ===================== */
