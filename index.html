@@ -1020,11 +1020,11 @@ body{padding:0 0 72px}
 
   <!-- ── KART 1: Veri Yükle ── -->
   <div class="folder-card">
-    <div class="folder-head" id="veriYukleHead">
+    <div class="folder-head" id="folderVeriYukleHead">
       <div class="folder-title"><span class="folder-icon-wrap">📂</span> Veri Yükle</div>
-      <span class="folder-arrow" id="veriYukleArrow">▼</span>
+      <span class="folder-arrow" id="folderVeriYukleArrow">▼</span>
     </div>
-    <div class="folder-body" id="veriYukleBody">
+    <div class="folder-body" id="folderVeriYukleBody">
       <div style="margin-top:10px">
         <input type="file" id="fileIn" accept=".csv" style="display:none">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
@@ -1038,11 +1038,11 @@ body{padding:0 0 72px}
 
   <!-- ── KART 2: Öğrenci Ekle ── -->
   <div class="folder-card">
-    <div class="folder-head" id="ogrenciEkleHead">
+    <div class="folder-head" id="folderOgrenciEkleHead">
       <div class="folder-title"><span class="folder-icon-wrap">➕</span> Öğrenci Ekle</div>
-      <span class="folder-arrow" id="ogrenciEkleArrow">▼</span>
+      <span class="folder-arrow" id="folderOgrenciEkleArrow">▼</span>
     </div>
-    <div class="folder-body" id="ogrenciEkleBody">
+    <div class="folder-body" id="folderOgrenciEkleBody">
       <div style="margin-top:10px">
         <div class="add-form">
           <div class="fg"><span class="fg-lbl">No</span><input class="inp" id="iNo" inputmode="numeric" placeholder="101"></div>
@@ -1057,14 +1057,14 @@ body{padding:0 0 72px}
 
   <!-- ── KART 3: Kayıtlı Öğrenciler ── -->
   <div class="folder-card">
-    <div class="folder-head" id="kayitliHead">
+    <div class="folder-head" id="folderKayitliHead">
       <div class="folder-title">
         <span class="folder-icon-wrap">👥</span> Kayıtlı
         <span class="folder-badge" id="mgrTotal"></span>
       </div>
-      <span class="folder-arrow" id="kayitliArrow">▼</span>
+      <span class="folder-arrow" id="folderKayitliArrow">▼</span>
     </div>
-    <div class="folder-body" id="kayitliBody">
+    <div class="folder-body" id="folderKayitliBody">
       <div style="margin-top:10px">
         <div id="listeSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
         <input class="srch" id="srch" placeholder="Ada, okul no veya sınıfa göre ara... (Türkçe destekli)">
@@ -1075,11 +1075,11 @@ body{padding:0 0 72px}
 
   <!-- ── KART 4: Listeden Puan Ver ── -->
   <div class="folder-card">
-    <div class="folder-head" id="listePuanHead">
+    <div class="folder-head" id="folderListePuanHead">
       <div class="folder-title"><span class="folder-icon-wrap">⭐</span> Listeden Puan Ver</div>
-      <span class="folder-arrow" id="listePuanArrow">▼</span>
+      <span class="folder-arrow" id="folderListePuanArrow">▼</span>
     </div>
-    <div class="folder-body" id="listePuanBody">
+    <div class="folder-body" id="folderListePuanBody">
       <div style="margin-top:10px">
         <div id="srchPuanSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
         <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara...">
@@ -1090,11 +1090,11 @@ body{padding:0 0 72px}
 
   <!-- ── KART 5: Dışa Aktar & Yedek ── -->
   <div class="folder-card">
-    <div class="folder-head" id="disaAktarHead">
+    <div class="folder-head" id="folderDisaAktarHead">
       <div class="folder-title"><span class="folder-icon-wrap">📤</span> Dışa Aktar &amp; Yedek</div>
-      <span class="folder-arrow" id="disaAktarArrow">▼</span>
+      <span class="folder-arrow" id="folderDisaAktarArrow">▼</span>
     </div>
-    <div class="folder-body" id="disaAktarBody">
+    <div class="folder-body" id="folderDisaAktarBody">
       <div style="margin-top:10px">
         <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Dışa Aktar</div>
         <div class="btn-row" style="margin-top:0">
@@ -1123,11 +1123,11 @@ body{padding:0 0 72px}
 
   <!-- ── KART 6: Tehlikeli Alan ── -->
   <div class="folder-card" style="border-color:var(--err)">
-    <div class="folder-head" id="tehlikeliHead" style="background:var(--errbg)">
+    <div class="folder-head" id="folderTehlikeliHead" style="background:var(--errbg)">
       <div class="folder-title" style="color:var(--err)"><span class="folder-icon-wrap" style="background:var(--errbg);border-color:var(--err)">⚠️</span> Tehlikeli Alan</div>
-      <span class="folder-arrow" id="tehlikeliArrow" style="color:var(--err)">▼</span>
+      <span class="folder-arrow" id="folderTehlikeliArrow" style="color:var(--err)">▼</span>
     </div>
-    <div class="folder-body" id="tehlikeliBody" style="border-top-color:var(--err)">
+    <div class="folder-body" id="folderTehlikeliBody" style="border-top-color:var(--err)">
       <div style="margin-top:10px">
         <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:10px;line-height:1.5">Bu işlem geri alınamaz. Tüm öğrenci, puan ve geçmiş verileri silinir.</div>
         <button class="btn-s danger" id="btnSilHep" style="width:100%;justify-content:center">🗑 Tüm Veriyi Sil</button>
@@ -2886,12 +2886,12 @@ var _listeSinifFiltre = null;
 function listeSinifChipsGoster(){
   var wrap = document.getElementById('listeSinifChips');
   if(!wrap) return;
-  var siniflar = siniflariAl();
+  var siniflar = siniflariAl(); // [[sinifAdi, sayi], ...]
   if(siniflar.length < 2){ wrap.innerHTML=''; return; }
   var h = '<button class="kat-btn'+(_listeSinifFiltre===null?' aktif':'')+'" onclick="listeSinifSec(null)">Hepsi</button>';
   siniflar.forEach(function(sf){
-    var sayi = ogr.filter(function(o){ return o.sinif===sf; }).length;
-    h += '<button class="kat-btn'+(_listeSinifFiltre===sf?' aktif':'')+'" onclick="listeSinifSec(\''+sf+'\')">'+sf+' <span style="font-size:9px;opacity:.7">'+sayi+'</span></button>';
+    var ad = sf[0], sayi = sf[1];
+    h += '<button class="kat-btn'+(_listeSinifFiltre===ad?' aktif':'')+'" onclick="listeSinifSec(\''+ad+'\')">'+ad+' <span style="font-size:9px;opacity:.7">'+sayi+'</span></button>';
   });
   wrap.innerHTML = h;
 }
@@ -2923,12 +2923,12 @@ var _srchPuanSinifFiltre = null;
 function srchPuanSinifChipsGoster(){
   var wrap = document.getElementById('srchPuanSinifChips');
   if(!wrap) return;
-  var siniflar = siniflariAl();
+  var siniflar = siniflariAl(); // [[sinifAdi, sayi], ...]
   if(siniflar.length < 2){ wrap.innerHTML=''; return; }
   var h = '<button class="kat-btn'+(_srchPuanSinifFiltre===null?' aktif':'')+'" onclick="srchPuanSinifSec(null)">Hepsi</button>';
   siniflar.forEach(function(sf){
-    var sayi = ogr.filter(function(o){ return o.sinif===sf; }).length;
-    h += '<button class="kat-btn'+(_srchPuanSinifFiltre===sf?' aktif':'')+'" onclick="srchPuanSinifSec(\''+sf+'\')">'+sf+' <span style="font-size:9px;opacity:.7">'+sayi+'</span></button>';
+    var ad = sf[0], sayi = sf[1];
+    h += '<button class="kat-btn'+(_srchPuanSinifFiltre===ad?' aktif':'')+'" onclick="srchPuanSinifSec(\''+ad+'\')">'+ad+' <span style="font-size:9px;opacity:.7">'+sayi+'</span></button>';
   });
   wrap.innerHTML = h;
 }
