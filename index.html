@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 2.0.04</title>
+<title>S-Seçim Pro 2.0.05</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -1602,17 +1602,17 @@ function kaydet(){
   pdepo.yaz('kul',JSON.stringify(u));
   pdepo.yaz('puan',JSON.stringify(puanlar));
   pdepo.yaz('yoklama',JSON.stringify(yok));
-  ppdepo.yaz('aktifKat',aktifKat);
+  pdepo.yaz('aktifKat',aktifKat);
   // puan geçmişi — son 500 kayıt
   pdepo.yaz('puanGecmis',JSON.stringify(puanGecmis.slice(0,500)));
-  ppdepo.yaz('mod',mod);
-  if(seciliSinif) ppdepo.yaz('seciliSinif',seciliSinif);
+  pdepo.yaz('mod',mod);
+  if(seciliSinif) pdepo.yaz('seciliSinif',seciliSinif);
   pdepo.yaz('seciliSiniflar',JSON.stringify(seciliSiniflar));
   pdepo.yaz('cokluMod',cokluMod?'1':'0');
   pdepo.yaz('gruplar',JSON.stringify(gruplar));
   pdepo.yaz('grupGecmis',JSON.stringify(grupGecmis.slice(0,50)));
   pdepo.yaz('timerProfiller',JSON.stringify(timerProfiller));
-  ppdepo.yaz('renkTema',aktifRenkTema);
+  pdepo.yaz('renkTema',aktifRenkTema);
 }
 function yukle(){
   try{
@@ -4252,7 +4252,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 4; // başlangıç build numarası
+var APP_VER_BUILD = 5; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
