@@ -711,49 +711,76 @@ body{padding:0 0 72px}
         <div class="pills" id="pills">
           <span style="font-size:13px;color:var(--t3)">Önce veri yükleyin</span>
         </div>
+        <!-- YOKLAMA TOGGLE -->
         <div id="yoklamaRow" style="display:none;margin-top:10px">
-          <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
-            <span>📋 Yoklama</span>
-            <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px">Hepsini Getir</button>
+          <div onclick="subToggle('yoklama')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:9px 12px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);user-select:none;transition:background .15s" id="yoklamaToggleHead">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:15px">📋</span>
+              <span style="font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--t1)">Yoklama</span>
+              <span id="yoklamaBadge" style="font-family:JetBrains Mono,monospace;font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--err);color:#fff;display:none"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div id="yoklamaToggleTrack" style="width:38px;height:20px;border-radius:10px;background:var(--bd);position:relative;transition:background .2s;flex-shrink:0">
+                <div id="yoklamaToggleThumb" style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+              </div>
+            </div>
           </div>
-          <div id="yoklamaList"></div>
+          <div id="yoklamaPanel" style="display:none;margin-top:6px;padding:10px 12px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm)">
+            <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px">
+              <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px">Hepsini Getir</button>
+            </div>
+            <div id="yoklamaList"></div>
+          </div>
         </div>
-        <div id="gruplamaRow" style="display:none;margin-top:10px">
-          <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
-            <span>👥 Otomatik Gruplama</span>
-          </div>
-          <!-- Grup sayısına göre bölme -->
-          <div style="margin-bottom:10px">
-            <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Kaç gruba bölsün?</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px" id="grupSayiBtnWrap">
-              <button class="btn-s" onclick="gruplamaYap(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2</button>
-              <button class="btn-s" onclick="gruplamaYap(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3</button>
-              <button class="btn-s" onclick="gruplamaYap(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4</button>
-              <button class="btn-s" onclick="gruplamaYap(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5</button>
-              <button class="btn-s" onclick="gruplamaYap(seciliSinif,6)" style="font-size:12px;padding:5px 10px">6</button>
+
+        <!-- GRUPLAR TOGGLE -->
+        <div id="gruplamaRow" style="display:none;margin-top:8px">
+          <div onclick="subToggle('gruplama')" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:9px 12px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);user-select:none;transition:background .15s" id="gruplamaToggleHead">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:15px">👥</span>
+              <span style="font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--t1)">Gruplar</span>
+              <span id="gruplamaBadge" style="font-family:JetBrains Mono,monospace;font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--ac);color:#fff;display:none"></span>
             </div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <input id="ozelGrupSayiInp" type="number" min="2" max="50" placeholder="Özel sayı…"
-                style="width:110px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
-              <button class="btn-s primary" onclick="gruplamaOzelSayiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div id="gruplamaToggleTrack" style="width:38px;height:20px;border-radius:10px;background:var(--bd);position:relative;transition:background .2s;flex-shrink:0">
+                <div id="gruplamaToggleThumb" style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+              </div>
             </div>
           </div>
-          <!-- Grup başına kişi sayısına göre bölme -->
-          <div style="margin-bottom:10px">
-            <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Her grupta kaç kişi olsun?</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
-              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2'li</button>
-              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3'lü</button>
-              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4'lü</button>
-              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5'li</button>
+          <div id="gruplamaPanel" style="display:none;margin-top:0;padding:12px;background:var(--bg2);border:1.5px solid var(--bd);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm)">
+            <!-- Grup sayısına göre bölme -->
+            <div style="margin-bottom:10px">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Kaç gruba bölsün?</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px" id="grupSayiBtnWrap">
+                <button class="btn-s" onclick="gruplamaYap(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2</button>
+                <button class="btn-s" onclick="gruplamaYap(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3</button>
+                <button class="btn-s" onclick="gruplamaYap(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4</button>
+                <button class="btn-s" onclick="gruplamaYap(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5</button>
+                <button class="btn-s" onclick="gruplamaYap(seciliSinif,6)" style="font-size:12px;padding:5px 10px">6</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input id="ozelGrupSayiInp" type="number" min="2" max="50" placeholder="Özel sayı…"
+                  style="width:110px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
+                <button class="btn-s primary" onclick="gruplamaOzelSayiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+              </div>
             </div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <input id="ozelKisiSayiInp" type="number" min="2" max="50" placeholder="Özel kişi…"
-                style="width:110px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
-              <button class="btn-s primary" onclick="gruplamaOzelKisiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+            <!-- Grup başına kişi sayısına göre bölme -->
+            <div style="margin-bottom:10px;padding-top:10px;border-top:1px solid var(--bd)">
+              <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Her grupta kaç kişi olsun?</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+                <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2'li</button>
+                <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3'lü</button>
+                <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4'lü</button>
+                <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5'li</button>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input id="ozelKisiSayiInp" type="number" min="2" max="50" placeholder="Özel kişi…"
+                  style="width:110px;background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
+                <button class="btn-s primary" onclick="gruplamaOzelKisiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+              </div>
             </div>
+            <div id="grupWrap"></div>
           </div>
-          <div id="grupWrap"></div>
         </div>
         <div class="prog-row" id="progRow" style="display:none;margin-top:12px;margin-bottom:0">
           <span class="prog-lbl" id="progLbl">0 / 0</span>
@@ -1870,11 +1897,92 @@ function ilerlemeGuncelle(){
 }
 
 /* ===================== YOKlAMA ===================== */
+/* ===================== SUB-TOGGLE (Yoklama / Gruplar anahtar) ===================== */
+var _subToggleState = { yoklama: false, gruplama: false };
+
+function subToggle(tip){
+  var acik = !_subToggleState[tip];
+  _subToggleState[tip] = acik;
+  var panel   = document.getElementById(tip+'Panel');
+  var track   = document.getElementById(tip+'ToggleTrack');
+  var thumb   = document.getElementById(tip+'ToggleThumb');
+  var head    = document.getElementById(tip+'ToggleHead');
+  if(panel){
+    panel.style.display = acik ? 'block' : 'none';
+  }
+  if(track){
+    track.style.background = acik ? 'var(--ok)' : 'var(--bd)';
+  }
+  if(thumb){
+    thumb.style.left = acik ? '21px' : '3px';
+  }
+  if(head){
+    head.style.borderRadius = acik
+      ? 'var(--r-sm) var(--r-sm) 0 0'
+      : 'var(--r-sm)';
+    head.style.borderBottom = acik ? '1px solid var(--bd)' : '';
+  }
+  // Panel açıldığında içeriği güncelle
+  if(acik){
+    if(tip==='yoklama') yoklamaGoster();
+    if(tip==='gruplama' && seciliSinif) gruplamaGoster(seciliSinif);
+  }
+  // Durumu kaydet
+  try{ localStorage.setItem('_subToggle_'+tip, acik?'1':'0'); }catch(e){}
+}
+
+function subToggleRestore(){
+  ['yoklama','gruplama'].forEach(function(tip){
+    try{
+      var saved = localStorage.getItem('_subToggle_'+tip);
+      if(saved==='1'){
+        // Durumu restore et ama içeriği hemen render etme — sinifSec sonra çağırır
+        _subToggleState[tip] = true;
+        var track = document.getElementById(tip+'ToggleTrack');
+        var thumb = document.getElementById(tip+'ToggleThumb');
+        var head  = document.getElementById(tip+'ToggleHead');
+        if(track) track.style.background = 'var(--ok)';
+        if(thumb) thumb.style.left = '21px';
+        if(head){ head.style.borderRadius='var(--r-sm) var(--r-sm) 0 0'; head.style.borderBottom='1px solid var(--bd)'; }
+      }
+    }catch(e){}
+  });
+}
+
+function yoklamaBadgeGuncelle(){
+  var badge = document.getElementById('yoklamaBadge');
+  if(!badge) return;
+  var yok = seciliSinif ? (yoklama[seciliSinif]||new Set()) : new Set();
+  var sayi = yok.size;
+  if(sayi>0){
+    badge.textContent = sayi+' yok';
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function gruplamaBadgeGuncelle(){
+  var badge = document.getElementById('gruplamaBadge');
+  if(!badge) return;
+  var grps = seciliSinif ? (gruplar[seciliSinif]||[]) : [];
+  if(grps.length>0){
+    badge.textContent = grps.length+' grup';
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
 function yoklamaGoster(){
   var row=document.getElementById('yoklamaRow');
   if(!row) return;
   if(!seciliSinif||!ogr.length){row.style.display='none';return;}
   row.style.display='block';
+  yoklamaBadgeGuncelle();
+  // Sadece panel açıksa içeriği render et
+  var panel = document.getElementById('yoklamaPanel');
+  if(!panel || panel.style.display==='none') return;
   var liste=document.getElementById('yoklamaList');
   var tumSinif=sinifOgrTum();
   var yok=yoklama[seciliSinif]||new Set();
@@ -2300,6 +2408,7 @@ function gruplamaOzelKisiUygula(){
 }
 
 function gruplamaGoster(sinif){
+  gruplamaBadgeGuncelle();
   var wrap = document.getElementById('grupWrap');
   if(!wrap) return;
   var grps = gruplar[sinif]||[];
@@ -4116,6 +4225,7 @@ function folderInit(){
   });
 }
 folderInit();
+subToggleRestore();
 
 // Öğrenci arama - ana sayfa (kaldırıldı)
 
