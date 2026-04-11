@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 1.8</title>
+<title>S-Seçim Pro 2.0.01</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -437,17 +437,17 @@ body{padding:0 0 72px}
 .srch-puan-inp{background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:9px 12px;font-size:14px;color:var(--t1);width:100%;outline:none;margin-bottom:8px;font-family:'Nunito',sans-serif;transition:border-color .15s}
 .srch-puan-inp:focus{border-color:var(--ac)}
 .srch-puan-list{max-height:240px;overflow-y:auto}
-.srch-puan-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.srch-puan-row{display:flex;align-items:center;gap:6px;padding:9px 0;border-bottom:1px solid var(--bd);flex-wrap:wrap}
 .srch-puan-row:last-child{border-bottom:none}
-.srch-puan-info{flex:1;font-size:14px;color:var(--t1)}
-.srch-puan-btns{display:flex;gap:6px;align-items:center}
-.sp-btn{font-size:17px;font-weight:900;width:34px;height:34px;border-radius:50%;border:1.5px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:Arial,sans-serif}
+.srch-puan-info{flex:1;min-width:0;font-size:13px;color:var(--t1);word-break:break-word}
+.srch-puan-btns{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.sp-btn{font-size:16px;font-weight:900;width:32px;height:32px;border-radius:50%;border:1.5px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:Arial,sans-serif;flex-shrink:0}
 .sp-btn-plus{border-color:var(--plus);color:var(--plus)}
 .sp-btn-plus:hover{background:var(--plusbg)}
 .sp-btn-minus{border-color:var(--minus);color:var(--minus)}
 .sp-btn-minus:hover{background:var(--minusbg)}
-.sp-puan-mini{font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--t2);min-width:52px;text-align:center}
-.sp-puan-mini span{padding:1px 5px;border-radius:4px}
+.sp-puan-mini{font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t2);min-width:46px;text-align:center;flex-shrink:0}
+.sp-puan-mini span{padding:1px 4px;border-radius:4px}
 .sp-puan-mini .sp-p{background:var(--plusbg);color:var(--plus)}
 .sp-puan-mini .sp-m{background:var(--minusbg);color:var(--minus)}
 
@@ -554,7 +554,7 @@ body{padding:0 0 72px}
 .profil-box{scrollbar-width:thin}
 
 /* ── PROJEKTöR MODU ── */
-.proj-overlay{display:none;position:fixed;inset:0;background:#000;z-index:9800;flex-direction:column;align-items:center;justify-content:center;cursor:default}
+.proj-overlay{display:none;position:fixed;inset:0;background:#000;z-index:9800;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
 .proj-overlay.acik{display:flex}
 .proj-kapat-btn{position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10;line-height:1}
 .proj-kapat-btn:hover{background:rgba(255,255,255,.25)}
@@ -639,7 +639,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 1.8</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.01</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
     </div>
     <div class="hdr-right">
@@ -722,12 +722,36 @@ body{padding:0 0 72px}
           <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between">
             <span>👥 Otomatik Gruplama</span>
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
-            <button class="btn-s" onclick="gruplamaYap(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2 Grup</button>
-            <button class="btn-s" onclick="gruplamaYap(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3 Grup</button>
-            <button class="btn-s" onclick="gruplamaYap(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4 Grup</button>
-            <button class="btn-s" onclick="gruplamaYap(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5 Grup</button>
-            <button class="btn-s" onclick="gruplamaYap(seciliSinif,6)" style="font-size:12px;padding:5px 10px">6 Grup</button>
+          <!-- Grup sayısına göre bölme -->
+          <div style="margin-bottom:10px">
+            <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Kaç gruba bölsün?</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px" id="grupSayiBtnWrap">
+              <button class="btn-s" onclick="gruplamaYap(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2</button>
+              <button class="btn-s" onclick="gruplamaYap(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3</button>
+              <button class="btn-s" onclick="gruplamaYap(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4</button>
+              <button class="btn-s" onclick="gruplamaYap(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5</button>
+              <button class="btn-s" onclick="gruplamaYap(seciliSinif,6)" style="font-size:12px;padding:5px 10px">6</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input id="ozelGrupSayiInp" type="number" min="2" max="50" placeholder="Özel sayı…"
+                style="width:110px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
+              <button class="btn-s primary" onclick="gruplamaOzelSayiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+            </div>
+          </div>
+          <!-- Grup başına kişi sayısına göre bölme -->
+          <div style="margin-bottom:10px">
+            <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Her grupta kaç kişi olsun?</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,2)" style="font-size:12px;padding:5px 10px">2'li</button>
+              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,3)" style="font-size:12px;padding:5px 10px">3'lü</button>
+              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,4)" style="font-size:12px;padding:5px 10px">4'lü</button>
+              <button class="btn-s" onclick="gruplamaKisiSayisiyla(seciliSinif,5)" style="font-size:12px;padding:5px 10px">5'li</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input id="ozelKisiSayiInp" type="number" min="2" max="50" placeholder="Özel kişi…"
+                style="width:110px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:'Nunito',sans-serif">
+              <button class="btn-s primary" onclick="gruplamaOzelKisiUygula()" style="font-size:12px;padding:6px 12px">Grupla</button>
+            </div>
           </div>
           <div id="grupWrap"></div>
         </div>
@@ -985,10 +1009,12 @@ body{padding:0 0 72px}
     </div>
     <div class="sep"></div>
     <div class="lbl">Kayıtlı <span id="mgrTotal" style="color:var(--ac);margin-left:4px"></span></div>
+    <div id="listeSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
     <input class="srch" id="srch" placeholder="Ada, okul no veya sınıfa göre ara... (Türkçe destekli)">
     <div class="slist" id="slist"></div>
     <div class="srch-puan-section">
       <div class="srch-puan-lbl">Listeden Puan Ver</div>
+      <div id="srchPuanSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
       <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara...">
       <div class="srch-puan-list" id="srchPuanList"></div>
     </div>
@@ -1106,16 +1132,19 @@ body{padding:0 0 72px}
 
 <!-- PROJEKTöR MODU -->
 <div class="proj-overlay" id="projOverlay">
-  <button class="proj-kapat-btn" id="projKapatBtn" title="Kapat (Esc)" onclick="projektorKapat()">✕</button>
-  <img id="projFotoEl" class="proj-foto" src="" style="display:none">
-  <div class="proj-sinif" id="projSinif"></div>
-  <div class="proj-num" id="projNum" style="display:none"></div>
-  <div class="proj-ad" id="projAd">—</div>
-  <div class="proj-puan" id="projPuan" style="display:none">
+  <!-- Tam ekran tıklama alanı — yeni öğrenci seçer -->
+  <div id="projTapArea" onclick="sec()" style="position:absolute;inset:0;z-index:0;cursor:pointer"></div>
+  <!-- Kapatma butonu — tıklama alanının üstünde -->
+  <button class="proj-kapat-btn" id="projKapatBtn" title="Kapat (Esc)" onclick="projektorKapat()" style="z-index:2">✕</button>
+  <img id="projFotoEl" class="proj-foto" src="" style="display:none;position:relative;z-index:1;pointer-events:none">
+  <div class="proj-sinif" id="projSinif" style="position:relative;z-index:1;pointer-events:none"></div>
+  <div class="proj-num" id="projNum" style="display:none;position:relative;z-index:1;pointer-events:none"></div>
+  <div class="proj-ad" id="projAd" style="position:relative;z-index:1;pointer-events:none">—</div>
+  <div class="proj-puan" id="projPuan" style="display:none;position:relative;z-index:1;pointer-events:none">
     <div class="proj-puan-badge proj-puan-plus" id="projPlus">+0</div>
     <div class="proj-puan-badge proj-puan-minus" id="projMinus">−0</div>
   </div>
-  <div class="proj-hint">Esc ile kapat</div>
+  <div class="proj-hint" style="position:absolute;bottom:24px;z-index:1;pointer-events:none">Ekrana dokun → yeni seçim &nbsp;·&nbsp; ✕ ile kapat</div>
 </div>
 
 <!-- YENİLİKLER MODALI ──────────────────────── -->
@@ -1129,7 +1158,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 1.8</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.01</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1176,7 +1205,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 1.8</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 2.0.01</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1186,14 +1215,193 @@ body{padding:0 0 72px}
 <!-- SAYFA KONTEYNERLERİ -->
 <script>
 /* ── Tüm JS tek blokta, global scope ── */
-window.onerror=function(m,s,l,c,e){
-  var d=document.getElementById('__err__');
-  if(!d){d=document.createElement('div');d.id='__err__';
-    d.style.cssText='position:fixed;top:60px;left:0;right:0;z-index:99999;background:#b00;color:#fff;padding:6px;font-size:11px;font-family:monospace;white-space:pre-wrap';
-    document.body.appendChild(d);}
-  d.textContent+='\nERROR: '+m+' (L'+l+':'+c+')';
-  return false;
+/* ===================== AKILLI HATA YAKALAYICI ===================== */
+var _hataLog = [];          // tüm session boyunca biriken hatalar
+var _hataGosteriliyor = false;
+var _hataOtoDismiss = null;
+
+function _hataKaydet(tip, mesaj, kaynak, satir, sutun, stack){
+  var kayit = {
+    ts: Date.now(),
+    tip: tip,           // 'JS', 'Promise', 'Network', 'Manuel'
+    mesaj: mesaj,
+    kaynak: (kaynak||'').replace(/^.*\//,''), // sadece dosya adı
+    satir: satir||0,
+    sutun: sutun||0,
+    stack: stack||'',
+    sayfa: typeof mevcutSayfa !== 'undefined' ? mevcutSayfa : '?',
+    ogrSayi: typeof ogr !== 'undefined' ? ogr.length : 0
+  };
+  _hataLog.push(kayit);
+  // localStorage'a da yaz (son 20)
+  try{ localStorage.setItem('_hataLog', JSON.stringify(_hataLog.slice(-20))); }catch(e){}
+  _hataToastGoster(kayit);
+  return kayit;
+}
+
+function _hataToastGoster(kayit){
+  // Önce eski toast varsa kaldır
+  var eskiToast = document.getElementById('_hataToast');
+  if(eskiToast) eskiToast.remove();
+  if(_hataOtoDismiss) clearTimeout(_hataOtoDismiss);
+
+  var kisa = kayit.mesaj.length > 80 ? kayit.mesaj.substring(0,80)+'…' : kayit.mesaj;
+  var sayi = _hataLog.length;
+
+  var toast = document.createElement('div');
+  toast.id = '_hataToast';
+  toast.style.cssText = [
+    'position:fixed','bottom:80px','left:10px','right:10px','z-index:99999',
+    'background:#1a0a0a','border:1.5px solid #ff5252','border-radius:12px',
+    'padding:10px 12px','font-family:JetBrains Mono,monospace','font-size:11px',
+    'color:#ff8a80','box-shadow:0 4px 20px rgba(0,0,0,.5)',
+    'display:flex','align-items:flex-start','gap:10px','cursor:pointer',
+    'animation:_hataSlideIn .25s ease'
+  ].join(';');
+
+  toast.innerHTML =
+    '<div style="font-size:18px;flex-shrink:0;margin-top:1px">⚠️</div>'+
+    '<div style="flex:1;min-width:0">'+
+      '<div style="font-weight:700;color:#ff5252;margin-bottom:2px;font-size:10px;letter-spacing:1px">'+
+        kayit.tip+' HATASI'+(sayi>1?' · '+sayi+' hata':'')+
+      '</div>'+
+      '<div style="color:#ffcdd2;font-size:11px;word-break:break-word;line-height:1.4">'+kisa+'</div>'+
+      (kayit.kaynak?'<div style="color:#ff8a80;font-size:9px;margin-top:3px">'+kayit.kaynak+(kayit.satir?':'+kayit.satir:'')+'</div>':'')+'</div>'+
+    '<div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">'+
+      '<button onclick="_hataRaporuAc()" style="border:1px solid #ff5252;background:none;color:#ff5252;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;cursor:pointer;font-family:JetBrains Mono,monospace">DETAY</button>'+
+      '<button onclick="document.getElementById(\'_hataToast\').remove()" style="border:1px solid #555;background:none;color:#888;border-radius:6px;padding:3px 8px;font-size:9px;font-weight:700;cursor:pointer;font-family:JetBrains Mono,monospace">✕</button>'+
+    '</div>';
+
+  // Stil ekle (bir kez)
+  if(!document.getElementById('_hataStyle')){
+    var st = document.createElement('style');
+    st.id = '_hataStyle';
+    st.textContent = '@keyframes _hataSlideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}';
+    document.head.appendChild(st);
+  }
+
+  document.body.appendChild(toast);
+
+  // 8 saniye sonra otomatik kapat
+  _hataOtoDismiss = setTimeout(function(){
+    var t = document.getElementById('_hataToast');
+    if(t){ t.style.opacity='0'; t.style.transition='opacity .4s'; setTimeout(function(){ if(t.parentNode) t.remove(); }, 400); }
+  }, 8000);
+}
+
+function _hataRaporuAc(){
+  var eskiToast = document.getElementById('_hataToast');
+  if(eskiToast) eskiToast.remove();
+
+  var ov = document.getElementById('_hataModalOv');
+  if(ov) ov.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = '_hataModalOv';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);display:flex;align-items:flex-end;justify-content:center;padding:0';
+  overlay.addEventListener('click', function(e){ if(e.target===this) this.remove(); });
+
+  var son = _hataLog[_hataLog.length-1]||{};
+  var tumLog = _hataLog.slice().reverse().map(function(h,i){
+    var t = new Date(h.ts).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    return '<div style="padding:8px 10px;border-bottom:1px solid #2a0a0a;'+(i===0?'background:#1a0000':'')+'">'+
+      '<div style="display:flex;justify-content:space-between;margin-bottom:3px">'+
+        '<span style="font-size:9px;font-weight:700;color:#ff5252;background:#2a0000;padding:1px 6px;border-radius:4px">'+h.tip+'</span>'+
+        '<span style="font-size:9px;color:#555">'+t+(h.sayfa?' · '+h.sayfa:'')+'</span>'+
+      '</div>'+
+      '<div style="font-size:11px;color:#ffcdd2;word-break:break-word;line-height:1.4;margin-bottom:2px">'+h.mesaj+'</div>'+
+      (h.kaynak?'<div style="font-size:9px;color:#888">'+h.kaynak+(h.satir?':'+h.satir+(h.sutun?':'+h.sutun:''):'')+'</div>':'')+
+      (h.stack?'<details style="margin-top:4px"><summary style="font-size:9px;color:#555;cursor:pointer">Stack trace</summary><pre style="font-size:9px;color:#666;white-space:pre-wrap;margin:4px 0 0;line-height:1.4">'+h.stack.substring(0,600)+'</pre></details>':'')+
+    '</div>';
+  }).join('');
+
+  overlay.innerHTML =
+    '<div style="background:#111;border:1.5px solid #ff5252;border-radius:14px 14px 0 0;width:100%;max-width:680px;max-height:85vh;display:flex;flex-direction:column;font-family:JetBrains Mono,monospace">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1.5px solid #2a0000;flex-shrink:0">'+
+        '<div>'+
+          '<div style="font-size:14px;font-weight:700;color:#ff5252">⚠️ Hata Raporu</div>'+
+          '<div style="font-size:9px;color:#555;margin-top:2px">'+_hataLog.length+' hata · Bu oturum</div>'+
+        '</div>'+
+        '<div style="display:flex;gap:8px">'+
+          '<button onclick="_hataSil()" style="border:1px solid #333;background:none;color:#666;border-radius:8px;padding:6px 10px;font-size:10px;cursor:pointer;font-family:JetBrains Mono,monospace">Temizle</button>'+
+          '<button onclick="_hataKopyala()" style="border:1px solid #ff5252;background:none;color:#ff5252;border-radius:8px;padding:6px 10px;font-size:10px;cursor:pointer;font-family:JetBrains Mono,monospace">Kopyala</button>'+
+          '<button onclick="document.getElementById(\'_hataModalOv\').remove()" style="border:none;background:#ff5252;color:#fff;border-radius:8px;padding:6px 12px;font-size:10px;font-weight:700;cursor:pointer;font-family:JetBrains Mono,monospace">Kapat</button>'+
+        '</div>'+
+      '</div>'+
+      '<div id="_hataListeWrap" style="overflow-y:auto;flex:1">'+tumLog+'</div>'+
+      '<div style="padding:10px 16px;border-top:1.5px solid #2a0000;flex-shrink:0;font-size:9px;color:#444;line-height:1.5">'+
+        '📱 Uygulama: S-Seçim · Tarayıcı: '+navigator.userAgent.substring(0,60)+'…'+
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(overlay);
+}
+
+function _hataKopyala(){
+  var txt = _hataLog.map(function(h){
+    return '['+new Date(h.ts).toLocaleString('tr-TR')+'] ['+h.tip+'] '+h.mesaj+
+      (h.kaynak?' @ '+h.kaynak+':'+h.satir:'')+
+      (h.stack?'\n'+h.stack:'');
+  }).join('\n---\n');
+  try{
+    navigator.clipboard.writeText(txt).then(function(){
+      var btn = document.querySelector('#_hataModalOv button:nth-child(2)');
+      // basit bildir
+      var t=document.createElement('div');
+      t.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;font-family:JetBrains Mono,monospace;z-index:999999';
+      t.textContent='✅ Kopyalandı';
+      document.body.appendChild(t);
+      setTimeout(function(){ t.remove(); }, 2000);
+    });
+  }catch(e){ alert(txt); }
+}
+
+function _hataSil(){
+  _hataLog = [];
+  try{ localStorage.removeItem('_hataLog'); }catch(e){}
+  var wrap = document.getElementById('_hataListeWrap');
+  if(wrap) wrap.innerHTML = '<div style="padding:20px;text-align:center;color:#444;font-size:11px">Hata kaydı temizlendi</div>';
+}
+
+// Global JS hataları
+window.onerror = function(m, s, l, c, e){
+  _hataKaydet('JS', m, s, l, c, e ? (e.stack||'') : '');
+  return true; // tarayıcının default hata göstermesini engelle
 };
+
+// Promise rejection hataları
+window.addEventListener('unhandledrejection', function(ev){
+  var msg = ev.reason ? (ev.reason.message || String(ev.reason)) : 'Bilinmeyen Promise hatası';
+  var stack = ev.reason && ev.reason.stack ? ev.reason.stack : '';
+  _hataKaydet('Promise', msg, '', 0, 0, stack);
+});
+
+// Network hataları (fetch wrapper)
+(function(){
+  var _orijinalFetch = window.fetch;
+  window.fetch = function(){
+    return _orijinalFetch.apply(this, arguments).catch(function(err){
+      _hataKaydet('Network', 'Fetch hatası: '+(err.message||err), '', 0, 0, '');
+      throw err;
+    });
+  };
+})();
+
+// Önceki oturumdan kalan hataları yükle
+(function(){
+  try{
+    var eski = localStorage.getItem('_hataLog');
+    if(eski){
+      var parsed = JSON.parse(eski);
+      if(Array.isArray(parsed) && parsed.length){
+        // Sadece son 1 saat içindekileri al
+        var sinir = Date.now() - 3600000;
+        var filtreli = parsed.filter(function(h){ return h.ts > sinir; });
+        if(filtreli.length) _hataLog = filtreli;
+      }
+    }
+  }catch(e){}
+})();
 var mevcutSayfa = 'anasayfa';
 function sayfaGoster(sayfa) {
   mevcutSayfa = sayfa;
@@ -1244,6 +1452,7 @@ var cokluMod = false;    // çoklu sınıf modu açık mı
 // Gruplama
 var gruplar = {};        // {sinif: [{ad, uyeler:[_i,...]}]}
 var aktifGrup = null;    // {sinif, grupIdx}
+var grupGecmis = [];     // kaydedilen grup gecmisi — ts, ad, sinif, gruplar dizisi
 // Zamanlayıcı profilleri
 var timerProfiller = [
   {ad:'Kısa Aktivite', sure:300},
@@ -1302,6 +1511,7 @@ function kaydet(){
   depo.yaz('seciliSiniflar',JSON.stringify(seciliSiniflar));
   depo.yaz('cokluMod',cokluMod?'1':'0');
   depo.yaz('gruplar',JSON.stringify(gruplar));
+  depo.yaz('grupGecmis',JSON.stringify(grupGecmis.slice(0,50)));
   depo.yaz('timerProfiller',JSON.stringify(timerProfiller));
   depo.yaz('renkTema',aktifRenkTema);
 }
@@ -1319,6 +1529,7 @@ function yukle(){
     var ssl=depo.al('seciliSiniflar'); if(ssl){ var pssl=JSON.parse(ssl); if(Array.isArray(pssl)) seciliSiniflar=pssl; }
     var cm=depo.al('cokluMod'); if(cm) cokluMod=(cm==='1');
     var gr=depo.al('gruplar'); if(gr){ var pgr=JSON.parse(gr); if(typeof pgr==='object') gruplar=pgr; }
+    var gg=depo.al('grupGecmis'); if(gg){ var pgg=JSON.parse(gg); if(Array.isArray(pgg)) grupGecmis=pgg; }
     var tp=depo.al('timerProfiller'); if(tp){ var ptp=JSON.parse(tp); if(Array.isArray(ptp)&&ptp.length) timerProfiller=ptp; }
   }catch(e){}
   return ogr.length>0;
@@ -1925,6 +2136,7 @@ function yedekGeriYukle(veri){
   kaydet();
   siniflariOlustur(); bosGoster(); baslikGuncelle(); gecmisiGoster(); kalanlariGoster(); listeyiGoster(); srchPuanGoster(); puanOzetGoster();
   document.getElementById('histLbl').textContent='';
+  appVerYukselt();
   bildir('✅ Yedek geri yüklendi — '+ogr.length+' öğrenci');
 }
 function yedekDosyadanYukle(dosya){
@@ -2023,10 +2235,12 @@ function sinifOgrCoklu(){
 
 /* ===================== OTOMATİK GRUPLAMA ===================== */
 function gruplamaYap(sinif, grupSayisi){
-  if(!sinif||!grupSayisi||grupSayisi<2) return;
+  if(!sinif) return;
+  grupSayisi = parseInt(grupSayisi);
+  if(!grupSayisi || grupSayisi < 2) { bildir('En az 2 grup olmalı'); return; }
   var tumOgr = sinifOgrTum();
   if(!tumOgr.length){ bildir('Öğrenci yok'); return; }
-  // Karıştır
+  if(grupSayisi > tumOgr.length){ bildir('Öğrenci sayısından fazla grup olamaz ('+tumOgr.length+' öğrenci)'); return; }
   var karisik = tumOgr.slice().sort(function(){ return Math.random()-0.5; });
   var grps = [];
   for(var i=0;i<grupSayisi;i++) grps.push({ad:'Grup '+(i+1), uyeler:[]});
@@ -2038,18 +2252,71 @@ function gruplamaYap(sinif, grupSayisi){
   bildir('✅ '+grupSayisi+' grup oluşturuldu');
 }
 
+// Grup başına kişi sayısıyla gruplama
+function gruplamaKisiSayisiyla(sinif, kisiSayisi){
+  if(!sinif) return;
+  kisiSayisi = parseInt(kisiSayisi);
+  if(!kisiSayisi || kisiSayisi < 2) { bildir('En az 2 kişi olmalı'); return; }
+  var tumOgr = sinifOgrTum();
+  if(!tumOgr.length){ bildir('Öğrenci yok'); return; }
+  var grupSayisi = Math.floor(tumOgr.length / kisiSayisi);
+  if(grupSayisi < 1) grupSayisi = 1;
+  var karisik = tumOgr.slice().sort(function(){ return Math.random()-0.5; });
+  var grps = [];
+  for(var i=0;i<grupSayisi;i++) grps.push({ad:'Grup '+(i+1), uyeler:[]});
+  // İlk (grupSayisi * kisiSayisi) kişiyi gruplara dağıt
+  var tamKisi = grupSayisi * kisiSayisi;
+  for(var i=0;i<tamKisi && i<karisik.length;i++){
+    grps[i % grupSayisi].uyeler.push(karisik[i]._i);
+  }
+  // Kalan kişileri (son grup artığı) rastgele diğer gruplara dağıt
+  var kalanlar = karisik.slice(tamKisi);
+  if(kalanlar.length > 0){
+    // Grupları karıştır ve sırayla dağıt
+    var grpSirasi = grps.slice().sort(function(){ return Math.random()-0.5; });
+    kalanlar.forEach(function(s, i){ grpSirasi[i % grpSirasi.length].uyeler.push(s._i); });
+  }
+  if(!gruplar[sinif]) gruplar[sinif]=[];
+  gruplar[sinif] = grps;
+  kaydet();
+  gruplamaGoster(sinif);
+  var msg = '✅ '+grupSayisi+' grup oluşturuldu (~'+kisiSayisi+' kişi/grup)';
+  if(kalanlar.length) msg += ' · '+kalanlar.length+' kişi diğer gruplara dağıtıldı';
+  bildir(msg);
+}
+
+// Özel sayı inputlarından gruplama
+function gruplamaOzelSayiUygula(){
+  var v = parseInt(document.getElementById('ozelGrupSayiInp').value);
+  if(!v || v < 2) { bildir('Geçerli bir sayı girin (en az 2)'); return; }
+  gruplamaYap(seciliSinif, v);
+  document.getElementById('ozelGrupSayiInp').value = '';
+}
+function gruplamaOzelKisiUygula(){
+  var v = parseInt(document.getElementById('ozelKisiSayiInp').value);
+  if(!v || v < 2) { bildir('Geçerli bir sayı girin (en az 2)'); return; }
+  gruplamaKisiSayisiyla(seciliSinif, v);
+  document.getElementById('ozelKisiSayiInp').value = '';
+}
+
 function gruplamaGoster(sinif){
   var wrap = document.getElementById('grupWrap');
   if(!wrap) return;
   var grps = gruplar[sinif]||[];
   if(!grps.length){
-    wrap.innerHTML='<div class="tbl-empty">Henüz grup oluşturulmadı</div>';
+    wrap.innerHTML='<div class="tbl-empty">Henüz grup oluşturulmadı</div>'+grupGecmisHTML(sinif);
     return;
   }
   var h='';
+  // Kaydet satırı
+  h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 10px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:var(--r-sm)">';
+  h+='<input id="grupKaydetAd" placeholder="Etkinlik adı (örn: 14 Nisan Fen Grubu)…" style="flex:1;background:var(--bg);border:1.5px solid var(--bd);border-radius:8px;padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:Nunito,sans-serif">';
+  h+='<button class="btn-s primary" onclick="grupKaydet(\''+sinif+'\')" style="font-size:12px;padding:6px 12px;white-space:nowrap">💾 Kaydet</button>';
+  h+='</div>';
+  // Grup listesi
   grps.forEach(function(g,gi){
     var uyeAdlar = g.uyeler.map(function(idx){return ogr[idx]?ogr[idx].ad:'?';});
-    h+='<div style="margin-bottom:12px;padding:10px 12px;background:var(--bg2);border-radius:var(--r-sm);border:1.5px solid var(--bd)">';
+    h+='<div style="margin-bottom:10px;padding:10px 12px;background:var(--bg2);border-radius:var(--r-sm);border:1.5px solid var(--bd)">';
     h+='<div style="font-size:13px;font-weight:800;color:var(--ac);margin-bottom:6px">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">('+g.uyeler.length+' kişi)</span></div>';
     h+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
     uyeAdlar.forEach(function(ad){
@@ -2057,7 +2324,94 @@ function gruplamaGoster(sinif){
     });
     h+='</div></div>';
   });
+  // Geçmiş bölümü
+  h+=grupGecmisHTML(sinif);
   wrap.innerHTML=h;
+}
+
+function grupGecmisHTML(sinif){
+  var gecmis = grupGecmis.filter(function(g){ return g.sinif===sinif; });
+  if(!gecmis.length) return '';
+  var h='<div style="margin-top:14px;border-top:1.5px dashed var(--bd);padding-top:12px">';
+  h+='<div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">📂 Kaydedilen Gruplar</div>';
+  gecmis.slice().reverse().forEach(function(kayit, ri){
+    var gercekIdx = gecmis.length-1-ri;
+    var tarih = new Date(kayit.ts).toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    h+='<div style="margin-bottom:8px;border:1.5px solid var(--bd);border-radius:var(--r-sm);overflow:hidden">';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg2);cursor:pointer" onclick="grupGecmisToggle(\'gg_'+sinif+'_'+gercekIdx+'\')">';
+    h+='<div>';
+    h+='<div style="font-size:13px;font-weight:800;color:var(--t1)">'+kayit.ad+'</div>';
+    h+='<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">'+tarih+' · '+kayit.gruplar.length+' grup</div>';
+    h+='</div>';
+    h+='<div style="display:flex;gap:6px;align-items:center">';
+    h+='<button class="btn-s" onclick="event.stopPropagation();grupGecmisYukle(\''+sinif+'\','+gercekIdx+')" style="font-size:11px;padding:4px 9px;color:var(--ac);border-color:var(--ac)">↩ Yükle</button>';
+    h+='<button class="btn-s danger" onclick="event.stopPropagation();grupGecmisSil(\''+sinif+'\','+gercekIdx+')" style="font-size:11px;padding:4px 8px">🗑</button>';
+    h+='<span style="font-size:12px;color:var(--t3)">▼</span>';
+    h+='</div>';
+    h+='</div>';
+    h+='<div id="gg_'+sinif+'_'+gercekIdx+'" style="display:none;padding:10px 12px">';
+    kayit.gruplar.forEach(function(g){
+      h+='<div style="margin-bottom:6px">';
+      h+='<div style="font-size:11px;font-weight:800;color:var(--ac);margin-bottom:3px">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3)">('+g.uyeAdlar.length+' kişi)</span></div>';
+      h+='<div style="display:flex;flex-wrap:wrap;gap:4px">';
+      g.uyeAdlar.forEach(function(ad){
+        h+='<span style="font-size:10px;font-weight:700;padding:2px 7px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:20px;color:var(--t1)">'+ad+'</span>';
+      });
+      h+='</div></div>';
+    });
+    h+='</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  return h;
+}
+
+function grupGecmisToggle(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.style.display = el.style.display==='none'?'block':'none';
+}
+
+function grupKaydet(sinif){
+  var adInp = document.getElementById('grupKaydetAd');
+  var ad = adInp ? adInp.value.trim() : '';
+  if(!ad){ bildir('⚠️ Bir etkinlik adı girin'); return; }
+  var grps = gruplar[sinif]||[];
+  if(!grps.length){ bildir('Önce grup oluşturun'); return; }
+  var kayit = {
+    ts: Date.now(),
+    ad: ad,
+    sinif: sinif,
+    gruplar: grps.map(function(g){
+      return { ad: g.ad, uyeAdlar: g.uyeler.map(function(idx){ return ogr[idx]?ogr[idx].ad:'?'; }) };
+    })
+  };
+  grupGecmis.push(kayit);
+  kaydet();
+  if(adInp) adInp.value='';
+  gruplamaGoster(sinif);
+  bildir('💾 "'+ad+'" kaydedildi');
+}
+
+function grupGecmisYukle(sinif, idx){
+  var kayit = grupGecmis[idx];
+  if(!kayit) return;
+  // Sadece göster, mevcut grupları değiştirme
+  bildir('📂 "'+kayit.ad+'" gösteriliyor (mevcut gruplar değişmedi)');
+  // Geçmiş satırını aç
+  var elId = 'gg_'+sinif+'_'+idx;
+  var el = document.getElementById(elId);
+  if(el) el.style.display='block';
+}
+
+function grupGecmisSil(sinif, idx){
+  var kayit = grupGecmis[idx];
+  if(!kayit) return;
+  if(!confirm('"'+kayit.ad+'" kaydını silmek istiyor musunuz?')) return;
+  grupGecmis.splice(idx,1);
+  kaydet();
+  gruplamaGoster(sinif);
+  bildir('🗑 Kayıt silindi');
 }
 
 /* ===================== ZAMANLAYıCı PROFİLLERİ ===================== */
@@ -2340,13 +2694,32 @@ function mgrToggle(){
   if(b.classList.contains('open')){ listeyiGoster(); srchPuanGoster(); }
 }
 
+var _listeSinifFiltre = null;
+function listeSinifChipsGoster(){
+  var wrap = document.getElementById('listeSinifChips');
+  if(!wrap) return;
+  var siniflar = siniflariAl();
+  if(siniflar.length < 2){ wrap.innerHTML=''; return; }
+  var h = '<button class="kat-btn'+(_listeSinifFiltre===null?' aktif':'')+'" onclick="listeSinifSec(null)">Hepsi</button>';
+  siniflar.forEach(function(sf){
+    h += '<button class="kat-btn'+(_listeSinifFiltre===sf?' aktif':'')+'" onclick="listeSinifSec(\''+sf+'\')">'+sf+'</button>';
+  });
+  wrap.innerHTML = h;
+}
+function listeSinifSec(sf){
+  _listeSinifFiltre = sf;
+  listeSinifChipsGoster();
+  listeyiGoster();
+}
 function listeyiGoster(){
   var q=(document.getElementById('srch').value||'');
   var liste=document.getElementById('slist');
   document.getElementById('mgrTotal').textContent='('+ogr.length+')';
+  listeSinifChipsGoster();
   if(!ogr.length){liste.innerHTML='<div class="tbl-empty">Kayıtlı yok</div>';return;}
   var f=ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
     .filter(function(s){
+      if(_listeSinifFiltre && s.sinif!==_listeSinifFiltre) return false;
       if(!q) return true;
       return trIcerir(s.ad,q)||(s.numara+'').indexOf(q)>=0||trIcerir(s.sinif,q);
     });
@@ -2357,12 +2730,31 @@ function listeyiGoster(){
   liste.querySelectorAll('.btn-del').forEach(function(b){b.addEventListener('click',function(){ogrenciSil(parseInt(this.dataset.idx));});});
 }
 
+var _srchPuanSinifFiltre = null;
+function srchPuanSinifChipsGoster(){
+  var wrap = document.getElementById('srchPuanSinifChips');
+  if(!wrap) return;
+  var siniflar = siniflariAl();
+  if(siniflar.length < 2){ wrap.innerHTML=''; return; }
+  var h = '<button class="kat-btn'+(_srchPuanSinifFiltre===null?' aktif':'')+'" onclick="srchPuanSinifSec(null)">Hepsi</button>';
+  siniflar.forEach(function(sf){
+    h += '<button class="kat-btn'+(_srchPuanSinifFiltre===sf?' aktif':'')+'" onclick="srchPuanSinifSec(\''+sf+'\')">'+sf+'</button>';
+  });
+  wrap.innerHTML = h;
+}
+function srchPuanSinifSec(sf){
+  _srchPuanSinifFiltre = sf;
+  srchPuanSinifChipsGoster();
+  srchPuanGoster();
+}
 function srchPuanGoster(){
   var q=(document.getElementById('srchPuan').value||'');
   var liste=document.getElementById('srchPuanList');
+  srchPuanSinifChipsGoster();
   if(!ogr.length){liste.innerHTML='<div class="tbl-empty">Kayıtlı öğrenci yok</div>';return;}
   var f=ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
     .filter(function(s){
+      if(_srchPuanSinifFiltre && s.sinif!==_srchPuanSinifFiltre) return false;
       if(!q) return true;
       return trIcerir(s.ad,q)||(s.numara+'').indexOf(q)>=0||trIcerir(s.sinif,q);
     });
@@ -2370,9 +2762,8 @@ function srchPuanGoster(){
   var h='';
   f.forEach(function(s){
     var p=puanAlToplam(s._i);
-    var fark=p.plus-p.minus;
     h+='<div class="srch-puan-row">';
-    h+='<div class="srch-puan-info"><span class="smeta">'+s.sinif+'</span><span class="smeta">'+(s.numara||'—')+'</span><span>'+s.ad+'</span></div>';
+    h+='<div class="srch-puan-info"><span class="smeta">'+s.sinif+'</span><span class="smeta">'+(s.numara||'—')+'</span><span style="font-weight:700">'+s.ad+'</span></div>';
     h+='<div class="srch-puan-btns">';
     h+='<span class="sp-puan-mini"><span class="sp-p">+'+p.plus+'</span> <span class="sp-m">−'+p.minus+'</span></span>';
     h+='<button class="sp-btn sp-btn-plus" data-idx="'+s._i+'" data-tip="+" title="Doğru (+)">+</button>';
@@ -2475,6 +2866,7 @@ function ogrenciSil(idx){
   });
   puanlar=yeniPuanlar;
   ogr.splice(idx,1); kaydet();
+  appVerYukselt();
   siniflariOlustur(); baslikGuncelle(); listeyiGoster(); srchPuanGoster(); gecmisiGoster(); kalanlariGoster(); ilerlemeGuncelle();
   bildir('Silindi');
 }
@@ -2979,6 +3371,13 @@ document.getElementById('btnHistSil').addEventListener('click',gecmisiTemizle);
 
 // Yönetim (accordion kaldırıldı)
 document.getElementById('srch').addEventListener('input',listeyiGoster);
+// Gruplama özel input Enter desteği
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){
+    if(e.target.id==='ozelGrupSayiInp') gruplamaOzelSayiUygula();
+    if(e.target.id==='ozelKisiSayiInp') gruplamaOzelKisiUygula();
+  }
+});
 document.getElementById('btnEkle').addEventListener('click',ogrenciEkle);
 document.getElementById('btnExport').addEventListener('click',csvIndir);
 document.getElementById('btnSilHep').addEventListener('click',tumunuSil);
@@ -3064,9 +3463,8 @@ document.addEventListener('keydown',function(e){
 });
 
 // Projektör overlay click
-document.getElementById('projOverlay').addEventListener('click', function(e){
-  if(e.target === this) projektorKapat();
-});
+// Projektör: tapArea onclick="sec()" ile yönetiliyor (HTML'de inline)
+// Kapatma butonu onclick="projektorKapat()" ile yönetiliyor
 // Yenilik overlay backdrop
 document.getElementById('yenilikOverlay').addEventListener('click', function(e){
   if(e.target===this) yenilikKapat();
@@ -3075,6 +3473,7 @@ document.getElementById('yenilikOverlay').addEventListener('click', function(e){
 /* ===================== BAŞLANGIÇ ===================== */
 // Profil sistemi — depo profil-aware, sadece yükle
 profilListesiYukle();
+appVerGuncelle(); // Versiyon göstergesini güncelle
 temauygula(depo.al('tema')||'gece');
 var kayitliAnimTip=depo.al('animTip');
 if(kayitliAnimTip) animTipSec(kayitliAnimTip);
@@ -3106,7 +3505,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro1.8';
+var YENILIK_VER = 'Pro2.0.01';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -3536,7 +3935,7 @@ function profilDegistir(profilId){
 
 function uygulamaYenidenBaslat(){
   ogr=[]; gecmis=[]; kullanilan={}; puanlar={}; yoklama={}; puanGecmis=[];
-  seciliSinif=null; seciliSiniflar=[]; cokluMod=false; gruplar={}; aktifGrup=null;
+  seciliSinif=null; seciliSiniflar=[]; cokluMod=false; gruplar={}; aktifGrup=null; grupGecmis=[];
   fotograflar={}; aktifKat='genel'; mod='unique';
   timerProfiller=[{ad:'Kisa Aktivite',sure:300},{ad:'Sinav',sure:2400},{ad:'Ders',sure:2700}];
   if(yukle()){
@@ -3661,6 +4060,29 @@ function profilModalGuncelle(){
 // Profil listesi: '_profilListesi' key'inde saklanır
 
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
+
+/* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
+var APP_VER_BASE = '2.0';
+var APP_VER_BUILD = 1; // başlangıç build numarası
+(function(){
+  try{
+    var saved = localStorage.getItem('_appBuild');
+    if(saved !== null) APP_VER_BUILD = parseInt(saved) || 1;
+  }catch(e){}
+})();
+function appVerStr(){ return APP_VER_BASE+'.'+String(APP_VER_BUILD).padStart(2,'0'); }
+function appVerYukselt(){
+  APP_VER_BUILD++;
+  try{ localStorage.setItem('_appBuild', APP_VER_BUILD); }catch(e){}
+  appVerGuncelle();
+  return appVerStr();
+}
+function appVerGuncelle(){
+  var v = appVerStr();
+  var els = document.querySelectorAll('.ver, .footer-ver');
+  els.forEach(function(el){ el.textContent = 'Pro '+v; });
+  document.title = 'S-Seçim Pro '+v;
+}
 
 /* dup kaldırıldı */
 
