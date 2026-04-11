@@ -42,7 +42,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 2.0.03</title>
+<title>S-Seçim Pro 2.0.04</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -639,7 +639,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.03</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.04</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
     </div>
     <div class="hdr-right">
@@ -1017,61 +1017,124 @@ body{padding:0 0 72px}
 </div><!-- end sayfaGecmis -->
 <div id="sayfaVeri" style="display:none">
   <div style="padding:12px 0 6px;font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3)">Veri Yönetimi</div>
-  <div class="mgr-card" style="padding:16px">
-    <div class="lbl" style="padding-top:0">Veri Yükle</div>
-    <input type="file" id="fileIn" accept=".csv" style="display:none">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-      <button class="btn-s primary" id="btnDosya">📂 Yerel Dosya (CSV)</button>
-      <span class="ghd" id="ghDurum"></span>
+
+  <!-- ── KART 1: Veri Yükle ── -->
+  <div class="folder-card">
+    <div class="folder-head" id="veriYukleHead">
+      <div class="folder-title"><span class="folder-icon-wrap">📂</span> Veri Yükle</div>
+      <span class="folder-arrow" id="veriYukleArrow">▼</span>
     </div>
-    <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--t3);margin-bottom:14px">CSV — Excel'de Farklı Kaydet → CSV (UTF-8)</div>
-    <div class="sep"></div>
-    <div class="lbl">Öğrenci Ekle</div>
-    <div class="add-form">
-      <div class="fg"><span class="fg-lbl">No</span><input class="inp" id="iNo" inputmode="numeric" placeholder="101"></div>
-      <div class="fg"><span class="fg-lbl">Sınıf</span><input class="inp" id="iSinif" placeholder="5"></div>
-      <div class="fg"><span class="fg-lbl">Şube</span><input class="inp" id="iSube" placeholder="B"></div>
-      <div class="fg" style="flex:2;min-width:140px"><span class="fg-lbl">Ad Soyad</span><input class="inp" id="iAd" placeholder="Ad Soyad"></div>
-      <div class="fg" style="min-width:60px"><span class="fg-lbl"> </span><button class="btn-s primary" id="btnEkle">+ Ekle</button></div>
-    </div>
-    <div class="sep"></div>
-    <div class="lbl">Kayıtlı <span id="mgrTotal" style="color:var(--ac);margin-left:4px"></span></div>
-    <div id="listeSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
-    <input class="srch" id="srch" placeholder="Ada, okul no veya sınıfa göre ara... (Türkçe destekli)">
-    <div class="slist" id="slist"></div>
-    <div class="srch-puan-section">
-      <div class="srch-puan-lbl">Listeden Puan Ver</div>
-      <div id="srchPuanSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
-      <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara...">
-      <div class="srch-puan-list" id="srchPuanList"></div>
-    </div>
-    <div class="sep"></div>
-    <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Dışa Aktar</div>
-    <div class="btn-row" style="margin-top:0">
-      <button class="btn-s primary" id="btnExport">CSV</button>
-      <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel</button>
-      <button class="btn-s" onclick="pdfRaporIndir()" style="color:#e53935;border-color:#e53935">📄 PDF Rapor</button>
-    </div>
-    <div class="btn-row">
-      <button class="btn-s" onclick="qrModalAc()" style="color:#7c3aed;border-color:#7c3aed">📱 QR Aktar</button>
-      <button class="btn-s" onclick="sifreliAktar()" style="color:#b45309;border-color:#b45309">🔒 Şifreli İndir</button>
-      <button class="btn-s" onclick="document.getElementById('sifreliFileIn').click()" style="color:#b45309;border-color:#b45309">🔓 Şifreli Yükle</button>
-      <input type="file" id="sifreliFileIn" accept=".ssenc,.json" style="display:none">
-    </div>
-    <div class="btn-row">
-      <button class="btn-s danger" id="btnSilHep">Tüm Veriyi Sil</button>
-    </div>
-    <div class="yedek-section">
-      <div class="yedek-lbl">Yedekleme &amp; Geri Yükleme</div>
-      <div class="yedek-btn-row">
-        <button class="btn-s primary" id="btnYedekAl">💾 Yedek Al</button>
-        <button class="btn-s github" id="btnYedekYukle">📂 Yedeği Geri Yükle</button>
-        <input type="file" id="yedekFileIn" accept=".json" style="display:none">
+    <div class="folder-body" id="veriYukleBody">
+      <div style="margin-top:10px">
+        <input type="file" id="fileIn" accept=".csv" style="display:none">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+          <button class="btn-s primary" id="btnDosya">📂 Yerel Dosya (CSV)</button>
+          <span class="ghd" id="ghDurum"></span>
+        </div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--t3)">CSV — Excel'de Farklı Kaydet → CSV (UTF-8)</div>
       </div>
-      <div class="yedek-info">Yedek; öğrenciler, geçmiş, puanlar ve seçim durumunu içerir.<br>JSON dosyası olarak kaydedilir, tekrar yüklenebilir.</div>
-      <div class="yedek-listesi" id="yedekListesi"></div>
     </div>
   </div>
+
+  <!-- ── KART 2: Öğrenci Ekle ── -->
+  <div class="folder-card">
+    <div class="folder-head" id="ogrenciEkleHead">
+      <div class="folder-title"><span class="folder-icon-wrap">➕</span> Öğrenci Ekle</div>
+      <span class="folder-arrow" id="ogrenciEkleArrow">▼</span>
+    </div>
+    <div class="folder-body" id="ogrenciEkleBody">
+      <div style="margin-top:10px">
+        <div class="add-form">
+          <div class="fg"><span class="fg-lbl">No</span><input class="inp" id="iNo" inputmode="numeric" placeholder="101"></div>
+          <div class="fg"><span class="fg-lbl">Sınıf</span><input class="inp" id="iSinif" placeholder="5"></div>
+          <div class="fg"><span class="fg-lbl">Şube</span><input class="inp" id="iSube" placeholder="B"></div>
+          <div class="fg" style="flex:2;min-width:140px"><span class="fg-lbl">Ad Soyad</span><input class="inp" id="iAd" placeholder="Ad Soyad"></div>
+          <div class="fg" style="min-width:60px"><span class="fg-lbl"> </span><button class="btn-s primary" id="btnEkle">+ Ekle</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KART 3: Kayıtlı Öğrenciler ── -->
+  <div class="folder-card">
+    <div class="folder-head" id="kayitliHead">
+      <div class="folder-title">
+        <span class="folder-icon-wrap">👥</span> Kayıtlı
+        <span class="folder-badge" id="mgrTotal"></span>
+      </div>
+      <span class="folder-arrow" id="kayitliArrow">▼</span>
+    </div>
+    <div class="folder-body" id="kayitliBody">
+      <div style="margin-top:10px">
+        <div id="listeSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+        <input class="srch" id="srch" placeholder="Ada, okul no veya sınıfa göre ara... (Türkçe destekli)">
+        <div class="slist" id="slist"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KART 4: Listeden Puan Ver ── -->
+  <div class="folder-card">
+    <div class="folder-head" id="listePuanHead">
+      <div class="folder-title"><span class="folder-icon-wrap">⭐</span> Listeden Puan Ver</div>
+      <span class="folder-arrow" id="listePuanArrow">▼</span>
+    </div>
+    <div class="folder-body" id="listePuanBody">
+      <div style="margin-top:10px">
+        <div id="srchPuanSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+        <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara...">
+        <div class="srch-puan-list" id="srchPuanList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KART 5: Dışa Aktar & Yedek ── -->
+  <div class="folder-card">
+    <div class="folder-head" id="disaAktarHead">
+      <div class="folder-title"><span class="folder-icon-wrap">📤</span> Dışa Aktar &amp; Yedek</div>
+      <span class="folder-arrow" id="disaAktarArrow">▼</span>
+    </div>
+    <div class="folder-body" id="disaAktarBody">
+      <div style="margin-top:10px">
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Dışa Aktar</div>
+        <div class="btn-row" style="margin-top:0">
+          <button class="btn-s primary" id="btnExport">CSV</button>
+          <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel</button>
+          <button class="btn-s" onclick="pdfRaporIndir()" style="color:#e53935;border-color:#e53935">📄 PDF Rapor</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn-s" onclick="qrModalAc()" style="color:#7c3aed;border-color:#7c3aed">📱 QR Aktar</button>
+          <button class="btn-s" onclick="sifreliAktar()" style="color:#b45309;border-color:#b45309">🔒 Şifreli İndir</button>
+          <button class="btn-s" onclick="document.getElementById('sifreliFileIn').click()" style="color:#b45309;border-color:#b45309">🔓 Şifreli Yükle</button>
+          <input type="file" id="sifreliFileIn" accept=".ssenc,.json" style="display:none">
+        </div>
+        <div class="divider"></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Yedekleme &amp; Geri Yükleme</div>
+        <div class="yedek-btn-row">
+          <button class="btn-s primary" id="btnYedekAl">💾 Yedek Al</button>
+          <button class="btn-s github" id="btnYedekYukle">📂 Yedeği Geri Yükle</button>
+          <input type="file" id="yedekFileIn" accept=".json" style="display:none">
+        </div>
+        <div class="yedek-info" style="margin-top:8px">Yedek; öğrenciler, geçmiş, puanlar ve seçim durumunu içerir.<br>JSON dosyası olarak kaydedilir, tekrar yüklenebilir.</div>
+        <div class="yedek-listesi" id="yedekListesi"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KART 6: Tehlikeli Alan ── -->
+  <div class="folder-card" style="border-color:var(--err)">
+    <div class="folder-head" id="tehlikeliHead" style="background:var(--errbg)">
+      <div class="folder-title" style="color:var(--err)"><span class="folder-icon-wrap" style="background:var(--errbg);border-color:var(--err)">⚠️</span> Tehlikeli Alan</div>
+      <span class="folder-arrow" id="tehlikeliArrow" style="color:var(--err)">▼</span>
+    </div>
+    <div class="folder-body" id="tehlikeliBody" style="border-top-color:var(--err)">
+      <div style="margin-top:10px">
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:10px;line-height:1.5">Bu işlem geri alınamaz. Tüm öğrenci, puan ve geçmiş verileri silinir.</div>
+        <button class="btn-s danger" id="btnSilHep" style="width:100%;justify-content:center">🗑 Tüm Veriyi Sil</button>
+      </div>
+    </div>
+  </div>
+
 </div><!-- end sayfaVeri -->
 
 </div><!-- end .page -->
@@ -1185,7 +1248,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.03</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.04</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1232,7 +1295,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 2.0.03</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 2.0.04</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1467,6 +1530,15 @@ var depo = (function(){
   };
 })();
 
+// Profil-aware depo: tüm profil-özel anahtarlar için prefix ekler
+// ogr (öğrenciler) ortak kalır, diğer her şey profile özel
+var pdepo = {
+  _k: function(k){ return _aktifProfilId + '__' + k; },
+  al:  function(k){ return depo.al(this._k(k)); },
+  yaz: function(k,v){ depo.yaz(this._k(k), v); },
+  sil: function(k){ depo.sil(this._k(k)); }
+};
+
 var ogr=[], seciliSinif=null, mod='unique', kullanilan={}, gecmis=[], seciliyor=false, animAcik=true, animTip='karistir';
 var _secBtnRect=null, _secScrollBefore=0;
 var modalSatirlar=[], uyariTimer=null;
@@ -1525,39 +1597,39 @@ function kaydet(){
   Object.keys(kullanilan).forEach(function(k){ u[k]=Array.from(kullanilan[k]); });
   var yok={};
   Object.keys(yoklama).forEach(function(k){ yok[k]=Array.from(yoklama[k]); });
-  depo.yaz('ogr',JSON.stringify(ogr));
-  depo.yaz('gec',JSON.stringify(gecmis));
-  depo.yaz('kul',JSON.stringify(u));
-  depo.yaz('puan',JSON.stringify(puanlar));
-  depo.yaz('yoklama',JSON.stringify(yok));
-  depo.yaz('aktifKat',aktifKat);
+  depo.yaz('ogr',JSON.stringify(ogr));          // öğrenciler ortak
+  pdepo.yaz('gec',JSON.stringify(gecmis));
+  pdepo.yaz('kul',JSON.stringify(u));
+  pdepo.yaz('puan',JSON.stringify(puanlar));
+  pdepo.yaz('yoklama',JSON.stringify(yok));
+  ppdepo.yaz('aktifKat',aktifKat);
   // puan geçmişi — son 500 kayıt
-  depo.yaz('puanGecmis',JSON.stringify(puanGecmis.slice(0,500)));
-  depo.yaz('mod',mod);
-  if(seciliSinif) depo.yaz('seciliSinif',seciliSinif);
-  depo.yaz('seciliSiniflar',JSON.stringify(seciliSiniflar));
-  depo.yaz('cokluMod',cokluMod?'1':'0');
-  depo.yaz('gruplar',JSON.stringify(gruplar));
-  depo.yaz('grupGecmis',JSON.stringify(grupGecmis.slice(0,50)));
-  depo.yaz('timerProfiller',JSON.stringify(timerProfiller));
-  depo.yaz('renkTema',aktifRenkTema);
+  pdepo.yaz('puanGecmis',JSON.stringify(puanGecmis.slice(0,500)));
+  ppdepo.yaz('mod',mod);
+  if(seciliSinif) ppdepo.yaz('seciliSinif',seciliSinif);
+  pdepo.yaz('seciliSiniflar',JSON.stringify(seciliSiniflar));
+  pdepo.yaz('cokluMod',cokluMod?'1':'0');
+  pdepo.yaz('gruplar',JSON.stringify(gruplar));
+  pdepo.yaz('grupGecmis',JSON.stringify(grupGecmis.slice(0,50)));
+  pdepo.yaz('timerProfiller',JSON.stringify(timerProfiller));
+  ppdepo.yaz('renkTema',aktifRenkTema);
 }
 function yukle(){
   try{
     var d=depo.al('ogr'); if(d){ var p=JSON.parse(d); if(Array.isArray(p)&&p.length) ogr=p; }
-    var h=depo.al('gec'); if(h){ var ph=JSON.parse(h); if(Array.isArray(ph)) gecmis=ph; }
-    var u=depo.al('kul'); if(u){ var pu=JSON.parse(u); Object.keys(pu).forEach(function(k){ kullanilan[k]=new Set(pu[k]); }); }
-    var pn=depo.al('puan'); if(pn){ var pp=JSON.parse(pn); if(typeof pp==='object'&&pp!==null) puanlar=pp; }
-    var yk=depo.al('yoklama'); if(yk){ var py=JSON.parse(yk); Object.keys(py).forEach(function(k){ yoklama[k]=new Set(py[k]); }); }
-    var ak=depo.al('aktifKat'); if(ak) aktifKat=ak;
-    var sm=depo.al('mod'); if(sm) mod=sm;
-    var ss=depo.al('seciliSinif'); if(ss) seciliSinif=ss;
-    var pg=depo.al('puanGecmis'); if(pg){ var ppg=JSON.parse(pg); if(Array.isArray(ppg)) puanGecmis=ppg; }
-    var ssl=depo.al('seciliSiniflar'); if(ssl){ var pssl=JSON.parse(ssl); if(Array.isArray(pssl)) seciliSiniflar=pssl; }
-    var cm=depo.al('cokluMod'); if(cm) cokluMod=(cm==='1');
-    var gr=depo.al('gruplar'); if(gr){ var pgr=JSON.parse(gr); if(typeof pgr==='object') gruplar=pgr; }
-    var gg=depo.al('grupGecmis'); if(gg){ var pgg=JSON.parse(gg); if(Array.isArray(pgg)) grupGecmis=pgg; }
-    var tp=depo.al('timerProfiller'); if(tp){ var ptp=JSON.parse(tp); if(Array.isArray(ptp)&&ptp.length) timerProfiller=ptp; }
+    var h=pdepo.al('gec'); if(h){ var ph=JSON.parse(h); if(Array.isArray(ph)) gecmis=ph; }
+    var u=pdepo.al('kul'); if(u){ var pu=JSON.parse(u); Object.keys(pu).forEach(function(k){ kullanilan[k]=new Set(pu[k]); }); }
+    var pn=pdepo.al('puan'); if(pn){ var pp=JSON.parse(pn); if(typeof pp==='object'&&pp!==null) puanlar=pp; }
+    var yk=pdepo.al('yoklama'); if(yk){ var py=JSON.parse(yk); Object.keys(py).forEach(function(k){ yoklama[k]=new Set(py[k]); }); }
+    var ak=pdepo.al('aktifKat'); if(ak) aktifKat=ak;
+    var sm=pdepo.al('mod'); if(sm) mod=sm;
+    var ss=pdepo.al('seciliSinif'); if(ss) seciliSinif=ss;
+    var pg=pdepo.al('puanGecmis'); if(pg){ var ppg=JSON.parse(pg); if(Array.isArray(ppg)) puanGecmis=ppg; }
+    var ssl=pdepo.al('seciliSiniflar'); if(ssl){ var pssl=JSON.parse(ssl); if(Array.isArray(pssl)) seciliSiniflar=pssl; }
+    var cm=pdepo.al('cokluMod'); if(cm) cokluMod=(cm==='1');
+    var gr=pdepo.al('gruplar'); if(gr){ var pgr=JSON.parse(gr); if(typeof pgr==='object') gruplar=pgr; }
+    var gg=pdepo.al('grupGecmis'); if(gg){ var pgg=JSON.parse(gg); if(Array.isArray(pgg)) grupGecmis=pgg; }
+    var tp=pdepo.al('timerProfiller'); if(tp){ var ptp=JSON.parse(tp); if(Array.isArray(ptp)&&ptp.length) timerProfiller=ptp; }
   }catch(e){}
   return ogr.length>0;
 }
@@ -1662,7 +1734,7 @@ function temauygula(t){
   if(t==='gece') document.body.classList.add('gece');
   var btn=document.getElementById('temaBtn');
   if(btn) btn.textContent=t==='gece'?'🌙':'☀️';
-  depo.yaz('tema',t);
+  pdepo.yaz('tema',t);
 }
 
 /* ===================== ANİMASYON ===================== */
@@ -1673,12 +1745,12 @@ function animAyarla(ac){
   document.getElementById('togTrack').className='tog-track'+(ac?'':' off');
   document.getElementById('togThumb').className='tog-thumb'+(ac?'':' off');
   document.getElementById('animOpts').style.display=ac?'flex':'none';
-  depo.yaz('anim',ac?'1':'0');
+  pdepo.yaz('anim',ac?'1':'0');
 }
 function animTipSec(tip){
   animTip=tip;
   document.querySelectorAll('.anim-opt').forEach(function(el){ el.classList.toggle('on', el.dataset.anim===tip); });
-  depo.yaz('animTip',tip);
+  pdepo.yaz('animTip',tip);
 }
 function konfetiFirlat(){
   var renkler=['#ff6b6b','#ffd93d','#6bcb77','#4da6ff','#ff9ff3','#ff9f43'];
@@ -1847,7 +1919,7 @@ function siniflariOlustur(){
 }
 function sinifSec(c){
   seciliSinif=c;
-  depo.yaz('seciliSinif',c||'');
+  pdepo.yaz('seciliSinif',c||'');
   siniflariOlustur(); bosGoster(); ilerlemeGuncelle(); gecmisiGoster(); kalanlariGoster(); puanOzetGoster(); yoklamaGoster();
   document.getElementById('histLbl').innerHTML=c?'&#8212; '+c:'';
   if(mevcutSayfa==='gecmis') guncelleSiralamaUI();
@@ -1864,7 +1936,7 @@ function modAyarla(m){
   document.getElementById('mUnique').classList.toggle('on',m==='unique');
   document.getElementById('progRow').style.display=m==='unique'?'flex':'none';
   ilerlemeGuncelle();
-  depo.yaz('mod',m);
+  pdepo.yaz('mod',m);
 }
 function sinifOgr(){
   var yok=yoklama[seciliSinif]||new Set();
@@ -2045,7 +2117,7 @@ function katButonlariGoster(){
   wrap.querySelectorAll('.kat-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
       aktifKat=this.dataset.kat;
-      depo.yaz('aktifKat',aktifKat);
+      pdepo.yaz('aktifKat',aktifKat);
       katButonlariGoster();
       rPuanGuncelle();
     });
@@ -2321,7 +2393,7 @@ function cokluSinifToggle(sinif){
   // Ana seciliSinif = son seçilen veya ilk
   if(seciliSiniflar.length>0){
     seciliSinif = seciliSiniflar[seciliSiniflar.length-1];
-    depo.yaz('seciliSinif', seciliSinif);
+    pdepo.yaz('seciliSinif', seciliSinif);
   }
   siniflariOlustur();
   ilerlemeGuncelle();
@@ -2622,34 +2694,41 @@ function sec(){
   sonucGoster(secilen);
   if(!animAcik){bitir(secilen);return;}
   var el=document.getElementById('rName');
+  var projAcik = document.getElementById('projOverlay').classList.contains('acik');
+  var elProj = projAcik ? document.getElementById('projAd') : null;
+
+  // Her iki elementte de aynı text/style değişikliğini uygula
+  function animSet(prop, val){ el.style[prop]=val; if(elProj) elProj.style[prop]=val; }
+  function animText(txt){ el.textContent=txt; if(elProj) elProj.textContent=txt; }
+
   var isimler=havuz.map(function(s){return s.ad;});
 
   if(animTip==='karistir'){
     var adim=0,top2=14;
     (function tik(){
-      el.style.opacity='0.1';
-      el.textContent=adim<top2-1?isimler[Math.floor(Math.random()*isimler.length)]:secilen.ad;
-      setTimeout(function(){ el.style.opacity='1'; adim++; if(adim<top2) setTimeout(tik,30+adim*9); else bitir(secilen); },40);
+      animSet('opacity','0.1');
+      animText(adim<top2-1?isimler[Math.floor(Math.random()*isimler.length)]:secilen.ad);
+      setTimeout(function(){ animSet('opacity','1'); adim++; if(adim<top2) setTimeout(tik,30+adim*9); else bitir(secilen); },40);
     })();
   } else if(animTip==='firlatma'){
-    el.style.transition='none'; el.style.transform='translateY(-60px)'; el.style.opacity='0'; el.textContent=secilen.ad;
-    setTimeout(function(){ el.style.transition='transform .5s cubic-bezier(.17,.67,.35,1.4), opacity .3s'; el.style.transform='translateY(0)'; el.style.opacity='1'; setTimeout(function(){el.style.transition='';bitir(secilen);},520); },50);
+    animSet('transition','none'); animSet('transform','translateY(-60px)'); animSet('opacity','0'); animText(secilen.ad);
+    setTimeout(function(){ animSet('transition','transform .5s cubic-bezier(.17,.67,.35,1.4), opacity .3s'); animSet('transform','translateY(0)'); animSet('opacity','1'); setTimeout(function(){ animSet('transition',''); bitir(secilen); },520); },50);
   } else if(animTip==='konfeti'){
-    el.style.opacity='0'; el.textContent=secilen.ad;
-    setTimeout(function(){ el.style.transition='opacity .4s'; el.style.opacity='1'; konfetiFirlat(); setTimeout(function(){el.style.transition='';bitir(secilen);},500); },100);
+    animSet('opacity','0'); animText(secilen.ad);
+    setTimeout(function(){ animSet('transition','opacity .4s'); animSet('opacity','1'); konfetiFirlat(); setTimeout(function(){ animSet('transition',''); bitir(secilen); },500); },100);
   } else if(animTip==='zoom'){
-    el.style.transition='none'; el.style.transform='scale(0.1)'; el.style.opacity='0'; el.textContent=secilen.ad;
-    setTimeout(function(){ el.style.transition='transform .5s cubic-bezier(.17,.67,.35,1.3), opacity .3s'; el.style.transform='scale(1)'; el.style.opacity='1'; setTimeout(function(){ yildizFirlat(el); el.style.transition=''; bitir(secilen); },520); },50);
+    animSet('transition','none'); animSet('transform','scale(0.1)'); animSet('opacity','0'); animText(secilen.ad);
+    setTimeout(function(){ animSet('transition','transform .5s cubic-bezier(.17,.67,.35,1.3), opacity .3s'); animSet('transform','scale(1)'); animSet('opacity','1'); setTimeout(function(){ yildizFirlat(el); animSet('transition',''); bitir(secilen); },520); },50);
   } else if(animTip==='salla'){
-    el.textContent=secilen.ad; el.style.display='inline-block';
+    animText(secilen.ad); animSet('display','inline-block');
     var sallaAdim=0, sallaAclar=[0,-15,15,-12,12,-8,8,-4,4,0];
-    (function sallaFrame(){ if(sallaAdim>=sallaAclar.length){el.style.transform='';bitir(secilen);return;} el.style.transform='rotate('+sallaAclar[sallaAdim]+'deg)'; sallaAdim++; setTimeout(sallaFrame,60); })();
+    (function sallaFrame(){ if(sallaAdim>=sallaAclar.length){ animSet('transform',''); bitir(secilen); return; } animSet('transform','rotate('+sallaAclar[sallaAdim]+'deg)'); sallaAdim++; setTimeout(sallaFrame,60); })();
   } else if(animTip==='yanip'){
-    el.textContent=secilen.ad;
+    animText(secilen.ad);
     var yanipSayac=0, yanipToplam=8, renkler=['var(--ac)','var(--ok)','var(--err)','#ffd93d','#ff9ff3'];
-    (function yanipFrame(){ if(yanipSayac>=yanipToplam){el.style.color='';bitir(secilen);return;} el.style.color=renkler[yanipSayac%renkler.length]; el.style.opacity=yanipSayac%2===0?'1':'0.2'; yanipSayac++; setTimeout(yanipFrame,80); })();
+    (function yanipFrame(){ if(yanipSayac>=yanipToplam){ animSet('color',''); animSet('opacity','1'); bitir(secilen); return; } animSet('color',renkler[yanipSayac%renkler.length]); animSet('opacity',yanipSayac%2===0?'1':'0.2'); yanipSayac++; setTimeout(yanipFrame,80); })();
   } else if(animTip==='balon'){
-    el.style.opacity='0'; el.textContent=secilen.ad;
+    animSet('opacity','0'); animText(secilen.ad);
     ['🎈','🎈','🎈','🎈','🎈','🎈'].forEach(function(b,i){
       setTimeout(function(){
         var bal=document.createElement('div'); bal.textContent=b;
@@ -2660,11 +2739,11 @@ function sec(){
         setTimeout(function(){if(bal.parentNode)bal.parentNode.removeChild(bal);},2000);
       },i*120);
     });
-    setTimeout(function(){ el.style.transition='opacity .4s'; el.style.opacity='1'; setTimeout(function(){el.style.transition='';bitir(secilen);},500); },200);
+    setTimeout(function(){ animSet('transition','opacity .4s'); animSet('opacity','1'); setTimeout(function(){ animSet('transition',''); bitir(secilen); },500); },200);
   } else if(animTip==='gomlek'){
-    el.textContent=secilen.ad;
+    animText(secilen.ad);
     var gomlekRenkler=['#ff6b6b','#ff9f43','#ffd93d','#6bcb77','#4da6ff','#a55eea'], gomlekSayac=0;
-    (function gomlekFrame(){ if(gomlekSayac>=12){el.style.color='';el.style.transform='';bitir(secilen);return;} el.style.color=gomlekRenkler[gomlekSayac%gomlekRenkler.length]; el.style.transform='scale('+(1+Math.sin(gomlekSayac*0.5)*0.15)+')'; gomlekSayac++; setTimeout(gomlekFrame,60); })();
+    (function gomlekFrame(){ if(gomlekSayac>=12){ animSet('color',''); animSet('transform',''); bitir(secilen); return; } animSet('color',gomlekRenkler[gomlekSayac%gomlekRenkler.length]); animSet('transform','scale('+(1+Math.sin(gomlekSayac*0.5)*0.15)+')'); gomlekSayac++; setTimeout(gomlekFrame,60); })();
   }
 }
 
@@ -2687,7 +2766,7 @@ function bitir(s){
   rPuanGuncelle();
   document.getElementById('rPuanSection').style.display='block';
   // kaydedilen tercihe göre aç/kapa (varsayılan: kapalı)
-  var puanAcik = depo.al('puanDetay')==='1';
+  var puanAcik = pdepo.al('puanDetay')==='1';
   var body=document.getElementById('rPuanBody');
   var toggleRow=document.getElementById('rPuanToggleRow');
   var arrow=document.getElementById('rPuanArrow');
@@ -2824,7 +2903,7 @@ function listeSinifSec(sf){
 function listeyiGoster(){
   var q=(document.getElementById('srch').value||'');
   var liste=document.getElementById('slist');
-  document.getElementById('mgrTotal').textContent='('+ogr.length+')';
+  document.getElementById('mgrTotal').textContent=ogr.length;
   listeSinifChipsGoster();
   if(!ogr.length){liste.innerHTML='<div class="tbl-empty">Kayıtlı yok</div>';return;}
   var f=ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
@@ -3394,7 +3473,7 @@ function bildir(msg){
 /* ===================== OLAYLAR ===================== */
 // Tek tema butonu
 document.getElementById('temaBtn').addEventListener('click',function(){
-  var mevcutTema=depo.al('tema')||'gece';
+  var mevcutTema=pdepo.al('tema')||'gece';
   var yeniTema=mevcutTema==='gece'?'acik':'gece';
   temauygula(yeniTema);
 });
@@ -3406,7 +3485,7 @@ document.getElementById('rPuanToggleRow').addEventListener('click',function(){
   var isOpen=body.classList.toggle('open');
   arrow.classList.toggle('open',isOpen);
   this.classList.toggle('open',isOpen);
-  depo.yaz('puanDetay',isOpen?'1':'0');
+  pdepo.yaz('puanDetay',isOpen?'1':'0');
 });
 
 // Animasyon
@@ -3584,10 +3663,10 @@ document.getElementById('yenilikOverlay').addEventListener('click', function(e){
 /* ===================== BAŞLANGIÇ ===================== */
 // Profil sistemi — depo profil-aware, sadece yükle
 profilListesiYukle();
-temauygula(depo.al('tema')||'gece');
-var kayitliAnimTip=depo.al('animTip');
+temauygula(pdepo.al('tema')||'gece');
+var kayitliAnimTip=pdepo.al('animTip');
 if(kayitliAnimTip) animTipSec(kayitliAnimTip);
-if(depo.al('anim')==='0') animAyarla(false);
+if(pdepo.al('anim')==='0') animAyarla(false);
 if(yukle()){
   siniflariOlustur();
   baslikGuncelle();
@@ -3615,7 +3694,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.03';
+var YENILIK_VER = 'Pro2.0.04';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -3920,7 +3999,7 @@ function renkTemaUygula(temaId){
   RENKTEMALAR.forEach(function(t){ document.body.classList.remove('tema-'+t.id); });
   if(temaId && temaId!=='indigo') document.body.classList.add('tema-'+temaId);
   aktifRenkTema=temaId||'indigo';
-  depo.yaz('renkTema',aktifRenkTema);
+  pdepo.yaz('renkTema',aktifRenkTema);
   renkTemaButonlariGuncelle();
 }
 
@@ -3959,7 +4038,7 @@ function fotografYukle(idx, callback){
     var r=new FileReader();
     r.onload=function(e){
       fotograflar[idx]=e.target.result;
-      depo.yaz('fotograflar',JSON.stringify(fotograflar));
+      pdepo.yaz('fotograflar',JSON.stringify(fotograflar));
       if(callback) callback(e.target.result);
       bildir('📸 Fotoğraf yüklendi');
     };
@@ -3972,12 +4051,12 @@ function fotografYukle(idx, callback){
 
 function fotografSil(idx){
   delete fotograflar[idx];
-  depo.yaz('fotograflar',JSON.stringify(fotograflar));
+  pdepo.yaz('fotograflar',JSON.stringify(fotograflar));
 }
 
 function fotografyukle(){
   try{
-    var f=depo.al('fotograflar');
+    var f=pdepo.al('fotograflar');
     if(f){ var pf=JSON.parse(f); if(typeof pf==='object') fotograflar=pf; }
   }catch(e){}
 }
@@ -4058,11 +4137,11 @@ function uygulamaYenidenBaslat(){
     siniflariOlustur(); baslikGuncelle(); bosGoster();
   }
   fotografyukle();
-  var rt=depo.al('renkTema')||'indigo';
+  var rt=pdepo.al('renkTema')||'indigo';
   aktifRenkTema=rt; renkTemaUygula(rt);
-  temauygula(depo.al('tema')||'gece');
-  var kat=depo.al('animTip'); if(kat) animTipSec(kat);
-  if(depo.al('anim')==='0') animAyarla(false);
+  temauygula(pdepo.al('tema')||'gece');
+  var kat=pdepo.al('animTip'); if(kat) animTipSec(kat);
+  if(pdepo.al('anim')==='0') animAyarla(false);
   timerProfillerGoster(); puanGecmisGoster(); profilModalGuncelle();
   bildir('Profil: '+aktifProfilAdBul());
 }
@@ -4173,7 +4252,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 3; // başlangıç build numarası
+var APP_VER_BUILD = 4; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
@@ -4201,7 +4280,7 @@ function profilKeyOlustur(profilId, dataKey){
   return profilId+'_'+dataKey;
 }
 /* ===================== FOLDER TOGGLE ===================== */
-var folderIds = ['Secim','Anim','Sinif','Hizli','Geri'];
+var folderIds = ['Secim','Anim','Sinif','Hizli','Geri','VeriYukle','OgrenciEkle','Kayitli','ListePuan','DisaAktar','Tehlikeli'];
 function folderToggle(id){
   var body = document.getElementById('folder'+id+'Body');
   var arrow = document.getElementById('folder'+id+'Arrow');
@@ -4276,7 +4355,7 @@ document.getElementById('siralamaHead').addEventListener('click',function(){ acc
 document.getElementById('puanGecmisHead').addEventListener('click',function(){ accToggle('puanGecmisBody','puanGecmisArrow'); });
 
 // Renk teması — fonksiyon tanımlandıktan sonra çağrılır
-renkTemaUygula(depo.al('renkTema') || aktifRenkTema);
+renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
 
 
 
