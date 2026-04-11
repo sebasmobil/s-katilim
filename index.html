@@ -42,7 +42,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
-<title>S-Seçim Pro 2.0.05</title>
+<!-- iOS "Ana Ekrana Ekle" desteği -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="S-Seçim">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4f6ef7">
+<title>S-Seçim Pro 2.0.06</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -639,7 +645,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.04</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.06</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
     </div>
     <div class="hdr-right">
@@ -1099,7 +1105,7 @@ body{padding:0 0 72px}
         <div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t2);margin-bottom:8px">Dışa Aktar</div>
         <div class="btn-row" style="margin-top:0">
           <button class="btn-s primary" id="btnExport">CSV</button>
-          <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel</button>
+          <button class="btn-s" id="btnExportXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel (CSV)</button>
           <button class="btn-s" onclick="pdfRaporIndir()" style="color:#e53935;border-color:#e53935">📄 PDF Rapor</button>
         </div>
         <div class="btn-row">
@@ -1248,7 +1254,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.04</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.06</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1295,7 +1301,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 2.0.04</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 2.0.06</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -3352,17 +3358,69 @@ function pdfRaporIndir(){
     html+='</tbody></table>';
   });
 
-  html+='<div class="meta no-print" style="margin-top:30px;text-align:center">S-Secim Pro &copy;sebasmobil &mdash; AGPL V3.0 2026</div>';
+  html+='<div class="meta" style="margin-top:30px;text-align:center">S-Secim Pro &copy;sebasmobil &mdash; AGPL V3.0 2026</div>';
   html+='</body></html>';
 
-  // Yeni pencerede aç ve yazdır
-  var win=window.open('','_blank','width=900,height=700');
-  if(!win){ bildir('Popup engellendi — tarayıcı ayarlarını kontrol edin'); return; }
-  win.document.write(html);
-  win.document.close();
-  win.focus();
-  setTimeout(function(){ win.print(); },600);
-  bildir('📄 PDF rapor hazırlanıyor...');
+  // Blob URL olustur
+  var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  var blobUrl = URL.createObjectURL(blob);
+  var dosyaAd = 'S-Secim-Rapor-' + (sinifFiltre||'tum').replace(/ /g,'-') + '-' + tarih.replace(/[.]/g,'-') + '.html';
+
+  // Eski modali kaldir
+  var eskiOv = document.getElementById('pdfOnizlemeOverlay');
+  if(eskiOv) eskiOv.parentNode.removeChild(eskiOv);
+
+  // Overlay
+  var ov = document.createElement('div');
+  ov.id = 'pdfOnizlemeOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9900;background:rgba(0,0,0,.75);display:flex;flex-direction:column;align-items:stretch';
+
+  // Ust bar
+  var bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;align-items:center;justify-content:space-between;background:var(--bg);padding:10px 16px;gap:12px;border-bottom:1.5px solid var(--bd);flex-shrink:0';
+
+  var baslik = document.createElement('span');
+  baslik.style.cssText = 'font-weight:900;font-size:15px;color:var(--t1)';
+  baslik.textContent = 'PDF Rapor Onizleme';
+
+  var btnGrup = document.createElement('div');
+  btnGrup.style.cssText = 'display:flex;gap:8px;align-items:center';
+
+  // Indir linki
+  var indirA = document.createElement('a');
+  indirA.href = blobUrl;
+  indirA.setAttribute('download', dosyaAd);
+  indirA.style.textDecoration = 'none';
+  var indirBtn = document.createElement('button');
+  indirBtn.style.cssText = 'background:#e53935;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif';
+  indirBtn.textContent = 'Indir (.html)';
+  indirA.appendChild(indirBtn);
+
+  // Kapat butonu
+  var kapatBtn = document.createElement('button');
+  kapatBtn.style.cssText = 'border:none;background:var(--bg3);color:var(--t1);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:20px;line-height:34px;flex-shrink:0;padding:0';
+  kapatBtn.textContent = 'X';
+  kapatBtn.onclick = function(){ pdfOnizlemeKapat(); };
+
+  btnGrup.appendChild(indirA);
+  btnGrup.appendChild(kapatBtn);
+  bar.appendChild(baslik);
+  bar.appendChild(btnGrup);
+
+  // iframe - blob URL icin sandbox olmadan
+  var frame = document.createElement('iframe');
+  frame.style.cssText = 'flex:1;border:none;background:#fff;width:100%';
+  frame.src = blobUrl;
+
+  ov.appendChild(bar);
+  ov.appendChild(frame);
+  document.body.appendChild(ov);
+  bildir('PDF rapor hazir');
+}
+
+function pdfOnizlemeKapat(){
+  var ov = document.getElementById('pdfOnizlemeOverlay');
+  if(ov){ ov.parentNode.removeChild(ov); }
 }
 
 function csvIndir(){
@@ -3382,22 +3440,21 @@ function csvIndir(){
 }
 
 function xlsxIndir(){
-  if(!ogr.length){bildir('Öğrenci yok');return;}
+  if(!ogr.length){bildir('Ogrenci yok');return;}
   var sirali=ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};});
   sirali.sort(function(a,b){
     var sc=a.sinif.localeCompare(b.sinif,'tr');
     if(sc!==0) return sc;
     return a.ad.localeCompare(b.ad,'tr');
   });
-  // Başlık: temel + her kategori için + ve −
-  var baslik=['Sınıf','Okul No','Ad Soyad','Seç Sayısı'];
-  PUAN_KATS.forEach(function(k){ baslik.push(k.emoji+' '+k.ad+' +'); baslik.push(k.emoji+' '+k.ad+' −'); });
-  baslik.push('Toplam +'); baslik.push('Toplam −'); baslik.push('Fark');
+  var baslik=['Sinif','Okul No','Ad Soyad','Sec Sayisi'];
+  PUAN_KATS.forEach(function(k){ baslik.push(k.ad+' +'); baslik.push(k.ad+' -'); });
+  baslik.push('Toplam +'); baslik.push('Toplam -'); baslik.push('Fark');
   var satirlar=[baslik];
   sirali.forEach(function(s){
     var pt=puanAlToplam(s._i);
     var secSayisi=gecmis.filter(function(g){return g._i===s._i;}).length;
-    var satir=[s.sinif,s.numara||'',s.ad,secSayisi];
+    var satir=[s.sinif, s.numara||'', s.ad, secSayisi];
     PUAN_KATS.forEach(function(k){
       var p=puanAl(s._i,k.id);
       satir.push(p.plus); satir.push(p.minus);
@@ -3405,43 +3462,28 @@ function xlsxIndir(){
     satir.push(pt.plus); satir.push(pt.minus); satir.push(pt.plus-pt.minus);
     satirlar.push(satir);
   });
-  // XML tabanlı Excel (XLSX yerine XLS/XML — ek kütüphane gerektirmez)
-  var xml='<?xml version="1.0" encoding="UTF-8"?>'
-    +'<?mso-application progid="Excel.Sheet"?>'
-    +'<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" '
-    +'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
-    +'<Styles>'
-    +'<Style ss:ID="Bas"><Font ss:Bold="1"/><Interior ss:Color="#1a6fd4" ss:Pattern="Solid"/><Font ss:Color="#FFFFFF" ss:Bold="1"/></Style>'
-    +'<Style ss:ID="Plus"><Font ss:Color="#1a9e6a" ss:Bold="1"/></Style>'
-    +'<Style ss:ID="Minus"><Font ss:Color="#c0392b" ss:Bold="1"/></Style>'
-    +'<Style ss:ID="FarkPos"><Font ss:Color="#1a9e6a" ss:Bold="1"/></Style>'
-    +'<Style ss:ID="FarkNeg"><Font ss:Color="#c0392b" ss:Bold="1"/></Style>'
-    +'</Styles>'
-    +'<Worksheet ss:Name="Puanlar">'
-    +'<Table>';
-  satirlar.forEach(function(r,ri){
-    xml+='<Row>';
-    r.forEach(function(c,ci){
-      var stl='';
-      if(ri===0) stl=' ss:StyleID="Bas"';
-      else if(ci===3) stl=' ss:StyleID="Plus"';
-      else if(ci===4) stl=' ss:StyleID="Minus"';
-      else if(ci===5){ var v=parseInt(c)||0; stl=' ss:StyleID="'+(v>0?'FarkPos':v<0?'FarkNeg':'')+'"'; }
-      var tip=(ri>0&&(ci===3||ci===4||ci===5))?'Number':'String';
-      var val=(c+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-      xml+='<Cell'+stl+'><Data ss:Type="'+tip+'">'+val+'</Data></Cell>';
-    });
-    xml+='</Row>';
+  var csv='';
+  satirlar.forEach(function(r){
+    csv+=r.map(function(c){
+      var s=(c===null||c===undefined)?'':String(c);
+      if(s.indexOf(',')!==-1||s.indexOf('"')!==-1||s.indexOf('\r')!==-1||s.indexOf('\n')!==-1){
+        s='"'+s.replace(/"/g,'""')+'"';
+      }
+      return s;
+    }).join(',')+'\r\n';
   });
-  xml+='</Table></Worksheet></Workbook>';
   try{
-    var blob=new Blob([xml],{type:'application/vnd.ms-excel;charset=utf-8'});
+    var blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
     var url=URL.createObjectURL(blob);
-    var a=document.createElement('a'); a.href=url; a.download='ogrenci-puanlar.xls'; a.style.display='none';
-    document.body.appendChild(a); a.click();
-    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},100);
-    bildir('📊 Excel indirildi');
-  }catch(e){bildir('İndirme desteklenmiyor');}
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='ogrenci-puanlar.csv';
+    a.style.display='none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+    bildir('Excel/CSV indirildi');
+  }catch(e){bildir('Indirme desteklenmiyor');}
 }
 
 /* ===================== YARDIMCILAR ===================== */
@@ -3694,7 +3736,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.04';
+var YENILIK_VER = 'Pro2.0.06';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4252,7 +4294,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 5; // başlangıç build numarası
+var APP_VER_BUILD = 6; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
