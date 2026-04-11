@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Seçim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Seçim Pro 2.0.08</title>
+<title>S-Seçim Pro 2.0.10</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -646,7 +646,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.08</span></div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.10</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
     </div>
     <div class="hdr-right">
@@ -1256,7 +1256,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.08</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.10</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1303,7 +1303,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 2.0.08</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 2.0.10</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1558,22 +1558,31 @@ function _kilitHash(s){
 var _KILIT_KEY       = 'adminKilit';      // localStorage: hashed password
 var _KILIT_SORU_KEY  = 'adminKilitSoru';  // localStorage: secret question (plaintext)
 var _KILIT_CEVAP_KEY = 'adminKilitCevap'; // localStorage: hashed answer
+var _KILIT_SURE_KEY  = 'adminKilitSure';  // localStorage: auto-lock minutes
 // !! Ana sifre — bu satiri degistirerek kendi ana sifrenizi belirleyin !!
 var _MASTER_HASH = _kilitHash('sebasmobil2026'); // varsayilan ana sifre
 var _KILITLI = true;                  // başlangıçta kilitli
 var _kilitAcikTimer = null;           // otomatik kilit zamanlayıcı
-var _KILIT_SURE = 30 * 60 * 1000;    // 30 dakika sonra otomatik kilitle
+// Otomatik kilit süresi localStorage'dan okunur (varsayılan: 30 dakika)
 var _kilitModalMod = 'giris';         // 'giris' | 'ayarlar'
 
 function kilitDurumOku(){
   var kayit = depo.al(_KILIT_KEY);
   if(!kayit){
-    // Hiç şifre tanımlı değil → kilitsiz mod
+    // Sifre henuz kurulmamis — ikonu goster, kurulum modunu ac
     _KILITLI = false;
+    _kilitUIGuncelle();
+    // Ilk acilista kurulum sihirbazini goster
+    setTimeout(function(){ kilitKurulumAc(); }, 800);
   } else {
     _KILITLI = true;
+    _kilitUIGuncelle();
   }
-  _kilitUIGuncelle();
+}
+
+function kilitKurulumAc(){
+  _kilitModalMod = 'ayarlar';
+  _kilitModalGoster(null);
 }
 
 function _kilitUIGuncelle(){
@@ -1582,8 +1591,18 @@ function _kilitUIGuncelle(){
   var kayit = depo.al(_KILIT_KEY);
   if(!btn) return;
   if(!kayit){
-    btn.style.display = 'none';
-    if(banner) banner.style.display = 'none';
+    // Sifre yok — ikonu goster ki kullanici kurulum yapabilsin
+    btn.textContent = '⚙️';
+    btn.title = 'Kilit kurulmamis — sifre belirlemek icin tikla';
+    btn.style.display = '';
+    btn.style.borderColor = 'var(--err)';
+    if(banner){
+      banner.style.display = 'block';
+      banner.style.background = '#d97706';
+      banner.style.cursor = 'pointer';
+      banner.onclick = function(){ kilitKurulumAc(); };
+      banner.textContent = '⚙️ KILIT KURULU DEGIL — Ogrenciler puan degistirebilir! Sifre kurmak icin tiklayin.';
+    }
   } else if(_KILITLI){
     btn.textContent = '🔒';
     btn.title = 'Kilitli — şifre ile aç';
@@ -1634,46 +1653,58 @@ function kilitModalAc(){
 
 function _kilitModalGoster(callback){
   _kilitOnayCallback = callback;
-  var ov = document.getElementById('kilitModalOverlay');
-  var inp = document.getElementById('kilitSifreInp');
-  var hata = document.getElementById('kilitHata');
-  var baslik = document.getElementById('kilitModalBaslik');
-  var alt = document.getElementById('kilitModalAlt');
-  var emoji = document.getElementById('kilitModalEmoji');
-  var ayarWrap = document.getElementById('kilitAyarlarWrap');
+  var ov      = document.getElementById('kilitModalOverlay');
+  var bloc    = document.getElementById('kilitSifreGirisBlok');
+  var inp     = document.getElementById('kilitSifreInp');
+  var hata    = document.getElementById('kilitHata');
+  var baslik  = document.getElementById('kilitModalBaslik');
+  var alt     = document.getElementById('kilitModalAlt');
+  var emoji   = document.getElementById('kilitModalEmoji');
+  var ayarWrap= document.getElementById('kilitAyarlarWrap');
   var onayBtn = document.getElementById('kilitOnayBtn');
+  var soruInp = document.getElementById('kilitSoruInp');
 
-  hata.textContent = '';
-  inp.value = '';
+  if(hata) hata.textContent = '';
+  if(inp)  inp.value = '';
 
-  if(_kilitModalMod === 'ayarlar' && !_KILITLI){
-    emoji.textContent = '⚙️';
-    baslik.textContent = 'Kilit Ayarları';
-    alt.textContent = 'Şifreyi değiştirebilir veya kilidi kaldırabilirsiniz.';
-    inp.style.display = 'none';
-    onayBtn.style.display = 'none';
-    document.getElementById('kilitSifreGirisBlok').style.display = 'none';
+  var sifreVar = !!depo.al(_KILIT_KEY);
+
+  if(_kilitModalMod === 'ayarlar'){
+    // Ayarlar / kurulum modu
+    emoji.textContent  = sifreVar ? '⚙️' : '🔐';
+    baslik.textContent = sifreVar ? 'Kilit Ayarlari' : 'Sifre Kur';
+    alt.textContent    = sifreVar
+      ? 'Sifreyi degistirebilir veya kilidi kaldiabilirsiniz.'
+      : 'Akilli tahta korumasi icin sifre ve gizli soru belirleyin.';
+    if(bloc) bloc.style.display = 'none';
     ayarWrap.style.display = 'block';
-  } else if(_kilitModalMod === 'ayarlar' && !depo.al(_KILIT_KEY)){
-    // İlk kurulum
-    emoji.textContent = '🔐';
-    baslik.textContent = 'Kilit Kur';
-    alt.textContent = 'Akıllı tahta koruması için bir şifre belirleyin.';
-    inp.style.display = 'none';
-    onayBtn.style.display = 'none';
-    document.getElementById('kilitSifreGirisBlok').style.display = 'none';
-    ayarWrap.style.display = 'block';
+    // Mevcut gizli soruyu onceden doldur
+    var mevcutSoru = depo.al(_KILIT_SORU_KEY);
+    if(soruInp && mevcutSoru) soruInp.value = mevcutSoru;
+    var sureInp = document.getElementById('kilitSureInp');
+    if(sureInp){ sureInp.value = depo.al(_KILIT_SURE_KEY) || '30'; }
+    // Yeni sifre alanlarini temizle
+    var ns = document.getElementById('kilitYeniSifreInp');
+    var nt = document.getElementById('kilitYeniSifreTekrar');
+    var ca = document.getElementById('kilitCevapInp');
+    if(ns) ns.value = '';
+    if(nt) nt.value = '';
+    if(ca) ca.value = '';
+    setTimeout(function(){
+      var ns2 = document.getElementById('kilitYeniSifreInp');
+      if(ns2) ns2.focus();
+    }, 120);
   } else {
-    emoji.textContent = '🔒';
-    baslik.textContent = 'Yönetici Girişi';
-    alt.textContent = 'Puan değişikliği için şifre gereklidir.';
-    inp.style.display = '';
-    onayBtn.style.display = '';
+    // Giris modu
+    emoji.textContent  = '🔒';
+    baslik.textContent = 'Yonetici Girisi';
+    alt.textContent    = 'Puan degisikligi icin sifre gereklidir.';
+    if(bloc) bloc.style.display = '';
     ayarWrap.style.display = 'none';
+    setTimeout(function(){ if(inp) inp.focus(); }, 120);
   }
 
   ov.style.display = 'flex';
-  setTimeout(function(){ inp.focus(); }, 100);
 }
 
 function kilitModalKapat(){
@@ -1693,14 +1724,15 @@ function kilitDogrula(){
     _KILITLI = false;
     _kilitUIGuncelle();
     kilitModalKapat();
-    bildir('🔓 Yönetici modu açıldı — 30 dk sonra otomatik kilitlenir');
+    var _kilitSureDk = parseInt(depo.al(_KILIT_SURE_KEY)) || 30;
+    bildir('🔓 Yönetici modu açıldı — ' + _kilitSureDk + ' dk sonra otomatik kilitlenir');
     // Otomatik kilit zamanlayıcı
     clearTimeout(_kilitAcikTimer);
     _kilitAcikTimer = setTimeout(function(){
       _KILITLI = true;
       _kilitUIGuncelle();
       bildir('🔒 Yönetici modu otomatik kilitlendi');
-    }, _KILIT_SURE);
+    }, _kilitSureDk * 60 * 1000);
     if(_kilitOnayCallback){ _kilitOnayCallback(); _kilitOnayCallback = null; }
   } else {
     hata.textContent = 'Şifre yanlış!';
@@ -1722,9 +1754,12 @@ function kilitSifreDegistir(){
   if(yeni !== tekrar){ hata.textContent = 'Şifreler eşleşmiyor!'; return; }
   if(!soru){ hata.textContent = 'Gizli soru boş olamaz!'; return; }
   if(cevap.length < 2){ hata.textContent = 'Gizli soru cevabı çok kısa!'; return; }
+  var sureDk = parseInt(document.getElementById('kilitSureInp') ? document.getElementById('kilitSureInp').value : '') || 30;
+  if(sureDk < 1) sureDk = 1;
   depo.yaz(_KILIT_KEY, _kilitHash(yeni));
   depo.yaz(_KILIT_SORU_KEY, soru);
   depo.yaz(_KILIT_CEVAP_KEY, _kilitHash(cevap));
+  depo.yaz(_KILIT_SURE_KEY, String(sureDk));
   _KILITLI = true;
   _kilitUIGuncelle();
   kilitModalKapat();
@@ -1806,12 +1841,7 @@ function _kilitGirisWrapSifirla(){
   if(kw) kw.style.display = 'none';
 }
 
-// _kilitModalGoster icinde giris wrap'i sifirla
-var _origKilitModalGoster = _kilitModalGoster;
-_kilitModalGoster = function(callback){
-  _kilitGirisWrapSifirla();
-  _origKilitModalGoster(callback);
-};
+// Giris wrap sifirlama fonksiyonu (kurtarma ekranindan geri donmek icin)
 
 // Enter ile giris (hem normal giris hem kurtarma)
 document.addEventListener('keydown', function(e){
@@ -4025,7 +4055,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.08';
+var YENILIK_VER = 'Pro2.0.10';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4583,7 +4613,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 8; // başlangıç build numarası
+var APP_VER_BUILD = 10; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
@@ -4721,6 +4751,13 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
           style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:13px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:8px">
         <input id="kilitCevapInp" type="text" placeholder="Cevap (buyuk/kucuk harf onemsiz)"
           style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:13px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;margin-top:4px">Otomatik Kilit Suresi</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <input id="kilitSureInp" type="number" min="1" max="480" value="30"
+            style="flex:1;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:14px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;text-align:center">
+          <span style="font-size:13px;color:var(--t2);white-space:nowrap;font-weight:700">dakika</span>
+        </div>
+        <div style="font-size:10px;color:var(--t3);margin-bottom:10px;margin-top:-6px">Yonetici girisi sonrasi kac dakika aktif kalsin? (1-480)</div>
         <button onclick="kilitSifreDegistir()" style="width:100%;padding:10px;border:none;border-radius:var(--r-sm);background:var(--ok);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">Kaydet</button>
         <button onclick="kilitKaldir()" style="width:100%;padding:9px;border:1.5px solid var(--err);border-radius:var(--r-sm);background:none;color:var(--err);font-size:12px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;margin-top:6px">Kilidi Kaldir</button>
       </div>
