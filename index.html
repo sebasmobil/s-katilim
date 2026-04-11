@@ -39,7 +39,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="license" content="GNU Affero General Public License v3.0 - https://www.gnu.org/licenses/agpl-3.0.html"/>
 <meta name="copyright" content="Copyright (C) 2026 sebasmobil"/>
 <!-- iOS "Ana Ekrana Ekle" desteği -->
@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Seçim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Seçim Pro 2.0.10</title>
+<title>S-Seçim Pro 2.0.12</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -128,6 +128,8 @@ body.gece{
 
 /* ── TEMEL ── */
 html,body{background:var(--pg);color:var(--t1);font-family:'Nunito',Arial,sans-serif;font-size:15px;min-height:100vh;-webkit-font-smoothing:antialiased}
+/* iOS zoom önleyici: input font-size 16px altı olmamalı */
+input,textarea,select{font-size:16px!important;font-family:'Nunito',Arial,sans-serif}
 body{padding:0 0 72px}
 .page{max-width:680px;margin:0 auto;width:100%;padding:12px 12px 0}
 #sayfaAnasayfa,#sayfaGecmis,#sayfaVeri{padding-bottom:16px}
@@ -646,8 +648,13 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.10</span></div>
-      <div id="aktifProfilGoster" onclick="profilModalAc()" style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3);cursor:pointer;margin-top:2px;transition:color .15s" title="Profil değiştir">👨‍🏫 Öğretmen 1</div>
+      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.12</span></div>
+      <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
+        style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
+        <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
+        <span style="font-size:11px;font-weight:800;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Öğretmen 1</span>
+        <span style="font-size:9px;color:var(--ac);opacity:.7;flex-shrink:0">▼</span>
+      </div>
     </div>
     <div class="hdr-right">
       <div class="ticon" id="kilitBtn" title="Yönetici Kilidi" onclick="kilitModalAc()" style="font-size:18px">🔒</div>
@@ -1067,13 +1074,14 @@ body{padding:0 0 72px}
   <div class="folder-card">
     <div class="folder-head" id="folderKayitliHead">
       <div class="folder-title">
-        <span class="folder-icon-wrap">👥</span> Kayıtlı
+        <span class="folder-icon-wrap">👥</span> Kayıtlı Öğrenciler
         <span class="folder-badge" id="mgrTotal"></span>
       </div>
       <span class="folder-arrow" id="folderKayitliArrow">▼</span>
     </div>
     <div class="folder-body" id="folderKayitliBody">
       <div style="margin-top:10px">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:8px;padding:7px 10px;background:var(--ac2);border-radius:8px;border-left:3px solid var(--ac)">📸 Öğrenci fotoğrafı eklemek için avatara tıklayın</div>
         <div id="listeSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
         <input class="srch" id="srch" placeholder="Ada, okul no veya sınıfa göre ara... (Türkçe destekli)">
         <div class="slist" id="slist"></div>
@@ -1256,7 +1264,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.10</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.12</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1303,7 +1311,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 2.0.10</span> &nbsp;©sebasmobil&nbsp;
+      S-Seçim <span class="footer-ver">Pro 2.0.12</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -3236,9 +3244,27 @@ function listeyiGoster(){
     });
   if(!f.length){liste.innerHTML='<div class="tbl-empty">Bulunamadı</div>';return;}
   var h='';
-  f.forEach(function(s){h+='<div class="srow"><div class="sinfo"><span class="smeta">'+s.sinif+'</span><span class="smeta">'+(s.numara||'—')+'</span><span>'+s.ad+'</span></div><button class="btn-del" data-idx="'+s._i+'">×</button></div>';});
+  f.forEach(function(s){
+    h+='<div class="srow" style="align-items:center;gap:10px">';
+    // Avatar / fotoğraf — data-fotoidx ile click delegation çalışır
+    h+=ogrAvatarHTML(s._i, 38);
+    // Bilgi
+    h+='<div class="sinfo" style="flex:1">';
+    h+='<span class="smeta">'+s.sinif+'</span>';
+    h+='<span class="smeta">'+(s.numara||'—')+'</span>';
+    h+='<span style="font-weight:700">'+s.ad+'</span>';
+    h+='</div>';
+    // Sil butonu
+    h+='<button class="btn-del" data-idx="'+s._i+'" title="Öğrenciyi sil">×</button>';
+    h+='</div>';
+  });
   liste.innerHTML=h;
-  liste.querySelectorAll('.btn-del').forEach(function(b){b.addEventListener('click',function(){ogrenciSil(parseInt(this.dataset.idx));});});
+  liste.querySelectorAll('.btn-del').forEach(function(b){
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      ogrenciSil(parseInt(this.dataset.idx));
+    });
+  });
 }
 
 var _srchPuanSinifFiltre = null;
@@ -3311,7 +3337,6 @@ function hizliPuanGoster(){
     var p=puanAlToplam(s._i);
     h+='<div class="hizli-puan-row">';
     h+='<div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">';
-    h+=ogrAvatarHTML(s._i,34);
     h+='<div class="hizli-puan-info">';
     h+='<div class="hizli-puan-ad" style="cursor:pointer" onclick="profilKartAc('+s._i+')">'+s.ad+'</div>';
     h+='<div class="hizli-puan-meta">'+s.sinif+(s.numara?' · '+s.numara:'')+'</div>';
@@ -4055,7 +4080,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.10';
+var YENILIK_VER = 'Pro2.0.12';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4440,7 +4465,8 @@ document.addEventListener('click',function(e){
   var idx=parseInt(el.dataset.fotoidx);
   fotografYukle(idx, function(url){
     profilFotoGuncelle(idx);
-    // listeyi yenile
+    // Veri sayfasındaki listeyi yenile (fotoğraf oradan yönetiliyor)
+    if(mevcutSayfa==='veri') listeyiGoster();
     if(mevcutSayfa==='anasayfa') hizliPuanGoster();
   });
 });
@@ -4547,7 +4573,14 @@ function profilAdDuzenle(profilId){
 
 function profilHeaderGuncelle(){
   var el=document.getElementById('aktifProfilGoster');
-  if(el) el.textContent=aktifProfilAdBul();
+  if(!el) return;
+  var p=_profilListesi.find(function(x){return x.id===_aktifProfilId;});
+  var emoji = p ? p.emoji : '👨‍🏫';
+  var ad    = p ? p.ad    : 'Öğretmen 1';
+  el.innerHTML =
+    '<span style="font-size:14px;flex-shrink:0">'+emoji+'</span>'+
+    '<span style="font-size:11px;font-weight:800;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ad+'</span>'+
+    '<span style="font-size:9px;color:var(--ac);opacity:.7;flex-shrink:0">&#9660;</span>';
 }
 
 function profilModalAc(){
@@ -4564,17 +4597,54 @@ function profilModalGuncelle(){
   if(!wrap) return;
   var h='';
   _profilListesi.forEach(function(p){
-    var isAktif=p.id===_aktifProfilId;
-    var ogrSayi=0; try{ var od=depo.al('ogr'); if(od){var oa=JSON.parse(od);ogrSayi=Array.isArray(oa)?oa.length:0;} }catch(e){}
-    var tarih=new Date(p.olusturma).toLocaleDateString('tr-TR');
-    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)">';
-    h+='<div style="width:40px;height:40px;border-radius:50%;background:'+(isAktif?'var(--ac)':'var(--bg2)')+';border:2px solid '+(isAktif?'var(--ac)':'var(--bd)')+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+p.emoji+'</div>';
-    h+='<div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--t1)">'+p.ad+(isAktif?' <span style="font-size:9px;background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px">AKTİF</span>':'')+'</div>';
-    h+='<div style="font-size:10px;color:var(--t2)">'+tarih+' · '+ogrSayi+' öğrenci</div></div>';
-    if(!isAktif) h+='<button class="btn-s prf-gec" data-pid="'+p.id+'" style="font-size:11px;padding:5px 10px;color:var(--ac);border-color:var(--ac)">Geç</button>';
-    h+='<button class="btn-s prf-duzenle" data-pid="'+p.id+'" style="font-size:11px;padding:5px 8px">✏️</button>';
-    if(!isAktif) h+='<button class="btn-s danger prf-sil" data-pid="'+p.id+'" style="font-size:11px;padding:5px 8px">🗑️</button>';
-    h+='</div>';
+    var isAktif = p.id===_aktifProfilId;
+    var ogrSayi = 0;
+    try{ var od=depo.al('ogr'); if(od){var oa=JSON.parse(od);ogrSayi=Array.isArray(oa)?oa.length:0;} }catch(e){}
+    var tarih = new Date(p.olusturma).toLocaleDateString('tr-TR');
+
+    // Kart arka planı aktife göre
+    var kartBg    = isAktif ? 'var(--ac2)'  : 'var(--bg2)';
+    var kartBd    = isAktif ? 'var(--ac)'   : 'var(--bd)';
+    var kartBdW   = isAktif ? '2px' : '1.5px';
+    var avatarBg  = isAktif ? 'var(--ac)'   : 'var(--bg3)';
+    var avatarBd  = isAktif ? 'var(--ac)'   : 'var(--bd2)';
+    var adRenk    = isAktif ? 'var(--ac)'   : 'var(--t1)';
+
+    h += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;'
+      +  'background:'+kartBg+';border:'+kartBdW+' solid '+kartBd+';border-radius:14px;position:relative">';
+
+    // Avatar dairesi
+    h += '<div style="width:52px;height:52px;border-radius:50%;background:'+avatarBg
+      +  ';border:2.5px solid '+avatarBd+';display:flex;align-items:center;justify-content:center'
+      +  ';font-size:24px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1)">'+p.emoji+'</div>';
+
+    // Bilgi alanı
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+    h += '<span style="font-size:15px;font-weight:900;color:'+adRenk+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.ad+'</span>';
+    if(isAktif) h += '<span style="font-size:10px;background:var(--ac);color:#fff;padding:2px 8px;border-radius:10px;font-weight:800;white-space:nowrap">✓ AKTİF</span>';
+    h += '</div>';
+    h += '<div style="font-size:11px;color:var(--t2);margin-top:3px">'
+      +  '📅 '+tarih+'&nbsp;&nbsp;·&nbsp;&nbsp;👤 '+ogrSayi+' öğrenci</div>';
+    h += '</div>';
+
+    // Butonlar
+    h += '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0">';
+    if(!isAktif){
+      h += '<button class="btn-s prf-gec" data-pid="'+p.id+'"'
+        +  ' style="font-size:12px;padding:6px 12px;background:var(--ac);color:#fff;border:none;border-radius:8px;font-weight:800;cursor:pointer;white-space:nowrap">Geç ▶</button>';
+    }
+    h += '<div style="display:flex;gap:4px">';
+    h += '<button class="btn-s prf-duzenle" data-pid="'+p.id+'"'
+      +  ' style="font-size:12px;padding:5px 10px;flex:1" title="Profil adını düzenle">✏️ Düzenle</button>';
+    if(!isAktif){
+      h += '<button class="btn-s danger prf-sil" data-pid="'+p.id+'"'
+        +  ' style="font-size:12px;padding:5px 8px" title="Profili sil">🗑️</button>';
+    }
+    h += '</div>';
+    h += '</div>';
+
+    h += '</div>';
   });
   wrap.innerHTML=h;
   profilHeaderGuncelle();
@@ -4613,7 +4683,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 10; // başlangıç build numarası
+var APP_VER_BUILD = 12; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
