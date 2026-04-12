@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Katilim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katilim Pro 2.0.21</title>
+<title>S-Katilim Pro 2.0.22</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -648,7 +648,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.21</span></div>
+      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.22</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -1243,7 +1243,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.21</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.22</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1290,7 +1290,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katilim <span class="footer-ver">Pro 2.0.21</span> &nbsp;©sebasmobil&nbsp;
+      S-Katilim <span class="footer-ver">Pro 2.0.22</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1301,10 +1301,7 @@ body{padding:0 0 72px}
 <script>
 /* ── Tüm JS tek blokta, global scope ── */
 var fotograflar = {}; // erken tanimlama
-var _kilitProfilGecisId   = null;
-var _kilitGecisEskiId     = null;
-var _kilitHedefProfilId   = null;
-var _kilitHedefProfilHash = null;
+
 
 function klavyeScrollDuzelt(el){
   setTimeout(function(){
@@ -1715,8 +1712,7 @@ function _kilitModalGoster(callback){
     // Giris modu
     emoji.textContent  = '🔒';
     // Hedef profil gecisindeyse o profilin adini goster
-    var _gorProfilId = _kilitHedefProfilId || _aktifProfilId;
-    var aktifP = _profilListesi.find(function(x){return x.id===_gorProfilId;});
+    var aktifP = _profilListesi.find(function(x){return x.id===_aktifProfilId;});
     baslik.textContent = (aktifP ? aktifP.emoji+' '+aktifP.ad : 'Yonetici') + ' — Giris';
     alt.textContent    = 'Bu profile erismek icin sifre gereklidir.';
     if(bloc) bloc.style.display = '';
@@ -1730,9 +1726,6 @@ function _kilitModalGoster(callback){
 function kilitModalKapat(){
   document.getElementById('kilitModalOverlay').style.display = 'none';
   // Profil gecisi iptal — hedef bilgileri temizle
-  _kilitHedefProfilId   = null;
-  _kilitHedefProfilHash = null;
-  _kilitGecisEskiId     = null;
   _kilitOnayCallback = null;
 }
 
@@ -1740,8 +1733,7 @@ function kilitDogrula(){
   var inp = document.getElementById('kilitSifreInp');
   var hata = document.getElementById('kilitHata');
   var girilenHash = _kilitHash(inp.value);
-  // Profil gecisindeyse hedef profilin hash'ini kullan, yoksa aktif profilin
-  var kayit = _kilitHedefProfilHash || depo.al(_kKey('hash'));
+  var kayit = depo.al(_kKey('hash'));
 
   if(!kayit){ hata.textContent = 'Henuz sifre tanimli degil.'; return; }
 
@@ -1750,8 +1742,6 @@ function kilitDogrula(){
     // Profil gecis callback varsa — kapat oncesi flag'i temizle ki kapat eski profile donmesin
     var _cb = _kilitOnayCallback;
     _kilitOnayCallback = null;
-    _kilitGecisEskiId = null;
-    _kilitProfilGecisId = null;
     _kilitUIGuncelle();
     kilitModalKapat();
     var _kilitSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
@@ -1773,12 +1763,7 @@ function kilitDogrula(){
     inp.focus();
     inp.style.borderColor = 'var(--err)';
     setTimeout(function(){ inp.style.borderColor = ''; }, 800);
-    // NOT: Profil gecisindeyse _kilitHedefProfilHash'i TEMIZLEME
-    // Kullanici tekrar deneyebilmeli. Sadece modal kapaninca temizle.
-    if(!_kilitHedefProfilHash){
-      _kilitOnayCallback = null;
-    }
-    _kilitGecisEskiId     = null;
+    _kilitOnayCallback = null;
   }
 }
 
@@ -4062,7 +4047,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.21';
+var YENILIK_VER = 'Pro2.0.22';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4486,31 +4471,33 @@ function profilSistemiEtkinlestir(){
 
 function profilDegistir(profilId){
   if(profilId === _aktifProfilId){ profilModalKapat(); return; }
-  // Hedef profilin hash'ini direkt localStorage'dan oku — _aktifProfilId swap YOK
   var hedefHash = localStorage.getItem('profil_'+profilId+'_kilit_hash');
-  if(hedefHash){
-    _kilitModalMod = 'giris';
-    // Hedef profil hash'ini ve ID'sini sakla — kilitDogrula bunu kullanacak
-    _kilitHedefProfilId   = profilId;
-    _kilitHedefProfilHash = hedefHash;
-    _kilitOnayCallback = function(){
-      _aktifProfilId = profilId;
-      _kilitHedefProfilId = null;
-      _kilitHedefProfilHash = null;
-      _profilKaydet();
-      profilModalKapat();
-      uygulamaYenidenBaslat();
-    };
-    _kilitGecisEskiId = null; // swap yok, eski ID zaten korunuyor
-    _kilitModalGoster(null);
+  if(!hedefHash){
+    // Şifresiz profil — direkt geç
+    _profilGecisYap(profilId);
+    return;
+  }
+  // Şifreli profil — inline şifre sor
+  var hedefP = _profilListesi.find(function(p){return p.id===profilId;});
+  var sifre = prompt((hedefP ? hedefP.emoji+' '+hedefP.ad : 'Profil') + ' sifresi:');
+  if(sifre === null) return; // iptal
+  if(_kilitHash(sifre) === hedefHash){
+    _profilGecisYap(profilId);
   } else {
-    _aktifProfilId = profilId;
-    _profilKaydet();
-    profilModalKapat();
-    uygulamaYenidenBaslat();
+    bildir('Sifre yanlis!');
   }
 }
-// _kilitProfilGecis degiskenleri script basinda tanimlandi
+
+function _profilGecisYap(profilId){
+  _aktifProfilId = profilId;
+  _profilKaydet();
+  profilModalKapat();
+  // Yeni profilin kilit durumunu sifirla
+  _KILITLI = true;
+  clearTimeout(_kilitAcikTimer);
+  uygulamaYenidenBaslat();
+}
+
 
 function uygulamaYenidenBaslat(){
   ogr=[]; gecmis=[]; kullanilan={}; puanlar={}; yoklama={}; puanGecmis=[];
@@ -4558,46 +4545,25 @@ function profilEkle(){
 }
 
 function profilSil(profilId){
-  if(_profilListesi.length<=1){bildir('En az 1 profil olmali');return;}
-  if(profilId===_aktifProfilId){bildir('Aktif profil silinemez');return;}
+  if(_profilListesi.length <= 1){ bildir('En az 1 profil olmali'); return; }
+  if(profilId === _aktifProfilId){ bildir('Aktif profil silinemez'); return; }
   var hedefP = _profilListesi.find(function(p){return p.id===profilId;});
   if(!hedefP) return;
-  // Profilin sifresi varsa once sifre iste
   var hedefHash = localStorage.getItem('profil_'+profilId+'_kilit_hash');
   if(hedefHash){
-    _kilitModalMod = 'giris';
-    _kilitHedefProfilId   = profilId;
-    _kilitHedefProfilHash = hedefHash;
-    // Baslik ve alt yazi guncelle
-    _kilitOnayCallback = function(){
-      if(!confirm(hedefP.emoji+' '+hedefP.ad+' profili ve tum verileri silinsin mi?')) return;
-      // localStorage'daki profil anahtarlarini temizle
-      ['hash','soru','cevap','sure'].forEach(function(tip){
-        localStorage.removeItem('profil_'+profilId+'_kilit_'+tip);
-      });
-      _profilListesi=_profilListesi.filter(function(p){return p.id!==profilId;});
-      _profilKaydet();
-      profilModalGuncelle();
-      bildir('Profil silindi');
-    };
-    // Modal acilmadan once baslik guncelle
-    var ov = document.getElementById('kilitModalOverlay');
-    _kilitModalGoster(null);
-    // Baslik override
-    var baslik = document.getElementById('kilitModalBaslik');
-    var alt    = document.getElementById('kilitModalAlt');
-    var emoji  = document.getElementById('kilitModalEmoji');
-    if(baslik) baslik.textContent = hedefP.emoji+' '+hedefP.ad+' — Silme Onayi';
-    if(alt)    alt.textContent    = 'Profili silmek icin sifresini girin.';
-    if(emoji)  emoji.textContent  = 'X';
-  } else {
-    // Sifre yok — sadece confirm
-    if(!confirm(hedefP.emoji+' '+hedefP.ad+' profili silinsin mi?')) return;
-    _profilListesi=_profilListesi.filter(function(p){return p.id!==profilId;});
-    _profilKaydet();
-    profilModalGuncelle();
-    bildir('Profil silindi');
+    var sifre = prompt((hedefP.emoji+' '+hedefP.ad) + ' profilini silmek icin sifresini girin:');
+    if(sifre === null) return;
+    if(_kilitHash(sifre) !== hedefHash){ bildir('Sifre yanlis — profil silinmedi'); return; }
   }
+  if(!confirm(hedefP.emoji+' '+hedefP.ad+' profili ve tum verileri silinsin mi?')) return;
+  // Profil kilit verilerini temizle
+  ['hash','soru','cevap','sure'].forEach(function(tip){
+    localStorage.removeItem('profil_'+profilId+'_kilit_'+tip);
+  });
+  _profilListesi = _profilListesi.filter(function(p){return p.id !== profilId;});
+  _profilKaydet();
+  profilModalGuncelle();
+  bildir('Profil silindi');
 }
 
 function profilAdDuzenle(profilId){
@@ -4735,7 +4701,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 21; // başlangıç build numarası
+var APP_VER_BUILD = 22; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
