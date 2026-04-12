@@ -45,10 +45,10 @@
 <!-- iOS "Ana Ekrana Ekle" desteği -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="S-Seçim">
+<meta name="apple-mobile-web-app-title" content="S-Katilim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Seçim Pro 2.0.13</title>
+<title>S-Katilim Pro 2.0.16</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -648,7 +648,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Seçim <span class="ver">Pro 2.0.13</span></div>
+      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.16</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -954,9 +954,9 @@ body{padding:0 0 72px}
         <span class="acc-title">Geçmiş</span>
         <span class="acc-meta" id="histLbl"></span>
       </span>
-      <span class="acc-arrow open" id="histArrow">▼</span>
+      <span class="acc-arrow" id="histArrow">▼</span>
     </div>
-    <div class="acc-body open" id="histBody">
+    <div class="acc-body" id="histBody">
       <div style="padding-top:14px">
         <div id="histWrap"><div class="tbl-empty">Seçim yapılmadı</div></div>
         <div class="btn-row"><button class="btn-s danger" id="btnHistSil">Geçmişi temizle</button></div>
@@ -1098,7 +1098,7 @@ body{padding:0 0 72px}
     <div class="folder-body" id="folderListePuanBody">
       <div style="margin-top:10px">
         <div id="srchPuanSinifChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
-        <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara...">
+        <input class="srch-puan-inp" id="srchPuan" placeholder="Ada, okul no veya sınıfa göre ara..." onfocus="klavyeScrollDuzelt(this)">
         <div class="srch-puan-list" id="srchPuanList"></div>
       </div>
     </div>
@@ -1119,7 +1119,6 @@ body{padding:0 0 72px}
           <button class="btn-s" onclick="pdfRaporIndir()" style="color:#e53935;border-color:#e53935">📄 PDF Rapor</button>
         </div>
         <div class="btn-row">
-          <button class="btn-s" onclick="qrModalAc()" style="color:#7c3aed;border-color:#7c3aed">📱 QR Aktar</button>
           <button class="btn-s" onclick="sifreliAktar()" style="color:#b45309;border-color:#b45309">🔒 Şifreli İndir</button>
           <button class="btn-s" onclick="document.getElementById('sifreliFileIn').click()" style="color:#b45309;border-color:#b45309">🔓 Şifreli Yükle</button>
           <input type="file" id="sifreliFileIn" accept=".ssenc,.json" style="display:none">
@@ -1192,27 +1191,7 @@ body{padding:0 0 72px}
   </div>
 </div>
 
-<!-- QR KOD MODALI -->
-<div id="qrOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9700;align-items:center;justify-content:center;padding:16px">
-  <div id="qrBox" style="background:var(--bg);width:100%;max-width:360px;border-radius:var(--r);padding:24px;box-shadow:0 8px 32px rgba(0,0,0,.2);transform:translateY(20px);transition:transform .3s">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div>
-        <div style="font-size:16px;font-weight:900;color:var(--t1)">📱 QR ile Aktar</div>
-        <div id="qrBilgi" style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px"></div>
-      </div>
-      <button onclick="qrModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button>
-    </div>
-    <div id="qrCanvas" style="display:flex;justify-content:center;align-items:center;padding:16px;background:#fff;border-radius:var(--r-sm);margin-bottom:14px;min-height:220px"></div>
-    <div style="font-size:12px;color:var(--t2);text-align:center;margin-bottom:12px;line-height:1.5">Diğer cihazda S-Seçim açık olmalı.<br>QR kodu taratınca veri otomatik aktarılır.</div>
-    <div style="display:flex;gap:8px">
-      <label style="flex:1;cursor:pointer">
-        <div class="btn-s" style="text-align:center;cursor:pointer;color:var(--ac);border-color:var(--ac)">📂 JSON ile Yükle</div>
-        <input type="file" id="qrFileIn" accept=".json" style="display:none">
-      </label>
-      <button onclick="qrModalKapat()" class="btn-s" style="flex:1">Kapat</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- ÖĞRENCİ PROFİL KARTI -->
 <div id="profilOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9600;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)">
@@ -1264,7 +1243,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Seçim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.13</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.16</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1311,7 +1290,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Seçim <span class="footer-ver">Pro 2.0.13</span> &nbsp;©sebasmobil&nbsp;
+      S-Katilim <span class="footer-ver">Pro 2.0.16</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1321,7 +1300,32 @@ body{padding:0 0 72px}
 <!-- SAYFA KONTEYNERLERİ -->
 <script>
 /* ── Tüm JS tek blokta, global scope ── */
-var fotograflar = {}; // erken tanimlama — her fonksiyondan once
+var fotograflar = {}; // erken tanimlama
+
+function klavyeScrollDuzelt(el){
+  setTimeout(function(){
+    if(!el) return;
+    if(window.visualViewport){
+      var vvh = window.visualViewport.height;
+      var rect = el.getBoundingClientRect();
+      var bottom = rect.bottom;
+      if(bottom > vvh - 20){
+        var diff = bottom - vvh + 80;
+        window.scrollBy({top: diff, behavior: 'smooth'});
+      }
+    } else {
+      el.scrollIntoView({block:'center', behavior:'smooth'});
+    }
+  }, 350);
+}
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', function(){
+    var aktifEl = document.activeElement;
+    if(aktifEl && (aktifEl.tagName==='INPUT'||aktifEl.tagName==='TEXTAREA')){
+      klavyeScrollDuzelt(aktifEl);
+    }
+  });
+}
 /* ===================== AKILLI HATA YAKALAYICI ===================== */
 var _hataLog = [];          // tüm session boyunca biriken hatalar
 var _hataGosteriliyor = false;
@@ -1437,7 +1441,7 @@ function _hataRaporuAc(){
       '</div>'+
       '<div id="_hataListeWrap" style="overflow-y:auto;flex:1">'+tumLog+'</div>'+
       '<div style="padding:10px 16px;border-top:1.5px solid #2a0000;flex-shrink:0;font-size:9px;color:#444;line-height:1.5">'+
-        '📱 Uygulama: S-Seçim · Tarayıcı: '+navigator.userAgent.substring(0,60)+'…'+
+        '📱 Uygulama: S-Katilim · Tarayıcı: '+navigator.userAgent.substring(0,60)+'…'+
       '</div>'+
     '</div>';
 
@@ -1564,10 +1568,9 @@ function _kilitHash(s){
   return (h>>>0).toString(36);
 }
 
-var _KILIT_KEY       = 'adminKilit';      // localStorage: hashed password
-var _KILIT_SORU_KEY  = 'adminKilitSoru';  // localStorage: secret question (plaintext)
-var _KILIT_CEVAP_KEY = 'adminKilitCevap'; // localStorage: hashed answer
-var _KILIT_SURE_KEY  = 'adminKilitSure';  // localStorage: auto-lock minutes
+// Kilit key'leri profil-bazlı — her profil kendi şifresini saklar
+function _kKey(tip){ return 'profil_'+_aktifProfilId+'_kilit_'+tip; }
+// tip: 'hash' | 'soru' | 'cevap' | 'sure'
 // !! Ana sifre — bu satiri degistirerek kendi ana sifrenizi belirleyin !!
 var _MASTER_HASH = _kilitHash('sebasmobil2026'); // varsayilan ana sifre
 var _KILITLI = true;                  // başlangıçta kilitli
@@ -1576,7 +1579,7 @@ var _kilitAcikTimer = null;           // otomatik kilit zamanlayıcı
 var _kilitModalMod = 'giris';         // 'giris' | 'ayarlar'
 
 function kilitDurumOku(){
-  var kayit = depo.al(_KILIT_KEY);
+  var kayit = depo.al(_kKey('hash'));
   if(!kayit){
     // Sifre henuz kurulmamis — ikonu goster, kurulum modunu ac
     _KILITLI = false;
@@ -1597,7 +1600,7 @@ function kilitKurulumAc(){
 function _kilitUIGuncelle(){
   var btn = document.getElementById('kilitBtn');
   var banner = document.getElementById('kilitBanner');
-  var kayit = depo.al(_KILIT_KEY);
+  var kayit = depo.al(_kKey('hash'));
   if(!btn) return;
   if(!kayit){
     // Sifre yok — ikonu goster ki kullanici kurulum yapabilsin
@@ -1610,7 +1613,8 @@ function _kilitUIGuncelle(){
       banner.style.background = '#d97706';
       banner.style.cursor = 'pointer';
       banner.onclick = function(){ kilitKurulumAc(); };
-      banner.textContent = '⚙️ KILIT KURULU DEGIL — Ogrenciler puan degistirebilir! Sifre kurmak icin tiklayin.';
+      var _bp=_profilListesi.find(function(x){return x.id===_aktifProfilId;});
+      banner.textContent = '⚙️ '+ (_bp?_bp.ad:'Bu profil') +' icin sifre belirlenmemis — tiklayin';
     }
   } else if(_KILITLI){
     btn.textContent = '🔒';
@@ -1628,7 +1632,7 @@ function _kilitUIGuncelle(){
 }
 
 function yetkiVar(){
-  var kayit = depo.al(_KILIT_KEY);
+  var kayit = depo.al(_kKey('hash'));
   if(!kayit) return true;   // şifre tanımlı değil → serbest
   return !_KILITLI;
 }
@@ -1643,7 +1647,7 @@ function _yetkiKontrol(geriCagir){
 var _kilitOnayCallback = null;
 
 function kilitModalAc(){
-  var kayit = depo.al(_KILIT_KEY);
+  var kayit = depo.al(_kKey('hash'));
   if(!kayit){
     // Şifre tanımlı değil → kurulum modunu aç
     _kilitModalMod = 'ayarlar';
@@ -1676,7 +1680,7 @@ function _kilitModalGoster(callback){
   if(hata) hata.textContent = '';
   if(inp)  inp.value = '';
 
-  var sifreVar = !!depo.al(_KILIT_KEY);
+  var sifreVar = !!depo.al(_kKey('hash'));
 
   if(_kilitModalMod === 'ayarlar'){
     // Ayarlar / kurulum modu
@@ -1688,10 +1692,10 @@ function _kilitModalGoster(callback){
     if(bloc) bloc.style.display = 'none';
     ayarWrap.style.display = 'block';
     // Mevcut gizli soruyu onceden doldur
-    var mevcutSoru = depo.al(_KILIT_SORU_KEY);
+    var mevcutSoru = depo.al(_kKey('soru'));
     if(soruInp && mevcutSoru) soruInp.value = mevcutSoru;
     var sureInp = document.getElementById('kilitSureInp');
-    if(sureInp){ sureInp.value = depo.al(_KILIT_SURE_KEY) || '30'; }
+    if(sureInp){ sureInp.value = depo.al(_kKey('sure')) || '30'; }
     // Yeni sifre alanlarini temizle
     var ns = document.getElementById('kilitYeniSifreInp');
     var nt = document.getElementById('kilitYeniSifreTekrar');
@@ -1706,8 +1710,9 @@ function _kilitModalGoster(callback){
   } else {
     // Giris modu
     emoji.textContent  = '🔒';
-    baslik.textContent = 'Yonetici Girisi';
-    alt.textContent    = 'Puan degisikligi icin sifre gereklidir.';
+    var aktifP = _profilListesi.find(function(x){return x.id===_aktifProfilId;});
+    baslik.textContent = (aktifP ? aktifP.emoji+' '+aktifP.ad : 'Yönetici') + ' — Giriş';
+    alt.textContent    = 'Bu profile erişmek için şifre gereklidir.';
     if(bloc) bloc.style.display = '';
     ayarWrap.style.display = 'none';
     setTimeout(function(){ if(inp) inp.focus(); }, 120);
@@ -1718,6 +1723,12 @@ function _kilitModalGoster(callback){
 
 function kilitModalKapat(){
   document.getElementById('kilitModalOverlay').style.display = 'none';
+  // Profil geçişi iptal — eski profile dön
+  if(_kilitGecisEskiId !== null){
+    _aktifProfilId = _kilitGecisEskiId;
+    _kilitGecisEskiId = null;
+    _kilitProfilGecisId = null;
+  }
   _kilitOnayCallback = null;
 }
 
@@ -1725,7 +1736,7 @@ function kilitDogrula(){
   var inp = document.getElementById('kilitSifreInp');
   var hata = document.getElementById('kilitHata');
   var girilenHash = _kilitHash(inp.value);
-  var kayit = depo.al(_KILIT_KEY);
+  var kayit = depo.al(_kKey('hash'));
 
   if(!kayit){ hata.textContent = 'Henüz şifre tanımlı değil.'; return; }
 
@@ -1733,7 +1744,7 @@ function kilitDogrula(){
     _KILITLI = false;
     _kilitUIGuncelle();
     kilitModalKapat();
-    var _kilitSureDk = parseInt(depo.al(_KILIT_SURE_KEY)) || 30;
+    var _kilitSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
     bildir('🔓 Yönetici modu açıldı — ' + _kilitSureDk + ' dk sonra otomatik kilitlenir');
     // Otomatik kilit zamanlayıcı
     clearTimeout(_kilitAcikTimer);
@@ -1747,9 +1758,14 @@ function kilitDogrula(){
     hata.textContent = 'Şifre yanlış!';
     inp.value = '';
     inp.focus();
-    // Kısa titreme efekti
     inp.style.borderColor = 'var(--err)';
     setTimeout(function(){ inp.style.borderColor = ''; }, 800);
+    // Profil geçişi iptalse eski profile dön
+    if(_kilitGecisEskiId !== null){
+      _aktifProfilId = _kilitGecisEskiId;
+      _kilitGecisEskiId = null;
+      _kilitProfilGecisId = null;
+    }
   }
 }
 
@@ -1765,10 +1781,10 @@ function kilitSifreDegistir(){
   if(cevap.length < 2){ hata.textContent = 'Gizli soru cevabı çok kısa!'; return; }
   var sureDk = parseInt(document.getElementById('kilitSureInp') ? document.getElementById('kilitSureInp').value : '') || 30;
   if(sureDk < 1) sureDk = 1;
-  depo.yaz(_KILIT_KEY, _kilitHash(yeni));
-  depo.yaz(_KILIT_SORU_KEY, soru);
-  depo.yaz(_KILIT_CEVAP_KEY, _kilitHash(cevap));
-  depo.yaz(_KILIT_SURE_KEY, String(sureDk));
+  depo.yaz(_kKey('hash'), _kilitHash(yeni));
+  depo.yaz(_kKey('soru'), soru);
+  depo.yaz(_kKey('cevap'), _kilitHash(cevap));
+  depo.yaz(_kKey('sure'), String(sureDk));
   _KILITLI = true;
   _kilitUIGuncelle();
   kilitModalKapat();
@@ -1777,9 +1793,9 @@ function kilitSifreDegistir(){
 
 function kilitKaldir(){
   if(!confirm('Kilidi tamamen kaldirmak istiyor musunuz? Herkes puan degistirebilir.')) return;
-  depo.sil(_KILIT_KEY);
-  depo.sil(_KILIT_SORU_KEY);
-  depo.sil(_KILIT_CEVAP_KEY);
+  depo.sil(_kKey('hash'));
+  depo.sil(_kKey('soru'));
+  depo.sil(_kKey('cevap'));
   _KILITLI = false;
   _kilitUIGuncelle();
   kilitModalKapat();
@@ -1788,7 +1804,7 @@ function kilitKaldir(){
 
 function kilitSifreUnuttum(){
   var ov = document.getElementById('kilitModalOverlay');
-  var soru = depo.al(_KILIT_SORU_KEY);
+  var soru = depo.al(_kKey('soru'));
   // Gizli soru paneline gec
   document.getElementById('kilitGirisWrap').style.display = 'none';
   document.getElementById('kilitKurtarmaWrap').style.display = 'block';
@@ -1810,7 +1826,7 @@ function kilitKurtarmaDogrula(){
   var cevapInp  = document.getElementById('kilitCevapGirInp').value.trim().toLowerCase();
   var masterInp = document.getElementById('kilitMasterInp').value;
   var hata      = document.getElementById('kilitKurtarmaHata');
-  var cevapHash = depo.al(_KILIT_CEVAP_KEY);
+  var cevapHash = depo.al(_kKey('cevap'));
 
   var tamam = false;
   // 1. Gizli soru cevabi kontrolu
@@ -2994,6 +3010,7 @@ function timerProfilKaydetDialog(){
 }
 
 function sec(){
+  if(!yetkiVar()){ _yetkiKontrol(function(){ sec(); }); return; }
   if(!seciliSinif){uyari('Önce bir sınıf seçin');return;}
   if(seciliyor) return;
   // Butonun mevcut scroll pozisyonunu kaydet
@@ -3166,6 +3183,7 @@ function gecmisiGoster(){
   w.innerHTML=h+'</tbody></table>';
   w.querySelectorAll('.btn-sil-row').forEach(function(btn){
     btn.addEventListener('click',function(){
+      if(!yetkiVar()){ _yetkiKontrol(null); return; }
       var idx=parseInt(this.dataset.idx);
       var silinen=gecmis[idx];
       gecmis.splice(idx,1);
@@ -3179,6 +3197,7 @@ function gecmisiGoster(){
   });
 }
 function gecmisiTemizle(){
+  if(!yetkiVar()){ _yetkiKontrol(function(){ gecmisiTemizle(); }); return; }
   if(seciliSinif){gecmis=gecmis.filter(function(h){return h.sinif!==seciliSinif;});if(kullanilan[seciliSinif])kullanilan[seciliSinif]=new Set();ilerlemeGuncelle();}
   else{gecmis=[];kullanilan={};}
   kaydet(); gecmisiGoster(); kalanlariGoster(); baslikGuncelle();
@@ -3203,6 +3222,22 @@ function accToggle(bodyId, arrowId){
   var body=document.getElementById(bodyId), arrow=document.getElementById(arrowId);
   var isOpen=body.classList.toggle('open');
   arrow.classList.toggle('open', isOpen);
+  // Durumu hatırla
+  try{ localStorage.setItem('_acc_'+bodyId, isOpen?'1':'0'); }catch(e){}
+}
+
+function accRestore(){
+  // Sayfa yüklenince accordion durumlarını geri yükle
+  ['histBody','remBody','puanOzetBody','siralamaBody','puanGecmisBody'].forEach(function(id){
+    var saved = localStorage.getItem('_acc_'+id);
+    if(saved===null) return; // Hiç kaydedilmemişse dokunma
+    var body  = document.getElementById(id);
+    var arrow = document.getElementById(id.replace('Body','Arrow'));
+    if(!body) return;
+    var shouldOpen = (saved==='1');
+    if(shouldOpen) body.classList.add('open'); else body.classList.remove('open');
+    if(arrow) arrow.classList.toggle('open', shouldOpen);
+  });
 }
 
 /* ===================== YÖNETİM ===================== */
@@ -3523,84 +3558,6 @@ function dosyaIndir(icerik, tip, ad){
   }catch(e){ bildir('İndirme desteklenmiyor'); }
 }
 
-/* ===================== QR KOD AKTARIMI ===================== */
-function qrVerisiOlustur(){
-  // Sadece öğrenciler + puanlar (gecmis çok büyük olabilir)
-  var veri={
-    v:'qr1',
-    ogr:ogr,
-    puan:puanlar,
-    ts:Date.now()
-  };
-  return JSON.stringify(veri);
-}
-
-function qrModalAc(){
-  var overlay=document.getElementById('qrOverlay');
-  if(!overlay) return;
-  if(!ogr.length){ bildir('Aktarılacak veri yok'); return; }
-
-  var veriStr=qrVerisiOlustur();
-  var boyut=new Blob([veriStr]).size;
-  document.getElementById('qrBilgi').textContent=ogr.length+' öğrenci · '+Math.round(boyut/1024*10)/10+' KB';
-
-  // QR kütüphanesi yükle
-  var wrap=document.getElementById('qrCanvas');
-  wrap.innerHTML='';
-  var script=document.getElementById('qrScript');
-  if(!script){
-    script=document.createElement('script');
-    script.id='qrScript';
-    script.src='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-    script.onload=function(){ qrOlustur(veriStr, wrap); };
-    document.head.appendChild(script);
-  } else {
-    qrOlustur(veriStr, wrap);
-  }
-  overlay.style.display='flex';
-  setTimeout(function(){document.getElementById('qrBox').style.transform='translateY(0)';},20);
-}
-
-function qrOlustur(veriStr, wrap){
-  try{
-    // veri çok büyükse URL encode ile kısalt
-    if(veriStr.length>2000){
-      wrap.innerHTML='<div style="padding:20px;text-align:center;font-size:13px;color:var(--err)">Veri çok büyük QR için.<br>Yedek Al ile aktarın.</div>';
-      return;
-    }
-    new QRCode(wrap,{text:veriStr,width:220,height:220,colorDark:'#111827',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
-  }catch(e){
-    wrap.innerHTML='<div style="padding:20px;text-align:center;font-size:12px;color:var(--err)">QR oluşturulamadı.<br>'+e.message+'</div>';
-  }
-}
-
-function qrModalKapat(){
-  var overlay=document.getElementById('qrOverlay');
-  if(!overlay) return;
-  document.getElementById('qrBox').style.transform='translateY(100%)';
-  setTimeout(function(){overlay.style.display='none';},300);
-}
-
-function qrDosyaOku(dosya){
-  var r=new FileReader();
-  r.onload=function(e){
-    try{
-      var veri=JSON.parse(e.target.result);
-      if(veri.v==='qr1'&&veri.ogr){
-        if(!confirm(veri.ogr.length+' ogrenci yuklensin mi? Mevcut veri silinir.')) return;
-        ogr=veri.ogr;
-        if(veri.puan&&typeof veri.puan==='object') puanlar=veri.puan;
-        gecmis=[]; kullanilan={}; yoklama={};
-        kaydet();
-        siniflariOlustur(); baslikGuncelle(); listeyiGoster(); gecmisiGoster();
-        srchPuanGoster(); puanOzetGoster(); hizliPuanGoster();
-        bildir('✅ QR verisi yüklendi: '+ogr.length+' öğrenci');
-      } else bildir('Geçersiz QR verisi');
-    }catch(err){ bildir('Dosya okunamadı'); }
-  };
-  r.readAsText(dosya,'UTF-8');
-}
-
 /* ===================== PDF RAPOR ===================== */
 function pdfRaporIndir(){
   if(!ogr.length){ bildir('Ogrenci yok'); return; }
@@ -3657,7 +3614,7 @@ function _pdfOlustur(){
       doc.setTextColor(255,255,255);
       doc.setFontSize(14);
       doc.setFont('helvetica','bold');
-      doc.text('S-Secim Pro Raporu', 14, 12);
+      doc.text('S-Katilim Pro Raporu', 14, 12);
       doc.setFontSize(9);
       doc.setFont('helvetica','normal');
       doc.text(sf + '  |  ' + tarih + '  |  sebasmobil AGPL V3.0', 150, 12);
@@ -3753,7 +3710,7 @@ function _pdfOlustur(){
     });
 
     // Kaydet
-    var dosyaAd = 'S-Secim-Rapor-' + (sinifFiltre||'tum').replace(/ /g,'-') + '-' + tarih.replace(/\./g,'-') + '.pdf';
+    var dosyaAd = 'S-Katilim-Rapor-' + (sinifFiltre||'tum').replace(/ /g,'-') + '-' + tarih.replace(/\./g,'-') + '.pdf';
     doc.save(dosyaAd);
     bildir('PDF indirildi');
   }catch(err){
@@ -3822,7 +3779,7 @@ function xlsxIndir(){
     var url=URL.createObjectURL(blob);
     var a=document.createElement('a');
     a.href=url;
-    a.download='ogrenci-puanlar.csv';
+    a.download='katilim-puanlar.csv';
     a.style.display='none';
     document.body.appendChild(a);
     a.click();
@@ -4081,7 +4038,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.13';
+var YENILIK_VER = 'Pro2.0.16';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4504,11 +4461,36 @@ function profilSistemiEtkinlestir(){
 }
 
 function profilDegistir(profilId){
-  _aktifProfilId = profilId;
-  _profilKaydet();
-  profilModalKapat();
-  uygulamaYenidenBaslat();
+  if(profilId === _aktifProfilId){ profilModalKapat(); return; }
+  // Hedef profilin şifresi var mı?
+  var hedefHash = localStorage.getItem('profil_'+profilId+'_kilit_hash');
+  if(hedefHash){
+    // Şifre modal — özel callback
+    _kilitModalMod = 'giris';
+    _kilitProfilGecisId = profilId;
+    _kilitOnayCallback = null;
+    // Geçici olarak hedef profilin _kKey'ini kullanmak için swap
+    var eskiId = _aktifProfilId;
+    _aktifProfilId = profilId;
+    _kilitModalGoster(null);
+    // Modal onaylandığında _profilGecisYap çağrılacak
+    _kilitOnayCallback = function(){
+      _aktifProfilId = profilId;
+      _profilKaydet();
+      profilModalKapat();
+      uygulamaYenidenBaslat();
+    };
+    // Şifre yanlışsa eski profile dön
+    _kilitGecisEskiId = eskiId;
+  } else {
+    _aktifProfilId = profilId;
+    _profilKaydet();
+    profilModalKapat();
+    uygulamaYenidenBaslat();
+  }
 }
+var _kilitProfilGecisId = null;
+var _kilitGecisEskiId   = null;
 
 function uygulamaYenidenBaslat(){
   ogr=[]; gecmis=[]; kullanilan={}; puanlar={}; yoklama={}; puanGecmis=[];
@@ -4531,6 +4513,10 @@ function uygulamaYenidenBaslat(){
   var kat=pdepo.al('animTip'); if(kat) animTipSec(kat);
   if(pdepo.al('anim')==='0') animAyarla(false);
   timerProfillerGoster(); puanGecmisGoster(); profilModalGuncelle();
+  // Yeni profilin kilit durumunu oku
+  _KILITLI = true;
+  clearTimeout(_kilitAcikTimer);
+  kilitDurumOku();
   bildir('Profil: '+aktifProfilAdBul());
 }
 
@@ -4540,7 +4526,7 @@ function aktifProfilAdBul(){
 }
 
 function profilEkle(){
-  var ad=prompt('Öğretmen adı:','');
+  var ad=prompt('Yeni öğretmen adı:','');
   if(!ad||!ad.trim()) return;
   var emojiler=['👩‍🏫','👨‍🏫','🧑‍🏫','👩‍💼','👨‍💼','🎓','📚','✏️'];
   var emoji=emojiler[_profilListesi.length%emojiler.length];
@@ -4624,6 +4610,8 @@ function profilModalGuncelle(){
     h += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
     h += '<span style="font-size:15px;font-weight:900;color:'+adRenk+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.ad+'</span>';
     if(isAktif) h += '<span style="font-size:10px;background:var(--ac);color:#fff;padding:2px 8px;border-radius:10px;font-weight:800;white-space:nowrap">✓ AKTİF</span>';
+    var pSifreVar = !!localStorage.getItem('profil_'+p.id+'_kilit_hash');
+    h += '<span style="font-size:10px;background:'+(pSifreVar?'#1a9e6a':'#d97706')+';color:#fff;padding:2px 7px;border-radius:10px;font-weight:700;white-space:nowrap">'+(pSifreVar?'🔐 Şifreli':'⚠️ Şifresiz')+'</span>';
     h += '</div>';
     h += '<div style="font-size:11px;color:var(--t2);margin-top:3px">'
       +  '📅 '+tarih+'&nbsp;&nbsp;·&nbsp;&nbsp;👤 '+ogrSayi+' öğrenci</div>';
@@ -4638,6 +4626,10 @@ function profilModalGuncelle(){
     h += '<div style="display:flex;gap:4px">';
     h += '<button class="btn-s prf-duzenle" data-pid="'+p.id+'"'
       +  ' style="font-size:12px;padding:5px 10px;flex:1" title="Profil adını düzenle">✏️ Düzenle</button>';
+    if(isAktif){
+      h += '<button class="btn-s prf-sifre" data-pid="'+p.id+'"'
+        +  ' style="font-size:12px;padding:5px 8px;color:#1a9e6a;border-color:#1a9e6a" title="Şifre ayarla">🔐</button>';
+    }
     if(!isAktif){
       h += '<button class="btn-s danger prf-sil" data-pid="'+p.id+'"'
         +  ' style="font-size:12px;padding:5px 8px" title="Profili sil">🗑️</button>';
@@ -4654,6 +4646,12 @@ function profilModalGuncelle(){
   });
   wrap.querySelectorAll('.prf-duzenle').forEach(function(btn){
     btn.addEventListener('click',function(){profilAdDuzenle(this.dataset.pid);});
+  });
+  wrap.querySelectorAll('.prf-sifre').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      _kilitModalMod='ayarlar';
+      _kilitModalGoster(null);
+    });
   });
   wrap.querySelectorAll('.prf-sil').forEach(function(btn){
     btn.addEventListener('click',function(){profilSil(this.dataset.pid);});
@@ -4684,7 +4682,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 13; // başlangıç build numarası
+var APP_VER_BUILD = 16; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
@@ -4702,7 +4700,7 @@ function appVerGuncelle(){
   var v = appVerStr();
   var els = document.querySelectorAll('.ver, .footer-ver');
   els.forEach(function(el){ el.textContent = 'Pro '+v; });
-  document.title = 'S-Seçim Pro '+v;
+  document.title = 'S-Katilim Pro '+v;
 }
 appVerGuncelle(); // Versiyon göstergesini güncelle (fonksiyon tanımından sonra)
 
@@ -4737,6 +4735,7 @@ function folderInit(){
 }
 folderInit();
 subToggleRestore();
+accRestore();
 kilitDurumOku(); // Kilit durumunu oku
 
 // Öğrenci arama - ana sayfa (kaldırıldı)
@@ -4752,10 +4751,7 @@ if(sifreliInp) sifreliInp.addEventListener('change',function(){
 });
 
 // QR dosya yükle
-var qrFileInp=document.getElementById('qrFileIn');
-if(qrFileInp) qrFileInp.addEventListener('change',function(){
-  if(this.files&&this.files[0]){ qrDosyaOku(this.files[0]); this.value=''; qrModalKapat(); }
-});
+
 
 function guncelleSiralamaUI(){
   var kart=document.getElementById('siralamaCard');
@@ -4801,7 +4797,7 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
     <div id="kilitModalBaslik" style="font-size:17px;font-weight:900;color:var(--t1);text-align:center;margin-bottom:4px">Yönetici Şifresi</div>
     <div id="kilitModalAlt" style="font-size:12px;color:var(--t2);text-align:center;margin-bottom:18px">Puan değişikliği için şifre gereklidir.</div>
     <div id="kilitSifreGirisBlok">
-      <input id="kilitSifreInp" type="password" placeholder="Sifre" autocomplete="current-password"
+      <input id="kilitSifreInp" type="password" placeholder="Sifre" autocomplete="current-password" onfocus="klavyeScrollDuzelt(this)"
         style="width:100%;padding:12px 14px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:10px">
       <div id="kilitHata" style="color:var(--err);font-size:12px;text-align:center;min-height:18px;margin-bottom:8px"></div>
       <div style="display:flex;gap:8px">
