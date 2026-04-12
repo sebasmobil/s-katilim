@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Katilim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katilim Pro 2.0.17</title>
+<title>S-Katilim Pro 2.0.18</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -648,7 +648,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.17</span></div>
+      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.18</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -1243,7 +1243,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.17</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.18</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1290,7 +1290,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katilim <span class="footer-ver">Pro 2.0.17</span> &nbsp;©sebasmobil&nbsp;
+      S-Katilim <span class="footer-ver">Pro 2.0.18</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1742,18 +1742,26 @@ function kilitDogrula(){
 
   if(girilenHash === kayit){
     _KILITLI = false;
+    // Profil gecis callback varsa — kapat oncesi flag'i temizle ki kapat eski profile donmesin
+    var _cb = _kilitOnayCallback;
+    _kilitOnayCallback = null;
+    _kilitGecisEskiId = null;
+    _kilitProfilGecisId = null;
     _kilitUIGuncelle();
     kilitModalKapat();
     var _kilitSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
-    bildir('🔓 Yönetici modu açıldı — ' + _kilitSureDk + ' dk sonra otomatik kilitlenir');
-    // Otomatik kilit zamanlayıcı
+    if(_cb){
+      // Profil gecisi: bildir sonradan gelsin
+      _cb();
+    } else {
+      bildir('Yonetici modu acildi — ' + _kilitSureDk + ' dk sonra otomatik kilitlenir');
+    }
     clearTimeout(_kilitAcikTimer);
     _kilitAcikTimer = setTimeout(function(){
       _KILITLI = true;
       _kilitUIGuncelle();
-      bildir('🔒 Yönetici modu otomatik kilitlendi');
+      bildir('Yonetici modu otomatik kilitlendi');
     }, _kilitSureDk * 60 * 1000);
-    if(_kilitOnayCallback){ _kilitOnayCallback(); _kilitOnayCallback = null; }
   } else {
     hata.textContent = 'Şifre yanlış!';
     inp.value = '';
@@ -1792,14 +1800,20 @@ function kilitSifreDegistir(){
 }
 
 function kilitKaldir(){
-  if(!confirm('Kilidi tamamen kaldirmak istiyor musunuz? Herkes puan degistirebilir.')) return;
+  if(!confirm('Sifreyi kaldirmak istediginizden emin misiniz? Profil sifresi olmadan kullanilabilir olacak.')) return;
   depo.sil(_kKey('hash'));
   depo.sil(_kKey('soru'));
   depo.sil(_kKey('cevap'));
+  depo.sil(_kKey('sure'));
   _KILITLI = false;
   _kilitUIGuncelle();
   kilitModalKapat();
-  bildir('Kilit kaldirildi');
+  // Sifre kaldirildi — hemen yeniden kurulum wizardini ac
+  setTimeout(function(){
+    bildir('Sifre kaldirildi. Yeni sifre belirleyin.');
+    _kilitModalMod = 'ayarlar';
+    _kilitModalGoster(null);
+  }, 500);
 }
 
 function kilitSifreUnuttum(){
@@ -2288,8 +2302,11 @@ function sinifOgr(){
             .filter(function(s){return s.sinif===seciliSinif && !yok.has(s._i);});
 }
 function sinifOgrTum(){
-  return ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};})
-            .filter(function(s){return s.sinif===seciliSinif;});
+  var liste = ogr.map(function(s,i){return{sinif:s.sinif,numara:s.numara,ad:s.ad,_i:i};});
+  if(cokluMod && seciliSiniflar.length > 0){
+    return liste.filter(function(s){ return seciliSiniflar.indexOf(s.sinif) !== -1; });
+  }
+  return liste.filter(function(s){ return s.sinif === seciliSinif; });
 }
 function ilerlemeGuncelle(){
   if(mod!=='unique') return;
@@ -2341,7 +2358,7 @@ function subToggle(tip){
   // Panel açıldığında içeriği güncelle
   if(acik){
     if(tip==='yoklama') yoklamaGoster();
-    if(tip==='gruplama' && seciliSinif) gruplamaGoster(seciliSinif);
+    if(tip==='gruplama'){ var _gk=_gruplamaSinifKey(); if(_gk) gruplamaGoster(_gk); }
   }
   // Durumu kaydet
   try{ localStorage.setItem('_subToggle_'+tip, acik?'1':'0'); }catch(e){}
@@ -2761,68 +2778,70 @@ function sinifOgrCoklu(){
 }
 
 /* ===================== OTOMATİK GRUPLAMA ===================== */
+function _gruplamaSinifKey(){
+  if(cokluMod && seciliSiniflar.length > 0) return seciliSiniflar.slice().sort().join('+');
+  return seciliSinif || '';
+}
 function gruplamaYap(sinif, grupSayisi){
-  if(!sinif) return;
+  var key = _gruplamaSinifKey();
+  if(!key) return;
   grupSayisi = parseInt(grupSayisi);
-  if(!grupSayisi || grupSayisi < 2) { bildir('En az 2 grup olmalı'); return; }
+  if(!grupSayisi || grupSayisi < 2) { bildir('En az 2 grup olmali'); return; }
   var tumOgr = sinifOgrTum();
-  if(!tumOgr.length){ bildir('Öğrenci yok'); return; }
-  if(grupSayisi > tumOgr.length){ bildir('Öğrenci sayısından fazla grup olamaz ('+tumOgr.length+' öğrenci)'); return; }
+  if(!tumOgr.length){ bildir('Ogrenci yok'); return; }
+  if(grupSayisi > tumOgr.length){ bildir('Ogrenci sayisindan fazla grup olamaz ('+tumOgr.length+' ogrenci)'); return; }
   var karisik = tumOgr.slice().sort(function(){ return Math.random()-0.5; });
   var grps = [];
   for(var i=0;i<grupSayisi;i++) grps.push({ad:'Grup '+(i+1), uyeler:[]});
   karisik.forEach(function(s,i){ grps[i%grupSayisi].uyeler.push(s._i); });
-  if(!gruplar[sinif]) gruplar[sinif]=[];
-  gruplar[sinif] = grps;
+  gruplar[key] = grps;
   kaydet();
-  gruplamaGoster(sinif);
-  bildir('✅ '+grupSayisi+' grup oluşturuldu');
+  gruplamaGoster(key);
+  var label = cokluMod && seciliSiniflar.length>1 ? seciliSiniflar.length+' sinif' : key;
+  bildir(grupSayisi+' grup olusturuldu — '+label);
 }
 
 // Grup başına kişi sayısıyla gruplama
 function gruplamaKisiSayisiyla(sinif, kisiSayisi){
-  if(!sinif) return;
+  var key = _gruplamaSinifKey();
+  if(!key) return;
   kisiSayisi = parseInt(kisiSayisi);
-  if(!kisiSayisi || kisiSayisi < 2) { bildir('En az 2 kişi olmalı'); return; }
+  if(!kisiSayisi || kisiSayisi < 2) { bildir('En az 2 kisi olmali'); return; }
   var tumOgr = sinifOgrTum();
-  if(!tumOgr.length){ bildir('Öğrenci yok'); return; }
+  if(!tumOgr.length){ bildir('Ogrenci yok'); return; }
   var grupSayisi = Math.floor(tumOgr.length / kisiSayisi);
   if(grupSayisi < 1) grupSayisi = 1;
   var karisik = tumOgr.slice().sort(function(){ return Math.random()-0.5; });
   var grps = [];
   for(var i=0;i<grupSayisi;i++) grps.push({ad:'Grup '+(i+1), uyeler:[]});
-  // İlk (grupSayisi * kisiSayisi) kişiyi gruplara dağıt
   var tamKisi = grupSayisi * kisiSayisi;
   for(var i=0;i<tamKisi && i<karisik.length;i++){
     grps[i % grupSayisi].uyeler.push(karisik[i]._i);
   }
-  // Kalan kişileri (son grup artığı) rastgele diğer gruplara dağıt
   var kalanlar = karisik.slice(tamKisi);
   if(kalanlar.length > 0){
-    // Grupları karıştır ve sırayla dağıt
     var grpSirasi = grps.slice().sort(function(){ return Math.random()-0.5; });
     kalanlar.forEach(function(s, i){ grpSirasi[i % grpSirasi.length].uyeler.push(s._i); });
   }
-  if(!gruplar[sinif]) gruplar[sinif]=[];
-  gruplar[sinif] = grps;
+  gruplar[key] = grps;
   kaydet();
-  gruplamaGoster(sinif);
-  var msg = '✅ '+grupSayisi+' grup oluşturuldu (~'+kisiSayisi+' kişi/grup)';
-  if(kalanlar.length) msg += ' · '+kalanlar.length+' kişi diğer gruplara dağıtıldı';
+  gruplamaGoster(key);
+  var msg = grupSayisi+' grup olusturuldu (~'+kisiSayisi+' kisi/grup)';
+  if(kalanlar.length) msg += ' · '+kalanlar.length+' kisi diger gruplara dagitildi';
   bildir(msg);
 }
 
 // Özel sayı inputlarından gruplama
 function gruplamaOzelSayiUygula(){
   var v = parseInt(document.getElementById('ozelGrupSayiInp').value);
-  if(!v || v < 2) { bildir('Geçerli bir sayı girin (en az 2)'); return; }
-  gruplamaYap(seciliSinif, v);
+  if(!v || v < 2) { bildir('Gecerli bir sayi girin (en az 2)'); return; }
+  gruplamaYap(null, v);
   document.getElementById('ozelGrupSayiInp').value = '';
 }
 function gruplamaOzelKisiUygula(){
   var v = parseInt(document.getElementById('ozelKisiSayiInp').value);
-  if(!v || v < 2) { bildir('Geçerli bir sayı girin (en az 2)'); return; }
-  gruplamaKisiSayisiyla(seciliSinif, v);
+  if(!v || v < 2) { bildir('Gecerli bir sayi girin (en az 2)'); return; }
+  gruplamaKisiSayisiyla(null, v);
   document.getElementById('ozelKisiSayiInp').value = '';
 }
 
@@ -4038,7 +4057,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.17';
+var YENILIK_VER = 'Pro2.0.18';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4682,7 +4701,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 17; // başlangıç build numarası
+var APP_VER_BUILD = 18; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
