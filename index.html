@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Katilim">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katilim Pro 2.0.24</title>
+<title>S-Katilim Pro 2.0.25</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -648,7 +648,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.24</span></div>
+      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.25</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -1243,7 +1243,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.24</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.25</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1290,7 +1290,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katilim <span class="footer-ver">Pro 2.0.24</span> &nbsp;©sebasmobil&nbsp;
+      S-Katilim <span class="footer-ver">Pro 2.0.25</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -3241,32 +3241,75 @@ function bosGoster(){
 
 /* ===================== GEÇMİŞ ===================== */
 function gecmiseEkle(s){
-  var tek=mod==='repeat'&&gecmis.some(function(h){return h.sinif===s.sinif&&h.ad===s.ad;});
-  gecmis.unshift({sinif:s.sinif,numara:s.numara,ad:s.ad,_i:s._i,tekrar:tek});
+  var tek = mod==='repeat' && gecmis.some(function(h){return h.sinif===s.sinif&&h.ad===s.ad;});
+  // Kacinci kez secildigini say (bu ekleme dahil)
+  var kacinci = gecmis.filter(function(h){return h._i===s._i;}).length + 1;
+  gecmis.unshift({sinif:s.sinif, numara:s.numara, ad:s.ad, _i:s._i, tekrar:tek,
+                  ts:Date.now(), kacinci:kacinci});
   kaydet(); gecmisiGoster(); kalanlariGoster();
+}
+
+function _gecmisTarihFormat(ts){
+  if(!ts) return '';
+  var d = new Date(ts);
+  var gun  = String(d.getDate()).padStart(2,'0');
+  var ay   = String(d.getMonth()+1).padStart(2,'0');
+  var yil  = d.getFullYear();
+  var sa   = String(d.getHours()).padStart(2,'0');
+  var dk   = String(d.getMinutes()).padStart(2,'0');
+  return gun+'.'+ay+'.'+yil+' '+sa+':'+dk;
 }
 function gecmisiGoster(){
   var w=document.getElementById('histWrap');
   var f=seciliSinif?gecmis.filter(function(h){return h.sinif===seciliSinif;}):gecmis;
-  if(!f.length){w.innerHTML='<div class="tbl-empty">Seçim yapılmadı</div>';return;}
-  var h='<table class="tbl"><thead><tr><th>#</th><th>Sınıf</th><th>No</th><th>Ad Soyad</th><th></th></tr></thead><tbody>';
+  if(!f.length){w.innerHTML='<div class="tbl-empty">Secim yapilmadi</div>';return;}
+  var h='';
   f.forEach(function(g,i){
     var gercekIdx=gecmis.indexOf(g);
     var pt=g._i!==undefined?puanAlToplam(g._i):{plus:0,minus:0};
-    var puanHtml='';
-    if(pt&&(pt.plus>0||pt.minus>0)){
-      var fark=pt.plus-pt.minus;
-      puanHtml='<div class="hist-puan-row">'
-        +'<span class="hist-puan-badge hist-puan-plus">+'+pt.plus+'</span>'
-        +'<span class="hist-puan-badge hist-puan-minus">−'+pt.minus+'</span>'
-        +'<span class="hist-puan-badge hist-puan-fark">'+(fark>0?'+':'')+fark+'</span>'
-        +'</div>';
+    var fark=pt.plus-pt.minus;
+    var sirano=f.length-i;
+    var tarih=g.ts?_gecmisTarihFormat(g.ts):'';
+    // Kacinci kez: eger kaydedilmisse goster, yoksa gercek zamanlik say
+    var kacStr='';
+    if(g.kacinci){
+      kacStr=g.kacinci+'. kez';
+    } else {
+      // Eski kayitlar icin retrospektif hesapla
+      var oSira=gecmis.slice(gecmis.indexOf(g)).filter(function(x){return x._i===g._i;}).length;
+      kacStr=oSira+'. kez';
     }
-    h+='<tr><td class="td-n">'+(f.length-i)+'</td><td class="td-c">'+g.sinif+'</td><td class="td-num">'+(g.numara||'—')+'</td>'
-      +'<td class="td-name">'+g.ad+(g.tekrar?'<span class="badge">TEKRAR</span>':'')+puanHtml+'</td>'
-      +'<td class="td-sil"><button class="btn-sil-row" data-idx="'+gercekIdx+'" title="Kaydı sil">✕</button></td></tr>';
+    h+='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd);position:relative">';
+    // Sira numarasi
+    h+='<div style="width:28px;height:28px;border-radius:50%;background:var(--ac2);border:1.5px solid var(--ac3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--ac);flex-shrink:0;margin-top:2px">'+sirano+'</div>';
+    // Icerik
+    h+='<div style="flex:1;min-width:0">';
+    // Ust satir: ad + sinif + tekrar badge
+    h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
+    h+='<span style="font-size:14px;font-weight:800;color:var(--t1)">'+g.ad+'</span>';
+    h+='<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--ac);background:var(--ac2);padding:1px 6px;border-radius:4px">'+g.sinif+'</span>';
+    if(g.numara) h+='<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">No:'+g.numara+'</span>';
+    if(g.tekrar) h+='<span class="badge">TEKRAR</span>';
+    h+='</div>';
+    // Alt satir: tarih/saat + kacinci kez
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap">';
+    if(tarih) h+='<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">🕐 '+tarih+'</span>';
+    h+='<span style="font-size:10px;font-weight:700;color:'+(g.kacinci&&g.kacinci>1?'var(--err)':'var(--ok)')+';background:'+(g.kacinci&&g.kacinci>1?'var(--errbg)':'var(--okb)')+';padding:1px 7px;border-radius:10px">'+kacStr+'</span>';
+    h+='</div>';
+    // Puan badge'leri
+    if(pt.plus>0||pt.minus>0){
+      h+='<div class="hist-puan-row" style="margin-top:5px">';
+      h+='<span class="hist-puan-badge hist-puan-plus">+'+pt.plus+'</span>';
+      h+='<span class="hist-puan-badge hist-puan-minus">−'+pt.minus+'</span>';
+      h+='<span class="hist-puan-badge hist-puan-fark">'+(fark>0?'+':'')+fark+'</span>';
+      h+='</div>';
+    }
+    h+='</div>';
+    // Sil butonu
+    h+='<button class="btn-sil-row" data-idx="'+gercekIdx+'" title="Kaydi sil" style="flex-shrink:0;margin-top:2px">✕</button>';
+    h+='</div>';
   });
-  w.innerHTML=h+'</tbody></table>';
+  w.innerHTML=h;
   w.querySelectorAll('.btn-sil-row').forEach(function(btn){
     btn.addEventListener('click',function(){
       if(!yetkiVar()){ _yetkiKontrol(null); return; }
@@ -4139,7 +4182,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.24';
+var YENILIK_VER = 'Pro2.0.25';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -4809,7 +4852,7 @@ var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== OTOMATİK VERSİYON YÖNETİMİ ===================== */
 var APP_VER_BASE = '2.0';
-var APP_VER_BUILD = 24; // başlangıç build numarası
+var APP_VER_BUILD = 25; // başlangıç build numarası
 (function(){
   try{
     var saved = localStorage.getItem('_appBuild');
