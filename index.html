@@ -45,10 +45,10 @@
 <!-- iOS "Ana Ekrana Ekle" desteği -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="S-Katilim">
+<meta name="apple-mobile-web-app-title" content="S-Katılım">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katilim Pro 2.0.27</title>
+<title>S-Katılım Pro 2.0.28</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -158,8 +158,10 @@ body{padding:0 0 72px}
 .hdr-h1{font-size:18px;font-weight:900;color:var(--t1);line-height:1;letter-spacing:-.3px;white-space:nowrap}
 .hdr-h1 .ver{font-size:9px;font-weight:800;color:#fff;font-family:JetBrains Mono,monospace;margin-left:6px;letter-spacing:.3px;background:var(--ac);padding:2px 8px;border-radius:5px;vertical-align:middle;display:inline-block}
 .hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.ticon{width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;border:1.5px solid var(--bd);background:var(--bg2);transition:all .2s;user-select:none;flex-shrink:0;box-shadow:var(--shadow)}
+.ticon{width:26px;height:26px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;border:1.5px solid var(--bd);background:var(--bg2);transition:all .2s;user-select:none;flex-shrink:0;box-shadow:var(--shadow)}
 .ticon:hover{border-color:var(--ac);transform:scale(1.1);box-shadow:var(--shadow2)}
+.ticon-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;user-select:none}
+.ticon-lbl{font-family:JetBrains Mono,monospace;font-size:7px;font-weight:700;color:var(--t3);letter-spacing:.3px;text-align:center;white-space:nowrap}
 
 /* ── ALT FOOTER (nav içinde) ── */
 .footer-ver{display:inline-block;background:var(--ac);color:#fff;font-size:8px;font-weight:800;padding:1px 6px;border-radius:4px;margin:0 2px;vertical-align:middle;letter-spacing:.3px}
@@ -582,6 +584,10 @@ body{padding:0 0 72px}
 /* ── UYARI ── */
 .topwarn{position:fixed;top:0;left:0;right:0;z-index:9000;background:var(--err);color:#fff;font-family:JetBrains Mono,monospace;font-size:14px;font-weight:700;text-align:center;padding:14px;pointer-events:none;display:none;letter-spacing:.5px}
 .topwarn.show{display:block}
+/* ── KİLİT SÜRE BUTONLARI ── */
+.kilit-sure-btn{font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t2);cursor:pointer;transition:all .15s}
+.kilit-sure-btn:hover{border-color:var(--ac);color:var(--ac)}
+.kilit-sure-btn.aktif{background:var(--ac);border-color:var(--ac);color:#fff}
 
 /* ── BİLDİRİM TOAST ── */
 /* bildir() JS ile üretir, ayrı CSS gerekmez */
@@ -651,7 +657,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katilim <span class="ver">Pro 2.0.27</span></div>
+      <div class="hdr-h1">S-Katılım <span class="ver">Pro 2.0.28</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -660,10 +666,22 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="hdr-right">
-      <div class="ticon" id="kilitBtn" title="Yönetici Kilidi" onclick="kilitModalAc()" style="font-size:18px">🔒</div>
-      <div class="ticon" id="projBtn" title="Projektör Modu" onclick="projektorAc()">🖥️</div>
-      <div class="ticon" id="paletBtn" title="Renk teması" onclick="renkTemaModalAc()">🎨</div>
-      <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
+      <div class="ticon-wrap" onclick="kilitModalAc()">
+        <div class="ticon" id="kilitBtn" title="Yönetici Kilidi" style="font-size:13px">🔒</div>
+        <span class="ticon-lbl">Kilit</span>
+      </div>
+      <div class="ticon-wrap" onclick="projektorAc()">
+        <div class="ticon" id="projBtn" title="Projektör Modu">🖥️</div>
+        <span class="ticon-lbl">Proj.</span>
+      </div>
+      <div class="ticon-wrap" onclick="renkTemaModalAc()">
+        <div class="ticon" id="paletBtn" title="Renk teması">🎨</div>
+        <span class="ticon-lbl">Renk</span>
+      </div>
+      <div class="ticon-wrap" id="temaBtnWrap">
+        <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
+        <span class="ticon-lbl">Tema</span>
+      </div>
     </div>
   </div>
 
@@ -1289,7 +1307,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katilim <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.27</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katılım <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.0.28</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1336,7 +1354,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katilim <span class="footer-ver">Pro 2.0.27</span> &nbsp;©sebasmobil&nbsp;
+      S-Katılım <span class="footer-ver">Pro 2.0.28</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1488,7 +1506,7 @@ function _hataRaporuAc(){
       '</div>'+
       '<div id="_hataListeWrap" style="overflow-y:auto;flex:1">'+tumLog+'</div>'+
       '<div style="padding:10px 16px;border-top:1.5px solid #2a0000;flex-shrink:0;font-size:9px;color:#444;line-height:1.5">'+
-        '📱 Uygulama: S-Katilim · Tarayıcı: '+navigator.userAgent.substring(0,60)+'…'+
+        '📱 Uygulama: S-Katılım · Tarayıcı: '+navigator.userAgent.substring(0,60)+'…'+
       '</div>'+
     '</div>';
 
@@ -1822,8 +1840,12 @@ function _kilitModalGoster(callback){
     // Mevcut gizli soruyu onceden doldur
     var mevcutSoru = depo.al(_kKey('soru'));
     if(soruInp && mevcutSoru) soruInp.value = mevcutSoru;
+    var mevcutSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
     var sureInp = document.getElementById('kilitSureInp');
-    if(sureInp){ sureInp.value = depo.al(_kKey('sure')) || '30'; }
+    if(sureInp){ sureInp.value = mevcutSureDk; }
+    var ozelWrap = document.getElementById('kilitSureOzelWrap');
+    if(ozelWrap) ozelWrap.style.display = 'none';
+    _kilitSureUIGuncelle(mevcutSureDk);
     // Yeni sifre alanlarini temizle
     var ns = document.getElementById('kilitYeniSifreInp');
     var nt = document.getElementById('kilitYeniSifreTekrar');
@@ -1904,12 +1926,12 @@ function kilitSifreDegistir(){
   if(yeni !== tekrar){ hata.textContent = 'Şifreler eşleşmiyor!'; return; }
   if(!soru){ hata.textContent = 'Gizli soru boş olamaz!'; return; }
   if(cevap.length < 2){ hata.textContent = 'Gizli soru cevabı çok kısa!'; return; }
-  var sureDk = parseInt(document.getElementById('kilitSureInp') ? document.getElementById('kilitSureInp').value : '') || 30;
-  if(sureDk < 1) sureDk = 1;
+  // Süre bağımsız olarak kaydedilir — mevcut değeri koru
+  var mevcutSure = depo.al(_kKey('sure')) || '30';
   depo.yaz(_kKey('hash'), _kilitHash(yeni));
   depo.yaz(_kKey('soru'), soru);
   depo.yaz(_kKey('cevap'), _kilitHash(cevap));
-  depo.yaz(_kKey('sure'), String(sureDk));
+  depo.yaz(_kKey('sure'), mevcutSure);
   _KILITLI = true;
   _kilitUIGuncelle();
   kilitModalKapat();
@@ -1926,6 +1948,50 @@ function kilitKaldir(){
   _kilitUIGuncelle();
   kilitModalKapat();
   bildir('Sifre kaldirildi — profil sifresiz kullanilabilir');
+}
+
+/* ── KİLİT SÜRE HIZLI SEÇİM ── */
+function _kilitSureUIGuncelle(seciliSure){
+  var btns = document.querySelectorAll('.kilit-sure-btn[data-sure]');
+  var ozelBtn = document.getElementById('kilitSureOzelBtn');
+  var predefined = [5,10,20,30,40];
+  var isPredefined = predefined.indexOf(seciliSure) !== -1;
+  btns.forEach(function(btn){
+    btn.classList.toggle('aktif', parseInt(btn.dataset.sure) === seciliSure);
+  });
+  if(ozelBtn) ozelBtn.classList.toggle('aktif', !isPredefined);
+  // Gösterge güncelle
+  var gosterge = document.getElementById('kilitSureGosterge');
+  if(gosterge) gosterge.textContent = 'Mevcut süre: ' + seciliSure + ' dakika';
+}
+
+function kilitSureSecHizli(dk){
+  depo.yaz(_kKey('sure'), String(dk));
+  // Aktif timeri da güncelle
+  _kilitSureUIGuncelle(dk);
+  // Özel input alanını gizle
+  var ozelWrap = document.getElementById('kilitSureOzelWrap');
+  if(ozelWrap) ozelWrap.style.display = 'none';
+  bildir('Otomatik kilit süresi: ' + dk + ' dakika');
+}
+
+function kilitSureOzelGoster(){
+  var ozelWrap = document.getElementById('kilitSureOzelWrap');
+  if(ozelWrap) ozelWrap.style.display = 'flex';
+  var inp = document.getElementById('kilitSureInp');
+  if(inp) { inp.focus(); inp.select(); }
+}
+
+function kilitSureOzelKaydet(){
+  var inp = document.getElementById('kilitSureInp');
+  var dk = parseInt(inp ? inp.value : '') || 30;
+  if(dk < 1) dk = 1;
+  if(dk > 480) dk = 480;
+  depo.yaz(_kKey('sure'), String(dk));
+  _kilitSureUIGuncelle(dk);
+  var ozelWrap = document.getElementById('kilitSureOzelWrap');
+  if(ozelWrap) ozelWrap.style.display = 'none';
+  bildir('Otomatik kilit süresi: ' + dk + ' dakika');
 }
 
 function kilitSifreUnuttum(){
@@ -3935,7 +4001,7 @@ function _pdfOlustur(){
       doc.setTextColor(255,255,255);
       doc.setFontSize(14);
       doc.setFont('helvetica','bold');
-      doc.text('S-Katilim Pro Raporu', 14, 12);
+      doc.text('S-Katılım Pro Raporu', 14, 12);
       doc.setFontSize(9);
       doc.setFont('helvetica','normal');
       doc.text(sf + '  |  ' + tarih + '  |  sebasmobil AGPL V3.0', 150, 12);
@@ -4031,7 +4097,7 @@ function _pdfOlustur(){
     });
 
     // Kaydet
-    var dosyaAd = 'S-Katilim-Rapor-' + (sinifFiltre||'tum').replace(/ /g,'-') + '-' + tarih.replace(/\./g,'-') + '.pdf';
+    var dosyaAd = 'S-Katılım-Rapor-' + (sinifFiltre||'tum').replace(/ /g,'-') + '-' + tarih.replace(/\./g,'-') + '.pdf';
     doc.save(dosyaAd);
     bildir('PDF indirildi');
   }catch(err){
@@ -4359,7 +4425,7 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.0.27';
+var YENILIK_VER = 'Pro2.0.28';
 var YENILIKLER = [
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
@@ -5047,7 +5113,7 @@ function appVerGuncelle(){
   var v = appVerStr();
   var els = document.querySelectorAll('.ver, .footer-ver');
   els.forEach(function(el){ el.textContent = 'Pro '+v; });
-  document.title = 'S-Katilim Pro '+v;
+  document.title = 'S-Katılım Pro '+v;
 }
 appVerGuncelle(); // Versiyon göstergesini güncelle (fonksiyon tanımından sonra)
 
@@ -5167,7 +5233,27 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
       <div id="kilitGirisWrap">
         <!-- Ayarlar formu -->
         <div id="kilitAyarlarWrap" style="display:none">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">Sifre Ayarlari</div>
+          <!-- BÖLÜM 1: Otomatik Kilit Süresi (bağımsız) -->
+          <div style="background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:12px;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px">⏱ Otomatik Kilit Süresi</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px" id="kilitSureHizliWrap">
+              <button onclick="kilitSureSecHizli(5)" class="kilit-sure-btn" data-sure="5">5 dk</button>
+              <button onclick="kilitSureSecHizli(10)" class="kilit-sure-btn" data-sure="10">10 dk</button>
+              <button onclick="kilitSureSecHizli(20)" class="kilit-sure-btn" data-sure="20">20 dk</button>
+              <button onclick="kilitSureSecHizli(30)" class="kilit-sure-btn" data-sure="30">30 dk</button>
+              <button onclick="kilitSureSecHizli(40)" class="kilit-sure-btn" data-sure="40">40 dk</button>
+              <button onclick="kilitSureOzelGoster()" class="kilit-sure-btn" id="kilitSureOzelBtn">Özel</button>
+            </div>
+            <div id="kilitSureOzelWrap" style="display:none;display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <input id="kilitSureInp" type="number" min="1" max="480" value="30"
+                style="flex:1;padding:8px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;text-align:center">
+              <span style="font-size:13px;color:var(--t2);white-space:nowrap;font-weight:700">dakika</span>
+              <button onclick="kilitSureOzelKaydet()" style="padding:8px 12px;border:none;border-radius:var(--r-sm);background:var(--ac);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;white-space:nowrap">Ayarla</button>
+            </div>
+            <div id="kilitSureGosterge" style="font-size:11px;color:var(--ac);font-weight:700;text-align:center;padding:3px 0"></div>
+          </div>
+          <!-- BÖLÜM 2: Şifre Ayarları -->
+          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">🔑 Sifre Ayarlari</div>
           <input id="kilitYeniSifreInp" type="password" placeholder="Yeni sifre (en az 4 karakter)"
             style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:8px">
           <input id="kilitYeniSifreTekrar" type="password" placeholder="Sifreyi tekrar girin"
@@ -5177,15 +5263,8 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
             style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:8px">
           <input id="kilitCevapInp" type="text" placeholder="Cevap (buyuk/kucuk harf onemsiz)"
             style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;margin-bottom:12px">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px">Otomatik Kilit Suresi</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-            <input id="kilitSureInp" type="number" min="1" max="480" value="30"
-              style="flex:1;padding:10px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;text-align:center">
-            <span style="font-size:13px;color:var(--t2);white-space:nowrap;font-weight:700">dakika</span>
-          </div>
-          <div style="font-size:10px;color:var(--t3);margin-bottom:14px">Giris sonrasi kac dakika aktif kalsin? (1-480)</div>
           <button onclick="kilitSifreDegistir()"
-            style="width:100%;padding:11px;border:none;border-radius:var(--r-sm);background:var(--ok);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px">Kaydet</button>
+            style="width:100%;padding:11px;border:none;border-radius:var(--r-sm);background:var(--ok);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:8px">Sifreyi Kaydet</button>
           <button onclick="kilitKaldir()"
             style="width:100%;padding:9px;border:1.5px solid var(--err);border-radius:var(--r-sm);background:none;color:var(--err);font-size:12px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif">Kilidi Kaldir</button>
         </div>
