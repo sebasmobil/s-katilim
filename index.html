@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Katılım">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katılım Pro 2.1.3</title>
+<title>S-Katılım Pro 2.1.6</title>
 <!-- ═══════ PWA: Web App Manifest + İkonlar ═══════ -->
 <!-- Apple Touch Icon (iOS Ana Ekrana Ekle) -->
 <link rel="apple-touch-icon" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAENElEQVR42u3dwXHUWhRFUUdBWmRCCORDhAxNMWFGUcYt6d6316lSAKj3epI/H/fbm5mZmZmZmZmZmZmZmV2yr99+vrsLdkzMd13utmVih8IED4QJHggTPQwmfBBM9DCY8EEw4YNgwgfBhA+C8F0gCN8FgvhdEAjfBYL4XRCI3wWB8F0giH/M9XsQ2FHxXzkIhJ+J/SQUaj4k/g2DQPy56LdgUPei+E8aBOLPRT8Zg9qHxV8cBOJ/t3cIivHbHAjiFz8E4hd+HYL4xQ8BAMIvQxC/+CEQv/ghEL/w4xAAEH8agfjFD4H4xQ+B+MUPAQDi7yIQv/ghEL/4IYgDsDYC8RsEABgA4jcIGgAMgvEAxG9pBABYFoD4LY1A/PYUAqe/eQo4/e2V+/Lj+5/LU0D8uej/dkEAQDb+VyIAQPwr45+MwOlvt8T/KgTrnwLi78Y/FYHT326LP/0UEL/40z8LAABAFoDXH/Gn/5Oo+MU//S/GALDL4wdA/AC8cCsAOP3Fv+V/kgPALosfAPGL/4IBYNn4xwPw+gPA1Rv9GgSA0x8A8Yt/EQIAxL8qfgAsHf9YAN7//dC7EcDLEGwGMOWDdfoDcGv8Uz9g8S98DdoEYNuHLX4ARoQBwJz7AMBDUTj9AVgL4JQPvx4/AA+HIX4A0gCmIqjED8CQQPzQC0AawKQ4Sqc/AE7IdPwACCUd/zgAlb8DmBhMMX4IIEif/l6BBgO4K55y/ADEnwL1+AEIIxA/AGkE4gcgi8DpD0AWgfgByCIQPwBZBOIHII1A/AAcBeAj8Tn9owAgEP9d8QMw8FVI/AsBnPi7QZ9CIP5lrz8n/3LcuxE4/QEY98tx70IgfgCyCMS//P2/8CvSxQ9A/ksyxO/1J/8tMQAAkP6mGPF7/cl/VZL4Ach/WZ74vf7kvzAPAKd//hsjxQ/ApQAgEP8qANXvDRa/0z//xdniByD7GvQEAvEPBVB+CtyFwOk/OH5PAfGnT39PAf+yK336ewpcg0D8AKz7MAEIA4DgdQjEvzD+qwDUEIh/MQBPgc8hKO3I+D0F/h+B+A8BAMHHEYj/oPgB+DeI8hIAILB0/FcCgED8KwBAYOn4AbA8AAgsHf/VACDoxr8GAATiT8cPgfjz8d8BAIJG/GsBQCD+dPwQiD8fPwTiz8d/FwAIzon/OAB3IgBhd/hHxg+B+PPxQyD+fPx3AwBhR/gpABCIPx3/kwhAmBd+Mn4IxJ+P/2kEIDwbvviHIKhCePqeq34YggqECfdZ7YMRnIhh0n1V+SIE2yFMu5fqXopgE4ap907VhyCYBmLDfVLz4RDuQrHtXqg3iuAjWE79s6kWguylVhCEbxCI3yAQv4EgfINA/AaC8A0E4RsIwjcQhG8gCN9AEL7BIHoDQfgGg+gNCMEbEII3KMRuZ6JxF8zMzMzMzMzMzMzsov0C3hRS3hsgLFUAAAAASUVORK5CYII=">
@@ -458,6 +458,19 @@ body{padding:0 0 72px}
 .srow:last-child{border-bottom:none}
 .sinfo{flex:1;font-size:14px;color:var(--t1)}
 .smeta{font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--t2);margin-right:6px}
+.ep-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:20px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t1);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.ep-chip:active{transform:scale(.96)}
+.ep-chip-aktif{background:var(--ac);color:#fff;border-color:var(--ac)}
+.grp-puan-btn{display:inline-flex;align-items:center;justify-content:center;gap:3px;padding:4px 10px;border-radius:20px;border:1.5px solid var(--bd);background:var(--bg);color:var(--t1);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;white-space:nowrap}
+.grp-puan-btn:active{transform:scale(.95)}
+.grp-plus{border-color:var(--plus);color:var(--plus)}
+.grp-plus:hover{background:var(--plus);color:#fff}
+.grp-minus{border-color:var(--minus);color:var(--minus)}
+.grp-minus:hover{background:var(--minus);color:#fff}
+.grp-uye-chip{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;background:var(--bg);border:1.5px solid var(--bd);border-radius:20px;color:var(--t1);cursor:pointer;transition:all .15s;user-select:none}
+.grp-uye-chip.secili{background:var(--ac);color:#fff;border-color:var(--ac)}
+.grp-uye-chip:active{transform:scale(.95)}
+.grp-secim-bar{margin-top:8px;padding-top:8px;border-top:1px dashed var(--bd);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .btn-del{background:none;border:none;cursor:pointer;color:var(--t3);font-size:17px;padding:2px 8px;line-height:1;transition:color .15s}
 .btn-del:hover{color:var(--err)}
 .ghd{font-family:JetBrains Mono,monospace;font-size:11px;margin-left:4px}
@@ -675,7 +688,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katılım <span class="ver">Pro 2.1.3</span></div>
+      <div class="hdr-h1">S-Katılım <span class="ver">Pro 2.1.6</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -1325,7 +1338,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katılım <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.1.3</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katılım <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.1.6</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1372,7 +1385,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katılım <span class="footer-ver">Pro 2.1.3</span> &nbsp;©sebasmobil&nbsp;
+      S-Katılım <span class="footer-ver">Pro 2.1.6</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -2904,15 +2917,17 @@ function puanAlToplam(idx){
   Object.keys(puanlar[idx]).forEach(function(k){ tp+=puanlar[idx][k].plus; tm+=puanlar[idx][k].minus; });
   return {plus:tp,minus:tm};
 }
-function puanVer(idx, tip, kat){
-  if(!yetkiVar()){ _yetkiKontrol(function(){ puanVer(idx,tip,kat); }); return; }
+function puanVer(idx, tip, kat, not){
+  if(!yetkiVar()){ _yetkiKontrol(function(){ puanVer(idx,tip,kat,not); }); return; }
   kat = kat || aktifKat;
   if(!puanlar[idx]) puanlar[idx]={};
   if(!puanlar[idx][kat]) puanlar[idx][kat]={plus:0,minus:0};
   if(tip==='+') puanlar[idx][kat].plus++; else puanlar[idx][kat].minus++;
   // Puan geçmişine ekle
   var s=ogr[idx]||{};
-  puanGecmis.unshift({ts:Date.now(),idx:idx,kat:kat,tip:tip,ad:s.ad||'',sinif:s.sinif||'',numara:s.numara||''});
+  var kayit={ts:Date.now(),idx:idx,kat:kat,tip:tip,ad:s.ad||'',sinif:s.sinif||'',numara:s.numara||''};
+  if(not && not.trim()) kayit.not=not.trim();
+  puanGecmis.unshift(kayit);
   if(puanGecmis.length>500) puanGecmis=puanGecmis.slice(0,500);
   kaydet();
   rPuanGuncelle();
@@ -2921,7 +2936,145 @@ function puanVer(idx, tip, kat){
   srchPuanGoster();
   hizliPuanGoster();
   var katObj=PUAN_KATS.find(function(k){return k.id===kat;})||{emoji:'⭐',ad:'Genel'};
-  bildir(tip==='+' ? katObj.emoji+' +1 '+katObj.ad : '❌ -1 '+katObj.ad);
+  bildir(tip==='+' ? katObj.emoji+' +1 '+katObj.ad+(not?' · '+not:'') : '❌ -1 '+katObj.ad+(not?' · '+not:''));
+}
+
+/* ===================== GRUP TOPLU PUAN ===================== */
+function grupPuanVerEtiketli(uyeler, tip){
+  var eski=document.getElementById('_etiketPanel');
+  if(eski) eski.remove();
+  var hizliNotlar=tip==='+'?HIZLI_NOTLAR_PLUS:HIZLI_NOTLAR_MINUS;
+  var renk=tip==='+'?'var(--plus)':'var(--minus)';
+  var katHtml=PUAN_KATS.map(function(k){
+    var aktif=k.id===aktifKat;
+    return '<button class="ep-chip'+(aktif?' ep-chip-aktif':'')+'" data-kat="'+k.id+'"'
+      +(aktif?' style="background:var(--ac);color:#fff;border-color:var(--ac)"':'')+'>'+k.emoji+' '+k.ad+'</button>';
+  }).join('');
+  var notHtml=hizliNotlar.map(function(n){
+    return '<button class="ep-chip ep-chip-not" data-not="'+n+'">'+n+'</button>';
+  }).join('');
+  var adlar = uyeler.map(function(i){ return ogr[i]?ogr[i].ad:'?'; });
+  var ozet = adlar.length<=4 ? adlar.join(', ') : adlar.slice(0,3).join(', ')+' ve '+(adlar.length-3)+' kişi daha';
+  var ov=document.createElement('div');
+  ov.id='_etiketPanel';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9800;display:flex;align-items:flex-end;justify-content:center';
+  ov.innerHTML=
+    '<div style="background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r) var(--r) 0 0;padding:16px;width:100%;max-width:600px;box-shadow:var(--shadow2)">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+    +'<div><span style="font-size:22px">'+(tip==='+'?'⭐':'❌')+'</span>'
+    +' <span style="font-weight:900;font-size:14px;color:'+renk+'">'+uyeler.length+' Öğrenci</span>'
+    +'<div style="font-size:11px;color:var(--t2);font-family:JetBrains Mono,monospace;margin-top:2px">'+ozet+'</div></div>'
+    +'<button id="_epKapat" style="background:none;border:none;font-size:22px;color:var(--t2);cursor:pointer;line-height:1">×</button>'
+    +'</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">KATEGORİ</div>'
+    +'<div id="_epKatWrap" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+katHtml+'</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">HIZLI NOT</div>'
+    +'<div id="_epNotWrap" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">'+notHtml+'</div>'
+    +'<input id="_epNotInp" class="inp" placeholder="Not yaz (opsiyonel)..." style="margin-bottom:12px">'
+    +'<button id="_epKaydet" class="btn-s primary" style="width:100%;font-size:15px;padding:12px">'
+    +(tip==='+'?'✅ '+uyeler.length+' Öğrenciye +1 Puan Ver':'❌ '+uyeler.length+' Öğrenciye −1 Puan Ver')
+    +'</button>'
+    +'</div>';
+  document.body.appendChild(ov);
+  var secilenKat=aktifKat;
+  ov.querySelectorAll('.ep-chip[data-kat]').forEach(function(b){
+    b.addEventListener('click',function(){
+      secilenKat=this.dataset.kat;
+      ov.querySelectorAll('.ep-chip[data-kat]').forEach(function(x){x.style.cssText='';});
+      this.style.background='var(--ac)';this.style.color='#fff';this.style.borderColor='var(--ac)';
+    });
+  });
+  ov.querySelectorAll('.ep-chip-not').forEach(function(b){
+    b.addEventListener('click',function(){
+      var inp=document.getElementById('_epNotInp');
+      inp.value=this.dataset.not;
+      ov.querySelectorAll('.ep-chip-not').forEach(function(x){x.style.cssText='';});
+      this.style.background='var(--ac)';this.style.color='#fff';this.style.borderColor='var(--ac)';
+    });
+  });
+  document.getElementById('_epNotInp').addEventListener('input',function(){
+    ov.querySelectorAll('.ep-chip-not').forEach(function(x){x.style.cssText='';});
+  });
+  document.getElementById('_epKapat').addEventListener('click',function(){ ov.remove(); });
+  document.getElementById('_epKaydet').addEventListener('click',function(){
+    aktifKat=secilenKat;
+    var notVal=(document.getElementById('_epNotInp').value||'').trim();
+    ov.remove();
+    uyeler.forEach(function(i){ puanVer(i,tip,secilenKat,notVal); });
+    bildir((tip==='+'?'✅ +1':'❌ −1')+' → '+uyeler.length+' öğrenci');
+  });
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+  document.getElementById('_epNotInp').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('_epKaydet').click();});
+}
+
+/* ===================== ETİKET + NOT MİNİ-PANELİ ===================== */
+var HIZLI_NOTLAR_PLUS  = ['Harika!','Aktif katılım','Doğru cevap','Çok çalıştı','Ödev tam','Söz hakkı aldı'];
+var HIZLI_NOTLAR_MINUS = ['Eksik ödev','Katılmadı','Yanlış cevap','Dikkatsizlik','Geç geldi','Kural ihlali'];
+
+function puanVerEtiketli(idx, tip){
+  // Varsa kaldır
+  var eski=document.getElementById('_etiketPanel');
+  if(eski) eski.remove();
+  var s=ogr[idx]||{};
+  var hizliNotlar=tip==='+'?HIZLI_NOTLAR_PLUS:HIZLI_NOTLAR_MINUS;
+  var renk=tip==='+'?'var(--plus)':'var(--minus)';
+  var katHtml=PUAN_KATS.map(function(k){
+    var aktif=k.id===aktifKat;
+    return '<button class="ep-chip'+(aktif?' ep-chip-aktif':'')+'" data-kat="'+k.id+'"'
+      +(aktif?' style="background:var(--ac);color:#fff;border-color:var(--ac)"':'')+'>'+k.emoji+' '+k.ad+'</button>';
+  }).join('');
+  var notHtml=hizliNotlar.map(function(n){
+    return '<button class="ep-chip ep-chip-not" data-not="'+n+'">'+n+'</button>';
+  }).join('');
+  var ov=document.createElement('div');
+  ov.id='_etiketPanel';
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9800;display:flex;align-items:flex-end;justify-content:center';
+  ov.innerHTML=
+    '<div style="background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r) var(--r) 0 0;padding:16px;width:100%;max-width:600px;box-shadow:var(--shadow2)">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+    +'<div><span style="font-size:22px">'+(tip==='+'?'⭐':'❌')+'</span>'
+    +' <span style="font-weight:900;font-size:15px;color:'+renk+'">'+s.ad+'</span>'
+    +'<span style="font-size:11px;color:var(--t2);margin-left:6px;font-family:JetBrains Mono,monospace">'+s.sinif+'</span></div>'
+    +'<button id="_epKapat" style="background:none;border:none;font-size:22px;color:var(--t2);cursor:pointer;line-height:1">×</button>'
+    +'</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">KATEGORİ</div>'
+    +'<div id="_epKatWrap" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+katHtml+'</div>'
+    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">HIZLI NOT</div>'
+    +'<div id="_epNotWrap" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">'+notHtml+'</div>'
+    +'<input id="_epNotInp" class="inp" placeholder="Not yaz (opsiyonel)..." style="margin-bottom:12px">'
+    +'<button id="_epKaydet" class="btn-s primary" style="width:100%;font-size:15px;padding:12px">'
+    +(tip==='+'?'✅ +1 Puan Ver':'❌ −1 Puan Ver')
+    +'</button>'
+    +'</div>';
+  document.body.appendChild(ov);
+  var secilenKat=aktifKat;
+  ov.querySelectorAll('.ep-chip[data-kat]').forEach(function(b){
+    b.addEventListener('click',function(){
+      secilenKat=this.dataset.kat;
+      ov.querySelectorAll('.ep-chip[data-kat]').forEach(function(x){x.classList.remove('ep-chip-aktif');x.style.cssText='';});
+      this.style.background='var(--ac)';this.style.color='#fff';this.style.borderColor='var(--ac)';
+    });
+  });
+  ov.querySelectorAll('.ep-chip-not').forEach(function(b){
+    b.addEventListener('click',function(){
+      var inp=document.getElementById('_epNotInp');
+      inp.value=this.dataset.not;
+      ov.querySelectorAll('.ep-chip-not').forEach(function(x){x.style.cssText='';});
+      this.style.background='var(--ac)';this.style.color='#fff';this.style.borderColor='var(--ac)';
+    });
+  });
+  document.getElementById('_epNotInp').addEventListener('input',function(){
+    ov.querySelectorAll('.ep-chip-not').forEach(function(x){x.style.cssText='';});
+  });
+  document.getElementById('_epKapat').addEventListener('click',function(){ ov.remove(); });
+  document.getElementById('_epKaydet').addEventListener('click',function(){
+    aktifKat=secilenKat;
+    var notVal=(document.getElementById('_epNotInp').value||'').trim();
+    ov.remove();
+    puanVer(idx,tip,secilenKat,notVal);
+  });
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+  document.getElementById('_epNotInp').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('_epKaydet').click();});
 }
 function rPuanGuncelle(){
   if(secilenOgrIdx===null) return;
@@ -3267,17 +3420,90 @@ function gruplamaGoster(sinif){
   // Grup listesi
   grps.forEach(function(g,gi){
     var uyeAdlar = g.uyeler.map(function(idx){return ogr[idx]?ogr[idx].ad:'?';});
-    h+='<div style="margin-bottom:10px;padding:10px 12px;background:var(--bg2);border-radius:var(--r-sm);border:1.5px solid var(--bd)">';
-    h+='<div style="font-size:13px;font-weight:800;color:var(--ac);margin-bottom:6px">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">('+g.uyeler.length+' kişi)</span></div>';
-    h+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
-    uyeAdlar.forEach(function(ad){
-      h+='<span style="font-size:11px;font-weight:700;padding:3px 8px;background:var(--bg);border:1.5px solid var(--bd);border-radius:20px;color:var(--t1)">'+ad+'</span>';
-    });
+    h+='<div class="grp-kart" data-gi="'+gi+'" style="margin-bottom:10px;padding:10px 12px;background:var(--bg2);border-radius:var(--r-sm);border:1.5px solid var(--bd)">';
+    // Başlık + tümüne puan butonları
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">';
+    h+='<div style="font-size:13px;font-weight:800;color:var(--ac)">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">('+g.uyeler.length+' kişi)</span></div>';
+    h+='<div style="display:flex;gap:5px;align-items:center">';
+    h+='<span style="font-size:10px;font-family:JetBrains Mono,monospace;color:var(--t2)">Tümüne:</span>';
+    h+='<button class="grp-puan-btn grp-plus grp-tumune" data-gi="'+gi+'" title="Tüm gruba +1">+</button>';
+    h+='<button class="grp-puan-btn grp-minus grp-tumune" data-gi="'+gi+'" title="Tüm gruba −1">−</button>';
     h+='</div></div>';
+    // Üye chip'leri — tıklanınca seçilir, seçilenlere toplu puan
+    h+='<div class="grp-uyeler" style="display:flex;flex-wrap:wrap;gap:5px">';
+    g.uyeler.forEach(function(uyeIdx, ui){
+      var ad = ogr[uyeIdx]?ogr[uyeIdx].ad:'?';
+      h+='<span class="grp-uye-chip" data-idx="'+uyeIdx+'" title="Seç/kaldır">'+ad+'</span>';
+    });
+    h+='</div>';
+    // Seçilenlere puan satırı (başta gizli, seçim yapılınca görünür)
+    h+='<div class="grp-secim-bar" style="display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--bd);display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+    h+='<span class="grp-secim-sayi" style="font-size:11px;font-family:JetBrains Mono,monospace;color:var(--t2)">0 seçili</span>';
+    h+='<button class="grp-puan-btn grp-plus grp-secim-plus" title="Seçilenlere +1">+ Seçilenlere</button>';
+    h+='<button class="grp-puan-btn grp-minus grp-secim-minus" title="Seçilenlere −1">− Seçilenlere</button>';
+    h+='<button class="grp-secim-temizle" style="font-size:11px;color:var(--t2);background:none;border:none;cursor:pointer;text-decoration:underline">Temizle</button>';
+    h+='</div>';
+    h+='</div>';
   });
   // Geçmiş bölümü
   h+=grupGecmisHTML(sinif);
   wrap.innerHTML=h;
+
+  // ── Grup puan butonları event binding ──
+  // Tümüne + / -
+  wrap.querySelectorAll('.grp-tumune').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var gi = parseInt(this.dataset.gi);
+      var g = grps[gi];
+      if(!g||!g.uyeler.length) return;
+      var tip = this.classList.contains('grp-plus') ? '+' : '-';
+      grupPuanVerEtiketli(g.uyeler.slice(), tip);
+    });
+  });
+
+  // Üye chip seçimi
+  wrap.querySelectorAll('.grp-uye-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      this.classList.toggle('secili');
+      var kart = this.closest('.grp-kart');
+      if(!kart) return;
+      var seciliChipler = kart.querySelectorAll('.grp-uye-chip.secili');
+      var bar = kart.querySelector('.grp-secim-bar');
+      var sayi = kart.querySelector('.grp-secim-sayi');
+      if(bar){
+        bar.style.display = seciliChipler.length ? 'flex' : 'none';
+        if(sayi) sayi.textContent = seciliChipler.length + ' seçili';
+      }
+    });
+  });
+
+  // Seçilenlere + / -
+  wrap.querySelectorAll('.grp-secim-plus, .grp-secim-minus').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var kart = this.closest('.grp-kart');
+      if(!kart) return;
+      var seciliChipler = kart.querySelectorAll('.grp-uye-chip.secili');
+      var uyeler = Array.from(seciliChipler).map(function(c){ return parseInt(c.dataset.idx); });
+      var tip = this.classList.contains('grp-secim-plus') ? '+' : '-';
+      if(!uyeler.length) return;
+      grupPuanVerEtiketli(uyeler, tip);
+      // Seçimi temizle
+      seciliChipler.forEach(function(c){ c.classList.remove('secili'); });
+      var bar = kart.querySelector('.grp-secim-bar');
+      if(bar) bar.style.display = 'none';
+    });
+  });
+
+  // Temizle
+  wrap.querySelectorAll('.grp-secim-temizle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var kart = this.closest('.grp-kart');
+      if(!kart) return;
+      kart.querySelectorAll('.grp-uye-chip.secili').forEach(function(c){ c.classList.remove('secili'); });
+      var bar = kart.querySelector('.grp-secim-bar');
+      if(bar) bar.style.display = 'none';
+    });
+  });
 }
 
 function grupGecmisHTML(sinif){
@@ -3301,14 +3527,34 @@ function grupGecmisHTML(sinif){
     h+='</div>';
     h+='</div>';
     h+='<div id="gg_'+sinif+'_'+gercekIdx+'" style="display:none;padding:10px 12px">';
-    kayit.gruplar.forEach(function(g){
-      h+='<div style="margin-bottom:6px">';
-      h+='<div style="font-size:11px;font-weight:800;color:var(--ac);margin-bottom:3px">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3)">('+g.uyeAdlar.length+' kişi)</span></div>';
-      h+='<div style="display:flex;flex-wrap:wrap;gap:4px">';
-      g.uyeAdlar.forEach(function(ad){
-        h+='<span style="font-size:10px;font-weight:700;padding:2px 7px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:20px;color:var(--t1)">'+ad+'</span>';
-      });
+    kayit.gruplar.forEach(function(g, ggi){
+      var ggId='gg_grp_'+sinif+'_'+gercekIdx+'_'+ggi;
+      h+='<div class="gg-kart" style="margin-bottom:8px;padding:8px 10px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm)">';
+      // Başlık + tümüne butonlar
+      h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:5px">';
+      h+='<div style="font-size:11px;font-weight:800;color:var(--ac)">'+g.ad+' <span style="font-family:JetBrains Mono,monospace;font-size:9px;color:var(--t3)">('+g.uyeAdlar.length+' kişi)</span></div>';
+      h+='<div style="display:flex;gap:4px;align-items:center">';
+      h+='<span style="font-size:9px;font-family:JetBrains Mono,monospace;color:var(--t2)">Tümüne:</span>';
+      h+='<button class="grp-puan-btn grp-plus gg-tumune" data-sinif="'+sinif+'" data-ki="'+gercekIdx+'" data-ggi="'+ggi+'" title="Tüm gruba +1" style="font-size:11px;padding:3px 8px">+</button>';
+      h+='<button class="grp-puan-btn grp-minus gg-tumune" data-sinif="'+sinif+'" data-ki="'+gercekIdx+'" data-ggi="'+ggi+'" title="Tüm gruba −1" style="font-size:11px;padding:3px 8px">−</button>';
       h+='</div></div>';
+      // Seçilebilir üye chip'leri
+      h+='<div class="grp-uyeler" style="display:flex;flex-wrap:wrap;gap:4px">';
+      g.uyeAdlar.forEach(function(ad){
+        // idx'i isimden bul
+        var uyeIdx = -1;
+        for(var oi=0;oi<ogr.length;oi++){ if(ogr[oi].ad===ad){ uyeIdx=oi; break; } }
+        h+='<span class="grp-uye-chip" data-idx="'+uyeIdx+'" data-ad="'+ad+'" style="font-size:10px;padding:2px 8px">'+ad+'</span>';
+      });
+      h+='</div>';
+      // Seçilenlere puan satırı
+      h+='<div class="grp-secim-bar" style="display:none;margin-top:7px;padding-top:7px;border-top:1px dashed var(--bd)">';
+      h+='<span class="grp-secim-sayi" style="font-size:10px;font-family:JetBrains Mono,monospace;color:var(--t2)">0 seçili</span>';
+      h+='<button class="grp-puan-btn grp-plus grp-secim-plus" style="font-size:11px;padding:3px 8px">+ Seçilenlere</button>';
+      h+='<button class="grp-puan-btn grp-minus grp-secim-minus" style="font-size:11px;padding:3px 8px">− Seçilenlere</button>';
+      h+='<button class="grp-secim-temizle" style="font-size:10px;color:var(--t2);background:none;border:none;cursor:pointer;text-decoration:underline">Temizle</button>';
+      h+='</div>';
+      h+='</div>';
     });
     h+='</div>';
     h+='</div>';
@@ -3320,7 +3566,79 @@ function grupGecmisHTML(sinif){
 function grupGecmisToggle(id){
   var el=document.getElementById(id);
   if(!el) return;
-  el.style.display = el.style.display==='none'?'block':'none';
+  var acildi = el.style.display==='none';
+  el.style.display = acildi ? 'block' : 'none';
+  if(!acildi) return;
+  // Açılınca event'leri bağla (tekrar bağlamayı önlemek için flag)
+  if(el._eventsBound) return;
+  el._eventsBound = true;
+
+  // Tümüne butonları
+  el.querySelectorAll('.gg-tumune').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var sinif=this.dataset.sinif, ki=parseInt(this.dataset.ki), ggi=parseInt(this.dataset.ggi);
+      var kayitlar = grupGecmis.filter(function(g){return g.sinif===sinif;});
+      var kayit = kayitlar[ki];
+      if(!kayit) return;
+      var g = kayit.gruplar[ggi];
+      if(!g) return;
+      var tip = this.classList.contains('grp-plus') ? '+' : '-';
+      var uyeler = g.uyeAdlar.map(function(ad){
+        for(var i=0;i<ogr.length;i++){ if(ogr[i].ad===ad) return i; } return -1;
+      }).filter(function(i){ return i>=0; });
+      if(!uyeler.length){ bildir('Öğrenci bulunamadı'); return; }
+      grupPuanVerEtiketli(uyeler, tip);
+    });
+  });
+
+  // Üye chip seçimi
+  el.querySelectorAll('.grp-uye-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      this.classList.toggle('secili');
+      var kart = this.closest('.gg-kart');
+      if(!kart) return;
+      var secili = kart.querySelectorAll('.grp-uye-chip.secili');
+      var bar = kart.querySelector('.grp-secim-bar');
+      var sayi = kart.querySelector('.grp-secim-sayi');
+      if(bar){ bar.style.display = secili.length ? 'flex' : 'none'; }
+      if(sayi) sayi.textContent = secili.length + ' seçili';
+    });
+  });
+
+  // Seçilenlere puan
+  el.querySelectorAll('.grp-secim-plus, .grp-secim-minus').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var kart = this.closest('.gg-kart');
+      if(!kart) return;
+      var secili = kart.querySelectorAll('.grp-uye-chip.secili');
+      var uyeler = Array.from(secili).map(function(c){
+        var idx = parseInt(c.dataset.idx);
+        if(idx>=0) return idx;
+        // isimden bul
+        var ad = c.dataset.ad;
+        for(var i=0;i<ogr.length;i++){ if(ogr[i].ad===ad) return i; }
+        return -1;
+      }).filter(function(i){ return i>=0; });
+      if(!uyeler.length) return;
+      var tip = this.classList.contains('grp-secim-plus') ? '+' : '-';
+      grupPuanVerEtiketli(uyeler, tip);
+      secili.forEach(function(c){ c.classList.remove('secili'); });
+      var bar = kart.querySelector('.grp-secim-bar');
+      if(bar) bar.style.display = 'none';
+    });
+  });
+
+  // Temizle
+  el.querySelectorAll('.grp-secim-temizle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var kart = this.closest('.gg-kart');
+      if(!kart) return;
+      kart.querySelectorAll('.grp-uye-chip.secili').forEach(function(c){ c.classList.remove('secili'); });
+      var bar = kart.querySelector('.grp-secim-bar');
+      if(bar) bar.style.display = 'none';
+    });
+  });
 }
 
 function grupKaydet(sinif){
@@ -3827,7 +4145,7 @@ function srchPuanGoster(){
       var idx=parseInt(this.dataset.idx);
       var tip=this.dataset.tip;
       if(tip==='edit'){ puanDuzenleAc(idx); return; }
-      puanVer(idx,tip);
+      puanVerEtiketli(idx,tip);
     });
   });
 }
@@ -3866,7 +4184,7 @@ function hizliPuanGoster(){
       var idx=parseInt(this.dataset.idx);
       var tip=this.dataset.tip;
       if(tip==='edit'){ puanDuzenleAc(idx); return; }
-      puanVer(idx,tip);
+      puanVerEtiketli(idx,tip);
     });
   });
 }
@@ -4618,11 +4936,11 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.1.3';
+var YENILIK_VER = 'Pro2.1.6';
 var YENILIKLER = [
-  { emoji:'✏️', baslik:'Öğrenci Düzenleme (2.1.3)', aciklama:'Veri Yönetimi > Kayıtlı Öğrenciler listesinde her öğrencinin yanındaki ✏️ butonuna tıklayarak sınıf, şube, okul no ve ad soyad düzenlenebilir.' },
-  { emoji:'🖥️', baslik:'Projektör kapanma düzeltmesi (2.1.3)', aciklama:'Masaüstü bilgisayarda projektör kapatma butonuna basınca ekranın açılıp kapanma döngüsüne girme sorunu giderildi.' },
-  { emoji:'📐', baslik:'Geniş ekran menü düzeltmesi (2.1.3)', aciklama:'Masaüstünde pencere genişleyince alt navigasyon menüsünün kaybolması sorunu giderildi.' },
+  { emoji:'✏️', baslik:'Öğrenci Düzenleme (2.1.6)', aciklama:'Veri Yönetimi > Kayıtlı Öğrenciler listesinde her öğrencinin yanındaki ✏️ butonuna tıklayarak sınıf, şube, okul no ve ad soyad düzenlenebilir.' },
+  { emoji:'🖥️', baslik:'Projektör kapanma düzeltmesi (2.1.6)', aciklama:'Masaüstü bilgisayarda projektör kapatma butonuna basınca ekranın açılıp kapanma döngüsüne girme sorunu giderildi.' },
+  { emoji:'📐', baslik:'Geniş ekran menü düzeltmesi (2.1.6)', aciklama:'Masaüstünde pencere genişleyince alt navigasyon menüsünün kaybolması sorunu giderildi.' },
   { emoji:'👥', baslik:'Coklu ogretmen profili', aciklama:'Baslik cubugundaki profil adina tiklayarak profiller arasinda gecis yapin. Her profil kendi ogrenci ve puan verisini bagimsiz saklar.' },
   { emoji:'➕', baslik:'Profil ekle ve sil', aciklama:'Yeni Profil Ekle butonu ile ogretmen profili olusturun, profil adini duzenleyin veya silin.' },
   { emoji:'🔄', baslik:'Anlik profil gecisi', aciklama:'Profil degisince tum veri (ogrenciler, puanlar, gecmis, tercihler) aninda o profile ait veriye gecer.' },
@@ -4892,7 +5210,7 @@ function puanGecmisGoster(){
     wrap.innerHTML='<div class="tbl-empty">Henüz puan verilmedi</div>';
     return;
   }
-  var h='<table class="tbl" style="font-size:12px"><thead><tr><th>Tarih</th><th>Öğrenci</th><th>Kat.</th><th>İşlem</th></tr></thead><tbody>';
+  var h='<table class="tbl" style="font-size:12px"><thead><tr><th>Tarih</th><th>Öğrenci</th><th>Kat.</th><th>İşlem</th><th>Not</th></tr></thead><tbody>';
   filtre.slice(0,50).forEach(function(g){
     var katObj=PUAN_KATS.find(function(k){return k.id===g.kat;})||{emoji:'⭐',ad:'Genel'};
     var tarih=new Date(g.ts);
@@ -4900,8 +5218,9 @@ function puanGecmisGoster(){
     h+='<tr>';
     h+='<td style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);white-space:nowrap">'+tarihStr+'</td>';
     h+='<td class="td-name" style="cursor:pointer" onclick="profilKartAc('+g.idx+')">'+g.ad+'<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)">'+g.sinif+'</span></td>';
-    h+='<td>'+katObj.emoji+'</td>';
+    h+='<td title="'+katObj.ad+'">'+katObj.emoji+'</td>';
     h+='<td style="font-weight:800;color:'+(g.tip==='+'?'var(--plus)':'var(--minus)')+'">'+( g.tip==='+'?'+1':'−1')+'</td>';
+    h+='<td style="font-size:11px;color:var(--t2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(g.not?'💬 '+g.not:'')+'</td>';
     h+='</tr>';
   });
   if(filtre.length>50) h+='<tr><td colspan="4" style="text-align:center;padding:8px;font-size:11px;color:var(--t3);font-family:JetBrains Mono,monospace">...ve '+(filtre.length-50)+' kayıt daha</td></tr>';
@@ -5289,7 +5608,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.1.3';
+var APP_VER_SABIT = '2.1.6';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
