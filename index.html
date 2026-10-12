@@ -48,7 +48,7 @@
 <meta name="apple-mobile-web-app-title" content="S-Katılım">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4f6ef7">
-<title>S-Katılım Pro 2.3.3</title>
+<title>S-Katılım Pro 2.3.6</title>
 <!-- ═══════ PWA: Web App Manifest + İkonlar ═══════ -->
 <!-- Apple Touch Icon (iOS Ana Ekrana Ekle) -->
 <link rel="apple-touch-icon" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAENElEQVR42u3dwXHUWhRFUUdBWmRCCORDhAxNMWFGUcYt6d6316lSAKj3epI/H/fbm5mZmZmZmZmZmZmZmV2yr99+vrsLdkzMd13utmVih8IED4QJHggTPQwmfBBM9DCY8EEw4YNgwgfBhA+C8F0gCN8FgvhdEAjfBYL4XRCI3wWB8F0giH/M9XsQ2FHxXzkIhJ+J/SQUaj4k/g2DQPy56LdgUPei+E8aBOLPRT8Zg9qHxV8cBOJ/t3cIivHbHAjiFz8E4hd+HYL4xQ8BAMIvQxC/+CEQv/ghEL/w4xAAEH8agfjFD4H4xQ+B+MUPAQDi7yIQv/ghEL/4IYgDsDYC8RsEABgA4jcIGgAMgvEAxG9pBABYFoD4LY1A/PYUAqe/eQo4/e2V+/Lj+5/LU0D8uej/dkEAQDb+VyIAQPwr45+MwOlvt8T/KgTrnwLi78Y/FYHT326LP/0UEL/40z8LAABAFoDXH/Gn/5Oo+MU//S/GALDL4wdA/AC8cCsAOP3Fv+V/kgPALosfAPGL/4IBYNn4xwPw+gPA1Rv9GgSA0x8A8Yt/EQIAxL8qfgAsHf9YAN7//dC7EcDLEGwGMOWDdfoDcGv8Uz9g8S98DdoEYNuHLX4ARoQBwJz7AMBDUTj9AVgL4JQPvx4/AA+HIX4A0gCmIqjED8CQQPzQC0AawKQ4Sqc/AE7IdPwACCUd/zgAlb8DmBhMMX4IIEif/l6BBgO4K55y/ADEnwL1+AEIIxA/AGkE4gcgi8DpD0AWgfgByCIQPwBZBOIHII1A/AAcBeAj8Tn9owAgEP9d8QMw8FVI/AsBnPi7QZ9CIP5lrz8n/3LcuxE4/QEY98tx70IgfgCyCMS//P2/8CvSxQ9A/ksyxO/1J/8tMQAAkP6mGPF7/cl/VZL4Ach/WZ74vf7kvzAPAKd//hsjxQ/ApQAgEP8qANXvDRa/0z//xdniByD7GvQEAvEPBVB+CtyFwOk/OH5PAfGnT39PAf+yK336ewpcg0D8AKz7MAEIA4DgdQjEvzD+qwDUEIh/MQBPgc8hKO3I+D0F/h+B+A8BAMHHEYj/oPgB+DeI8hIAILB0/FcCgED8KwBAYOn4AbA8AAgsHf/VACDoxr8GAATiT8cPgfjz8d8BAIJG/GsBQCD+dPwQiD8fPwTiz8d/FwAIzon/OAB3IgBhd/hHxg+B+PPxQyD+fPx3AwBhR/gpABCIPx3/kwhAmBd+Mn4IxJ+P/2kEIDwbvviHIKhCePqeq34YggqECfdZ7YMRnIhh0n1V+SIE2yFMu5fqXopgE4ap907VhyCYBmLDfVLz4RDuQrHtXqg3iuAjWE79s6kWguylVhCEbxCI3yAQv4EgfINA/AaC8A0E4RsIwjcQhG8gCN9AEL7BIHoDQfgGg+gNCMEbEII3KMRuZ6JxF8zMzMzMzMzMzMzsov0C3hRS3hsgLFUAAAAASUVORK5CYII=">
@@ -145,7 +145,10 @@ body.gece{
 }
 
 /* ── TEMEL ── */
-html,body{background:var(--pg);color:var(--t1);font-family:'Nunito',Arial,sans-serif;font-size:15px;min-height:100vh;-webkit-font-smoothing:antialiased}
+html,body{background:var(--pg);color:var(--t1);font-family:'Nunito',Arial,sans-serif;font-size:var(--app-fs,15px);min-height:100vh;-webkit-font-smoothing:antialiased}
+/* Yazı boyutu zoom — sadece içerik, header hariç */
+.ana-sol,.ana-sag,#sayfaGecmis,#sayfaVeri{zoom:var(--app-zoom,1);}
+.header{zoom:1!important;}
 /* Ses butonları */
 .ses-opt{padding:7px 13px;border-radius:20px;border:1.5px solid var(--bd);background:var(--bg2);color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
 .ses-opt.aktif{background:var(--ac);border-color:var(--ac);color:#fff}
@@ -230,6 +233,8 @@ body{padding:0 0 72px}
 .mdot{width:8px;height:8px;border-radius:50%;background:var(--bd2);flex-shrink:0;transition:background .15s}
 .mtitle{font-size:14px;font-weight:800;color:var(--t1)}
 .mdesc{font-size:12px;color:var(--t2);padding-left:16px;line-height:1.4}
+.yazi-kademe-btn.aktif{border-color:var(--ac)!important;background:var(--ac2)!important;color:var(--ac)!important}
+.yazi-kademe-btn.aktif span{color:var(--ac)!important}
 
 /* ── ANİMASYON TOGGLE ── */
 .anim-card{background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r);padding:16px 18px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow)}
@@ -689,7 +694,7 @@ body{padding:0 0 72px}
   <!-- BAŞLIK -->
   <div class="header">
     <div class="hdr-left" style="display:flex;flex-direction:column">
-      <div class="hdr-h1">S-Katılım <span class="ver">Pro 2.3.3</span></div>
+      <div class="hdr-h1">S-Katılım <span class="ver">Pro 2.3.5</span></div>
       <div id="aktifProfilGoster" onclick="profilModalAc()" title="Profil değiştir"
         style="display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:3px 9px 3px 5px;background:var(--ac2);border:1.5px solid var(--ac3);border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;max-width:160px;overflow:hidden">
         <span style="font-size:14px;flex-shrink:0">👨‍🏫</span>
@@ -713,6 +718,14 @@ body{padding:0 0 72px}
       <div class="ticon-wrap" id="temaBtnWrap">
         <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
         <span class="ticon-lbl">Tema</span>
+      </div>
+      <div class="ticon-wrap" onclick="yaziBoyutuDegistir(-1)" title="Yazıyı Küçült">
+        <div class="ticon" style="font-size:11px;font-weight:900">A−</div>
+        <span class="ticon-lbl">Küçült</span>
+      </div>
+      <div class="ticon-wrap" onclick="yaziBoyutuDegistir(1)" title="Yazıyı Büyüt">
+        <div class="ticon" style="font-size:14px;font-weight:900">A+</div>
+        <span class="ticon-lbl">Büyüt</span>
       </div>
     </div>
   </div>
@@ -767,6 +780,26 @@ body{padding:0 0 72px}
     </div>
   </div>
 
+
+  <!-- YAZI BOYUTU (folder) -->
+  <div class="folder-card">
+    <div class="folder-head" id="folderYaziBoyutuHead">
+      <div class="folder-title"><span class="folder-icon-wrap">🔤</span> Yazı Boyutu</div>
+      <span class="folder-arrow" id="folderYaziBoyutuArrow">▼</span>
+    </div>
+    <div class="folder-body" id="folderYaziBoyutuBody">
+      <div style="margin-top:10px">
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:10px;line-height:1.5">Tüm uygulama genelinde metin boyutunu ayarlayın. 5 kademe: çok küçük → çok büyük.</div>
+        <div style="display:flex;gap:6px;align-items:flex-end;justify-content:center">
+          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(0);bildir('Yazı: Çok Küçük (13px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:11px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Küçük</span></button>
+          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(1);bildir('Yazı: Küçük (14px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:13px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Küçük</span></button>
+          <button class="yazi-kademe-btn aktif" onclick="yaziBoyutuUygula(2);bildir('Yazı: Normal (15px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:15px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Normal</span></button>
+          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(3);bildir('Yazı: Büyük (%120)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:17px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Büyük</span></button>
+          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(4);bildir('Yazı: Çok Büyük (%130)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:19px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Büyük</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- SES AYARLARI (folder) -->
   <div class="folder-card">
@@ -1324,6 +1357,17 @@ body{padding:0 0 72px}
     </div>
   </div>
 
+  <!-- AKTİVİTE LOGU -->
+  <div class="folder-card" id="folderAktLogCard">
+    <div class="folder-head" id="folderAktLogHead">
+      <div class="folder-title"><span class="folder-icon-wrap">📋</span> Aktivite Logu</div>
+      <span class="folder-arrow" id="folderAktLogArrow">▼</span>
+    </div>
+    <div class="folder-body" id="folderAktLogBody">
+      <div id="_aktLogIcerik" style="padding:4px 0"></div>
+    </div>
+  </div>
+
 </div><!-- end sayfaVeri -->
 
 </div><!-- end .page -->
@@ -1417,7 +1461,7 @@ body{padding:0 0 72px}
     <div style="padding:4px 20px 12px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
       <div>
         <div style="font-size:18px;font-weight:900;color:var(--t1);letter-spacing:-.3px">🎉 Yenilikler</div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katılım <span style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.3.3</span></div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);margin-top:2px">S-Katılım <span class="ver-badge" style="background:var(--ac);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px">Pro 2.3.6</span></div>
       </div>
     </div>
     <!-- Liste -->
@@ -1464,7 +1508,7 @@ body{padding:0 0 72px}
       </div>
     </div>
     <div class="nav-footer-row">
-      S-Katılım <span class="footer-ver">Pro 2.3.3</span> &nbsp;©sebasmobil&nbsp;
+      S-Katılım <span class="footer-ver">Pro 2.3.5</span> &nbsp;©sebasmobil&nbsp;
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL V3.0</a>
       &nbsp;2026
     </div>
@@ -1893,6 +1937,7 @@ function _kilitUIGuncelle(){
       banner.style.background = 'var(--ok)';
       banner.onclick = function(){
         _KILITLI = true;
+        logEkle('KİLİT', 'Kilit manuel kapatıldı');
         clearTimeout(_kilitAcikTimer);
         _kilitGeriSayimDurdur();
         _kilitUIGuncelle();
@@ -2044,6 +2089,7 @@ function kilitDogrula(){
 
   if(girilenHash === kayit){
     _KILITLI = false;
+    logEkle('KİLİT', 'Kilit açıldı (şifre ile)');
     // Profil gecis callback varsa — kapat oncesi flag'i temizle ki kapat eski profile donmesin
     var _cb = _kilitOnayCallback;
     _kilitOnayCallback = null;
@@ -2060,6 +2106,7 @@ function kilitDogrula(){
     _kilitGeriSayimBaslat(_kilitSureDk);
     _kilitAcikTimer = setTimeout(function(){
       _KILITLI = true;
+      logEkle('KİLİT', 'Kilit otomatik kapandı (süre doldu)');
       _kilitGeriSayimDurdur();
       _kilitUIGuncelle();
       bildir('🔒 Yönetici modu otomatik kilitlendi');
@@ -2206,6 +2253,7 @@ function kilitKurtarmaDogrula(){
 
   if(tamam){
     _KILITLI = false;
+    logEkle('KİLİT', 'Kilit açıldı (gizli soru / master şifre ile kurtarma)');
     var _kurtarmaSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
     _kilitUIGuncelle();
     kilitModalKapat();
@@ -2357,6 +2405,7 @@ function yukle(){
     var gg=pdepo.al('grupGecmis'); if(gg){ var pgg=JSON.parse(gg); if(Array.isArray(pgg)) grupGecmis=pgg; }
     var tp=pdepo.al('timerProfiller'); if(tp){ var ptp=JSON.parse(tp); if(Array.isArray(ptp)&&ptp.length) timerProfiller=ptp; }
   }catch(e){}
+  _aktLogYukle();
   return ogr.length>0;
 }
 
@@ -2732,6 +2781,7 @@ function veriUygula(yuk){
   if(!yuk.length){bildir('Veri okunamadı');return;}
   if(!ogr.length){
     ogr=yuk; kaydet(); siniflariOlustur(); bosGoster(); baslikGuncelle(); gecmisiGoster(); listeyiGoster(); srchPuanGoster();
+    logEkle('VERİ', 'Öğrenci listesi yüklendi: '+yuk.length+' öğrenci');
     bildir(yuk.length+' öğrenci yüklendi'); return;
   }
   var ek=0, gn=0;
@@ -2741,6 +2791,7 @@ function veriUygula(yuk){
     if(idx===-1){ogr.push(s);ek++;} else {ogr[idx]=s;gn++;}
   }
   kaydet(); siniflariOlustur(); bosGoster(); baslikGuncelle(); gecmisiGoster(); listeyiGoster(); srchPuanGoster();
+  logEkle('VERİ', 'Öğrenci verisi içe aktarıldı: '+ek+' eklendi, '+gn+' güncellendi');
   bildir(ek+' eklendi, '+gn+' güncellendi');
 }
 
@@ -2942,8 +2993,10 @@ function yoklamaGoster(){
       if(!yoklama[seciliSinif]) yoklama[seciliSinif]=new Set();
       if(yoklama[seciliSinif].has(idx)){
         yoklama[seciliSinif].delete(idx);
+        logEkle('YOKLAMA', 'Devamsızlık kaldırıldı — '+seciliSinif, ogr[idx]?ogr[idx].ad:'');
       } else {
         yoklama[seciliSinif].add(idx);
+        logEkle('YOKLAMA', 'Devamsız işaretlendi — '+seciliSinif, ogr[idx]?ogr[idx].ad:'');
         // Seçilmişse kullanılandan da çıkar
         if(kullanilan[seciliSinif]) kullanilan[seciliSinif].delete(idx);
       }
@@ -3012,6 +3065,10 @@ function puanVer(idx, tip, kat, not){
   if(not && not.trim()) kayit.not=not.trim();
   puanGecmis.unshift(kayit);
   if(puanGecmis.length>500) puanGecmis=puanGecmis.slice(0,500);
+  var katObj2=PUAN_KATS.find(function(k){return k.id===kat;})||{emoji:'⭐',ad:kat};
+  var logDetay = (tip==='+'?'+ ':'-1 ')+katObj2.emoji+' '+katObj2.ad+(kayit.not?' ('+kayit.not+')':'');
+  if(s.sinif) logDetay += ' — '+s.sinif+(s.numara?' #'+s.numara:'');
+  logEkle('PUAN', logDetay, s.ad||'');
   kaydet();
   rPuanGuncelle();
   puanOzetGoster();
@@ -4376,6 +4433,7 @@ function ogrenciEkle(){
     if(idx!==-1){
       if(!confirm(no+' no kayıtlı: '+ogr[idx].ad+'\nGüncelle?')) return;
       ogr[idx]={sinif:sinif,numara:no,ad:ad}; kaydet();
+      logEkle('ÖĞRENCİ', 'Bilgi güncellendi — '+sinif+(no?' #'+no:''), ad);
       document.getElementById('iNo').value=''; document.getElementById('iAd').value='';
       siniflariOlustur(); baslikGuncelle(); listeyiGoster(); srchPuanGoster();
       if(seciliSinif===sinif){gecmisiGoster();kalanlariGoster();}
@@ -4383,6 +4441,7 @@ function ogrenciEkle(){
     }
   }
   ogr.push({sinif:sinif,numara:no,ad:ad});
+  logEkle('ÖĞRENCİ', 'Öğrenci eklendi — '+sinif+(no?' #'+no:''), ad);
   document.getElementById('iNo').value=''; document.getElementById('iAd').value='';
   kaydet(); siniflariOlustur(); baslikGuncelle(); listeyiGoster(); srchPuanGoster();
   if(seciliSinif===sinif){gecmisiGoster();kalanlariGoster();}
@@ -4469,6 +4528,7 @@ function ogrenciDuzenleKaydet(){
     }
   }
   ogr[_duzenleIdx] = {sinif:sinif, numara:no, ad:ad};
+  logEkle('ÖĞRENCİ', 'Bilgi düzenlendi — '+sinif+(no?' #'+no:''), ad);
   kaydet();
   var ov = document.getElementById('_duzenleOverlay');
   if(ov) ov.remove();
@@ -4553,6 +4613,7 @@ function sinifSil(){
   ogr.forEach(function(s,i){ if(s.sinif===sinif) idxler.push(i); });
   idxler.sort(function(a,b){ return b-a; });
   idxler.forEach(function(idx){ ogrenciSilSessiz(idx); });
+  logEkle('SINIF', sinif+' sınıfı silindi ('+etkilenen.length+' öğrenci)');
   kaydet();
   siniflariOlustur(); baslikGuncelle(); listeyiGoster(); srchPuanGoster(); hizliPuanGoster();
   sinifSilSelectDoldur(); sinifGuncelleSelectDoldur();
@@ -4563,6 +4624,7 @@ function sinifSil(){
 function sadecePuanlariSifirla(){
   if(!confirm('Tüm puan geçmişi ve puanlar sıfırlanacak. Öğrenciler korunur. Emin misiniz?')) return;
   puanlar = {}; puanGecmis = []; grupGecmis = [];
+  logEkle('VERİ', 'Tüm puanlar sıfırlandı (öğrenciler korundu)');
   kaydet();
   puanOzetGoster(); gecmisiGoster(); srchPuanGoster(); hizliPuanGoster();
   bildir('✅ Tüm puanlar sıfırlandı, öğrenciler korundu');
@@ -4632,6 +4694,7 @@ function sinifGuncelleUygula(){
   if(!confirm(kaynak + ' → ' + hedef + ' | ' + etkilenen.length + ' öğrenci güncellenecek. Emin misiniz?')) return;
 
   etkilenen.forEach(function(s){ s.sinif = hedef; });
+  logEkle('SINIF', kaynak+' → '+hedef+' toplu güncelleme ('+etkilenen.length+' öğrenci)');
   kaydet();
   siniflariOlustur();
   baslikGuncelle();
@@ -4657,6 +4720,7 @@ function sinifGuncelleUygula(){
 function ogrenciSilSessiz(idx){
   // Konfirm ve UI güncellemesi yok — toplu silme için
   if(!ogr[idx]) return;
+  logEkle('ÖĞRENCİ', 'Öğrenci silindi (toplu) — '+(ogr[idx].sinif||'')+(ogr[idx].numara?' #'+ogr[idx].numara:''), ogr[idx].ad||'');
   Object.keys(kullanilan).forEach(function(k){
     var ns=new Set();
     kullanilan[k].forEach(function(i){if(i<idx)ns.add(i);else if(i>idx)ns.add(i-1);});
@@ -4679,6 +4743,8 @@ function ogrenciSilSessiz(idx){
 function ogrenciSil(idx){
   if(!yetkiVar()){ _yetkiKontrol(function(){ ogrenciSil(idx); }); return; }
   if(!confirm(ogr[idx].ad+' silinsin mi?')) return;
+  var _silAd = ogr[idx].ad, _silSinif = ogr[idx].sinif, _silNo = ogr[idx].numara;
+  logEkle('ÖĞRENCİ', 'Öğrenci silindi — '+_silSinif+(_silNo?' #'+_silNo:''), _silAd);
   Object.keys(kullanilan).forEach(function(k){
     var ns=new Set();
     kullanilan[k].forEach(function(i){if(i<idx)ns.add(i);else if(i>idx)ns.add(i-1);});
@@ -4704,6 +4770,7 @@ function tumunuSil(){
   var ap = _profilListesi.find(function(p){return p.id===_aktifProfilId;});
   var apAd = ap ? ap.emoji+' '+ap.ad : 'Bu profil';
   if(!confirm(apAd+' profilindeki TUM veri silinsin mi? (Diger profiller etkilenmez)')) return;
+  logEkle('VERİ', 'TÜM VERİ SİLİNDİ — '+apAd);
   ogr=[]; seciliSinif=null; gecmis=[]; kullanilan={}; puanlar={};
   yoklama={}; puanGecmis=[]; gruplar={}; grupGecmis=[]; fotograflar={};
   secilenOgrIdx=null;
@@ -5322,8 +5389,10 @@ yedekListesiGoster();
 
 
 /* ===================== YENİLİKLER MODALI ===================== */
-var YENILIK_VER = 'Pro2.3.3';
+var YENILIK_VER = 'Pro2.3.6';
 var YENILIKLER = [
+  { emoji:'📋', baslik:'Aktivite Logu (2.3.5)', aciklama:'Veri Yönetimi > Aktivite Logu bölümünde tüm işlemler zaman damgasıyla kaydedilir: kilit açma/kapama, puan değişiklikleri, öğrenci işlemleri, yoklama, sınıf ve veri yönetimi.' },
+  { emoji:'🚨', baslik:'Şüpheli İşlem Tespiti (2.3.5)', aciklama:'Aktivite Logu şüpheli oturumları otomatik tespit eder: gece saati erişimi, kilit açılır açılmaz puan değişikliği, çok hızlı art arda işlem, hafta sonu erişimi. Anlık banner uyarısı gösterilir.' },
   { emoji:'✏️', baslik:'Öğrenci Düzenleme (2.3.3)', aciklama:'Veri Yönetimi > Kayıtlı Öğrenciler listesinde her öğrencinin yanındaki ✏️ butonuna tıklayarak sınıf, şube, okul no ve ad soyad düzenlenebilir.' },
   { emoji:'🖥️', baslik:'Projektör kapanma düzeltmesi (2.3.3)', aciklama:'Masaüstü bilgisayarda projektör kapatma butonuna basınca ekranın açılıp kapanma döngüsüne girme sorunu giderildi.' },
   { emoji:'📐', baslik:'Geniş ekran menü düzeltmesi (2.3.3)', aciklama:'Masaüstünde pencere genişleyince alt navigasyon menüsünün kaybolması sorunu giderildi.' },
@@ -6038,15 +6107,359 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.3.3';
+var APP_VER_SABIT = '2.3.9';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
-  var els = document.querySelectorAll('.ver, .footer-ver');
+  var els = document.querySelectorAll('.ver, .footer-ver, .ver-badge');
   els.forEach(function(el){ el.textContent = 'Pro '+APP_VER_SABIT; });
   document.title = 'S-Katılım Pro '+APP_VER_SABIT;
 }
 appVerGuncelle();
+// DOM hazır olduktan sonra bir kez daha çalıştır (script yüklenirken element henüz yoksa)
+document.addEventListener('DOMContentLoaded', appVerGuncelle);
+
+/* ===================== YAZI BOYUTU ===================== */
+// 5 kademe zoom: 0.85 / 0.92 / 1.00 / 1.08 / 1.18
+var _YAZI_KADEMELERI   = [0.85, 0.92, 1.00, 1.20, 1.30];
+var _YAZI_ETIKETLERI   = ['Çok Küçük','Küçük','Normal','Büyük','Çok Büyük'];
+var _yaziKademe = 2; // index 2 = 1.00 (başlangıç)
+
+function yaziBoyutuUygula(kademe){
+  _yaziKademe = Math.max(0, Math.min(_YAZI_KADEMELERI.length-1, kademe));
+  var zoom = _YAZI_KADEMELERI[_yaziKademe];
+  document.documentElement.style.setProperty('--app-zoom', zoom);
+  try{ depo.yaz('yaziKademe', _yaziKademe+''); }catch(e){}
+  var btns = document.querySelectorAll('.yazi-kademe-btn');
+  btns.forEach(function(b, i){ b.classList.toggle('aktif', i === _yaziKademe); });
+}
+
+function yaziBoyutuDegistir(yon){
+  yaziBoyutuUygula(_yaziKademe + yon);
+  bildir('Yazı: ' + _YAZI_ETIKETLERI[_yaziKademe] + ' (' + Math.round(_YAZI_KADEMELERI[_yaziKademe]*100) + '%)');
+}
+
+// Kayıtlı kademeyi yükle
+(function(){
+  try{
+    var k = depo.al('yaziKademe');
+    if(k !== null){ yaziBoyutuUygula(parseInt(k)||2); }
+    else { yaziBoyutuUygula(2); }
+  }catch(e){ yaziBoyutuUygula(2); }
+})();
+
+/* ===================== AKTİVİTE LOGU ===================== */
+var _aktiviteLog = [];
+
+function _aktLogKey(){ return (_aktifProfilId||'default') + '__aktiviteLog'; }
+
+function _aktLogYukle(){
+  try{
+    var raw = localStorage.getItem(_aktLogKey());
+    _aktiviteLog = raw ? JSON.parse(raw) : [];
+  }catch(e){ _aktiviteLog = []; }
+}
+
+function logEkle(tip, detay, ogrAd){
+  var kayit = { ts: Date.now(), tip: tip, detay: detay || '' };
+  if(ogrAd) kayit.ogrAd = ogrAd;
+  _aktiviteLog.unshift(kayit);
+  if(_aktiviteLog.length > 1000) _aktiviteLog = _aktiviteLog.slice(0, 1000);
+  try{ localStorage.setItem(_aktLogKey(), JSON.stringify(_aktiviteLog)); }catch(e){}
+  // Şüpheli işlem anlık tespiti
+  try{ _supheTespitEt(kayit); }catch(e){}
+}
+
+function _logZaman(ts){
+  var d = new Date(ts);
+  var p = function(n){ return n < 10 ? '0'+n : ''+n; };
+  return d.getFullYear()+'.'+p(d.getMonth()+1)+'.'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+}
+
+/* ===================== ŞÜPHELİ İŞLEM ANALİZİ ===================== */
+
+// Şüpheli işlem tespiti — her logEkle çağrısından sonra otomatik çalışır
+function _supheTespitEt(yeniKayit){
+  var uyarilar = [];
+  var log = _aktiviteLog;
+  var simdi = yeniKayit.ts;
+
+  // 1. GECEYARISı / ERKEN SABAH: 23:00–06:00 arası kilit açıldı veya puan değişti
+  if(yeniKayit.tip === 'KİLİT' || yeniKayit.tip === 'PUAN'){
+    var saat = new Date(simdi).getHours();
+    if(saat >= 23 || saat < 6){
+      uyarilar.push({
+        seviye: 'yuksek',
+        mesaj: 'Gece ' + _logSaat(simdi) + ' saatinde ' + (yeniKayit.tip === 'KİLİT' ? 'kilit açıldı' : 'puan değiştirildi') + (yeniKayit.ogrAd ? ' (' + yeniKayit.ogrAd + ')' : ''),
+        ts: simdi
+      });
+    }
+  }
+
+  // 2. KİLİT AÇILIR AÇILMAZ PUAN: Kilit açılmasından 30 saniye içinde puan değişikliği
+  if(yeniKayit.tip === 'PUAN'){
+    for(var i = 0; i < Math.min(log.length, 20); i++){
+      var k = log[i];
+      if(k.tip === 'KİLİT' && k.detay && k.detay.indexOf('açıldı') !== -1){
+        var fark = simdi - k.ts;
+        if(fark >= 0 && fark <= 30000){ // 30 saniye
+          uyarilar.push({
+            seviye: 'yuksek',
+            mesaj: 'Kilit açılmasından sadece ' + Math.round(fark/1000) + ' saniye sonra puan değiştirildi' + (yeniKayit.ogrAd ? ' — ' + yeniKayit.ogrAd : ''),
+            ts: simdi
+          });
+        }
+        break;
+      }
+    }
+  }
+
+  // 3. AYNI ÖĞRENCİDE HIZLI ART ARDA DEĞİŞİKLİK: 2 dakika içinde aynı öğrenciye 3+ işlem
+  if(yeniKayit.tip === 'PUAN' && yeniKayit.ogrAd){
+    var son2dk = log.filter(function(k){
+      return k.tip === 'PUAN' && k.ogrAd === yeniKayit.ogrAd && (simdi - k.ts) <= 120000;
+    });
+    if(son2dk.length >= 3){
+      uyarilar.push({
+        seviye: 'orta',
+        mesaj: yeniKayit.ogrAd + ' öğrencisine 2 dakika içinde ' + (son2dk.length+1) + ' puan işlemi yapıldı',
+        ts: simdi
+      });
+    }
+  }
+
+  // 4. KİLİT ÇOK KISA AÇIK KALDI: Açılıp 60 saniyede kapandı ve arada işlem var
+  if(yeniKayit.tip === 'KİLİT' && yeniKayit.detay && yeniKayit.detay.indexOf('kapandı') !== -1){
+    var acilis = null;
+    for(var j = 0; j < Math.min(log.length, 30); j++){
+      if(log[j].tip === 'KİLİT' && log[j].detay && log[j].detay.indexOf('açıldı') !== -1){
+        acilis = log[j];
+        break;
+      }
+    }
+    if(acilis){
+      var acikKalma = simdi - acilis.ts;
+      var araIslemler = log.filter(function(k){
+        return k.ts > acilis.ts && k.ts < simdi && (k.tip === 'PUAN' || k.tip === 'ÖĞRENCİ');
+      });
+      if(acikKalma <= 60000 && araIslemler.length > 0){
+        uyarilar.push({
+          seviye: 'orta',
+          mesaj: 'Kilit sadece ' + Math.round(acikKalma/1000) + ' saniye açık kaldı, bu sürede ' + araIslemler.length + ' işlem yapıldı',
+          ts: simdi
+        });
+      }
+    }
+  }
+
+  // 5. HAFTA SONU veya BAYRAM (Cumartesi/Pazar) puan değişikliği
+  if(yeniKayit.tip === 'PUAN'){
+    var gun = new Date(simdi).getDay(); // 0=Pazar, 6=Cumartesi
+    if(gun === 0 || gun === 6){
+      uyarilar.push({
+        seviye: 'dusuk',
+        mesaj: (gun===0?'Pazar':'Cumartesi') + ' günü puan değiştirildi' + (yeniKayit.ogrAd ? ' — ' + yeniKayit.ogrAd : ''),
+        ts: simdi
+      });
+    }
+  }
+
+  // Uyarıları kaydet ve göster
+  if(uyarilar.length > 0){
+    if(!_aktiviteLog._suphe) _aktiviteLog._suphe = [];
+    uyarilar.forEach(function(u){
+      // logda şüpheli olarak işaretle — en son kayıt (yeni eklendi, index 0)
+      if(_aktiviteLog[0]) _aktiviteLog[0]._suphe = u.seviye;
+      // ayrı uyarı loguna da ekle
+      _supheBildirimGoster(u);
+    });
+  }
+}
+
+function _logSaat(ts){
+  var d = new Date(ts);
+  var p = function(n){ return n<10?'0'+n:''+n; };
+  return p(d.getHours())+':'+p(d.getMinutes());
+}
+
+// Şüpheli işlem banner bildirimi
+function _supheBildirimGoster(u){
+  var renk = u.seviye === 'yuksek' ? '#c0392b' : u.seviye === 'orta' ? '#e67e22' : '#7f8c8d';
+  var icon = u.seviye === 'yuksek' ? '🚨' : u.seviye === 'orta' ? '⚠️' : 'ℹ️';
+  // Ekranda banner göster
+  var banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:9999;background:'+renk+';color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;max-width:90vw;box-shadow:0 4px 20px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px;cursor:pointer';
+  banner.innerHTML = icon + ' <span>ŞÜPHELİ: ' + _esc(u.mesaj) + '</span>';
+  banner.onclick = function(){ banner.remove(); };
+  document.body.appendChild(banner);
+  setTimeout(function(){ if(banner.parentNode) banner.remove(); }, 8000);
+}
+
+function aktLogGoster(){
+  _aktLogYukle();
+  var el = document.getElementById('_aktLogIcerik');
+  if(!el) return;
+  el.innerHTML = _aktLogHTML();
+}
+
+function _aktLogAnaliz(){
+  // Tüm log üzerinden şüpheli oturumları tespit et
+  var log = _aktiviteLog;
+  var supheliOturumlar = [];
+
+  // Kilit açılış-kapanış çiftlerini bul
+  var acilislar = log.filter(function(k){ return k.tip==='KİLİT' && k.detay && k.detay.indexOf('açıldı')!==-1; });
+
+  acilislar.forEach(function(ac){
+    var oturumIslemler = log.filter(function(k){
+      return k.ts >= ac.ts && k.ts <= ac.ts + 3600000 && (k.tip==='PUAN'||k.tip==='ÖĞRENCİ');
+    });
+
+    var uyarilar = [];
+
+    // Gece saati
+    var saat = new Date(ac.ts).getHours();
+    if(saat >= 23 || saat < 6) uyarilar.push('🌙 Gece ' + _logSaat(ac.ts) + ' saatinde açıldı');
+
+    // Hafta sonu
+    var gun = new Date(ac.ts).getDay();
+    if(gun === 0 || gun === 6) uyarilar.push('📅 ' + (gun===0?'Pazar':'Cumartesi') + ' günü');
+
+    // Çok hızlı ilk işlem (ilk 30 sn)
+    var ilkIslem = oturumIslemler.filter(function(k){ return k.ts - ac.ts <= 30000; });
+    if(ilkIslem.length > 0) uyarilar.push('⚡ Kilit açılır açılmaz '+ilkIslem.length+' işlem ('+Math.round((ilkIslem[ilkIslem.length-1].ts-ac.ts)/1000)+'sn içinde)');
+
+    // Aynı öğrenciye hızlı çok işlem
+    var ogrSayim = {};
+    oturumIslemler.forEach(function(k){
+      if(k.ogrAd) ogrSayim[k.ogrAd] = (ogrSayim[k.ogrAd]||0)+1;
+    });
+    Object.keys(ogrSayim).forEach(function(ad){
+      if(ogrSayim[ad] >= 4) uyarilar.push('🔁 "'+ad+'" adlı öğrenciye '+ogrSayim[ad]+' kez işlem yapıldı');
+    });
+
+    if(uyarilar.length > 0){
+      supheliOturumlar.push({ acilis: ac, islemler: oturumIslemler, uyarilar: uyarilar });
+    }
+  });
+
+  return supheliOturumlar;
+}
+
+function _aktLogHTML(){
+  var log = _aktiviteLog;
+  var supheliOturumlar = _aktLogAnaliz();
+
+  var h = '<div style="padding:4px 0 8px">';
+
+  // ŞÜPHELİ OTURUM UYARI KUTUSU
+  if(supheliOturumlar.length > 0){
+    h += '<div style="background:#fff5f5;border:2px solid #e74c3c;border-radius:10px;padding:12px;margin-bottom:12px">';
+    h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+    h += '<span style="font-size:18px">🚨</span>';
+    h += '<span style="font-weight:900;color:#c0392b;font-size:14px">'+supheliOturumlar.length+' Şüpheli Oturum Tespit Edildi</span>';
+    h += '</div>';
+    supheliOturumlar.forEach(function(s, si){
+      h += '<div style="background:#fff;border:1.5px solid #e74c3c;border-radius:8px;padding:8px;margin-bottom:6px">';
+      h += '<div style="font-family:JetBrains Mono,monospace;font-size:11px;color:#c0392b;font-weight:700;margin-bottom:4px">📅 '+_logZaman(s.acilis.ts)+'</div>';
+      s.uyarilar.forEach(function(u){
+        h += '<div style="font-size:12px;color:#e74c3c;margin-bottom:2px">'+_esc(u)+'</div>';
+      });
+      if(s.islemler.length > 0){
+        h += '<div style="margin-top:6px;font-size:11px;color:#666">Bu oturumda yapılan işlemler:</div>';
+        s.islemler.slice(0,5).forEach(function(k){
+          var bilgi = _logSaat(k.ts)+' — '+(k.ogrAd?k.ogrAd+': ':'')+k.detay;
+          h += '<div style="font-size:11px;font-family:JetBrains Mono,monospace;color:#333;padding:2px 0;border-bottom:1px solid #eee">'+_esc(bilgi)+'</div>';
+        });
+        if(s.islemler.length > 5) h += '<div style="font-size:10px;color:#999;margin-top:2px">+ '+(s.islemler.length-5)+' işlem daha...</div>';
+      }
+      h += '</div>';
+    });
+    h += '</div>';
+  } else if(log.length > 0){
+    h += '<div style="background:var(--okbg,#f0faf0);border:1.5px solid var(--ok,#27ae60);border-radius:8px;padding:10px;margin-bottom:10px;display:flex;align-items:center;gap:8px">';
+    h += '<span style="font-size:16px">✅</span>';
+    h += '<span style="font-size:13px;color:var(--ok,#27ae60);font-weight:700">Şüpheli işlem tespit edilmedi</span>';
+    h += '</div>';
+  }
+
+  // Filtre satırı
+  h += '<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;align-items:center">';
+  h += '<input id="_alAra" type="text" placeholder="🔍 Ara..." style="flex:1;min-width:100px;padding:6px 10px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font-size:13px" oninput="aktLogFiltrele()">';
+  h += '<select id="_alTip" style="padding:6px 10px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font-size:12px" onchange="aktLogFiltrele()">';
+  h += '<option value="">Tümü</option>';
+  h += '<option value="KİLİT">🔒 Kilit</option>';
+  h += '<option value="PUAN">⭐ Puan</option>';
+  h += '<option value="ÖĞRENCİ">👤 Öğrenci</option>';
+  h += '<option value="YOKLAMA">📋 Yoklama</option>';
+  h += '<option value="SINIF">🏫 Sınıf</option>';
+  h += '<option value="VERİ">💾 Veri</option>';
+  h += '<option value="⚠️ŞÜPHELİ">⚠️ Şüpheli</option>';
+  h += '</select>';
+  h += '<button onclick="aktLogTemizle()" style="padding:6px 10px;background:var(--errbg);color:var(--err);border:1.5px solid var(--err);border-radius:8px;font-size:12px;cursor:pointer;white-space:nowrap">🗑 Temizle</button>';
+  h += '</div>';
+
+  // Kayıt sayısı
+  var supheliSayi = log.filter(function(k){ return k._suphe; }).length;
+  h += '<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:6px">';
+  h += log.length+' kayıt';
+  if(supheliSayi > 0) h += ' · <span style="color:#e74c3c;font-weight:700">'+supheliSayi+' şüpheli ⚠️</span>';
+  h += '</div>';
+
+  // Liste
+  h += '<div id="_alListe">' + _aktLogSatirlar(log) + '</div>';
+  h += '</div>';
+  return h;
+}
+
+function _aktLogSatirlar(log){
+  if(!log || !log.length) return '<div style="text-align:center;color:var(--t2);padding:20px;font-size:13px">Henüz kayıt yok</div>';
+  var tipRenk = {'KİLİT':'#e74c3c','PUAN':'#27ae60','ÖĞRENCİ':'#3498db','YOKLAMA':'#9b59b6','SINIF':'#16a085','VERİ':'#e67e22'};
+  var tipIcon = {'KİLİT':'🔒','PUAN':'⭐','ÖĞRENCİ':'👤','YOKLAMA':'📋','SINIF':'🏫','VERİ':'💾'};
+  var h = '<div style="display:flex;flex-direction:column;gap:3px">';
+  log.forEach(function(k){
+    var renk = tipRenk[k.tip] || '#888';
+    var icon = tipIcon[k.tip] || '📌';
+    var suphe = k._suphe;
+    var bg = suphe === 'yuksek' ? 'rgba(192,57,43,.08)' : suphe === 'orta' ? 'rgba(230,126,34,.08)' : 'var(--bg2)';
+    var borderRenk = suphe ? (suphe==='yuksek'?'#c0392b':'#e67e22') : renk;
+    h += '<div style="display:grid;grid-template-columns:auto auto 1fr auto;gap:6px;align-items:baseline;padding:5px 8px;background:'+bg+';border-radius:7px;border-left:3px solid '+borderRenk+';font-size:12px">';
+    h += '<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);white-space:nowrap">'+_logZaman(k.ts)+'</span>';
+    h += '<span style="font-weight:800;color:'+renk+';white-space:nowrap">'+icon+' '+k.tip+'</span>';
+    var bilgi = '';
+    if(k.ogrAd) bilgi += '<strong>'+_esc(k.ogrAd)+'</strong> ';
+    bilgi += _esc(k.detay||'');
+    h += '<span style="color:var(--fg)">'+bilgi+'</span>';
+    h += '<span style="font-size:11px">'+(suphe==='yuksek'?'🚨':suphe==='orta'?'⚠️':'')+'</span>';
+    h += '</div>';
+  });
+  h += '</div>';
+  return h;
+}
+
+function aktLogFiltrele(){
+  var ara = ((document.getElementById('_alAra')||{}).value||'').toLowerCase();
+  var tip = ((document.getElementById('_alTip')||{}).value||'');
+  var filtrelendi = _aktiviteLog.filter(function(k){
+    if(tip === '⚠️ŞÜPHELİ') return !!k._suphe;
+    if(tip && k.tip !== tip) return false;
+    if(ara){
+      var metin = (k.tip||'') + (k.ogrAd||'') + (k.detay||'');
+      if(metin.toLowerCase().indexOf(ara) === -1) return false;
+    }
+    return true;
+  });
+  var el = document.getElementById('_alListe');
+  if(el) el.innerHTML = _aktLogSatirlar(filtrelendi);
+}
+
+function aktLogTemizle(){
+  if(!confirm('Tüm aktivite logu silinecek. Emin misiniz?')) return;
+  _aktiviteLog = [];
+  try{ localStorage.removeItem(_aktLogKey()); }catch(e){}
+  aktLogGoster();
+  bildir('✅ Aktivite logu temizlendi');
+}
 
 /* dup kaldırıldı */
 
@@ -6054,7 +6467,7 @@ function profilKeyOlustur(profilId, dataKey){
   return profilId+'_'+dataKey;
 }
 /* ===================== FOLDER TOGGLE ===================== */
-var folderIds = ['Secim','Anim','Ses','Sinif','Hizli','Geri','VeriYukle','OgrenciEkle','Kayitli','ListePuan','DisaAktar','SinifGuncelle','Tehlikeli'];
+var folderIds = ['Secim','Anim','YaziBoyutu','Ses','Sinif','Hizli','Geri','VeriYukle','OgrenciEkle','Kayitli','ListePuan','DisaAktar','SinifGuncelle','Tehlikeli','AktLog'];
 function folderToggle(id){
   var body = document.getElementById('folder'+id+'Body');
   var arrow = document.getElementById('folder'+id+'Arrow');
@@ -6062,6 +6475,7 @@ function folderToggle(id){
   var isOpen = body.classList.toggle('open');
   if(arrow) arrow.classList.toggle('open', isOpen);
   depo.yaz('folder'+id, isOpen?'1':'0');
+  if(id === 'AktLog' && isOpen) aktLogGoster();
 }
 function folderInit(){
   folderIds.forEach(function(id){
