@@ -629,6 +629,7 @@ body{padding:0 0 72px}
 /* ── BİLDİRİM TOAST ── */
 /* bildir() JS ile üretir, ayrı CSS gerekmez */
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="gece">
 <div class="topwarn" id="topWarn"></div>
@@ -1170,12 +1171,13 @@ body{padding:0 0 72px}
     </div>
     <div class="folder-body" id="folderVeriYukleBody">
       <div style="margin-top:10px">
-        <input type="file" id="fileIn" accept=".csv" style="display:none">
+        <input type="file" id="fileIn" accept=".csv,.xlsx,.xls" style="display:none">
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-          <button class="btn-s primary" id="btnDosya">📂 Yerel Dosya (CSV)</button>
+          <button class="btn-s primary" id="btnDosya">📂 CSV Yükle</button>
+          <button class="btn-s" id="btnDosyaXlsx" style="color:#1a7a3c;border-color:#1a7a3c">📊 Excel Yükle</button>
           <span class="ghd" id="ghDurum"></span>
         </div>
-        <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--t3)">CSV — Excel'de Farklı Kaydet → CSV (UTF-8)</div>
+        <div style="font-family:JetBrains Mono,monospace;font-size:11px;color:var(--t3)">CSV veya Excel (.xlsx) — İlk satır başlık: numara, ad, sınıf</div>
       </div>
     </div>
   </div>
@@ -5245,17 +5247,68 @@ document.getElementById('scYineleBtn').addEventListener('click',function(){ scBa
 
 // GitHub kaldırıldı
 
-// Dosya
-document.getElementById('btnDosya').addEventListener('click',function(){document.getElementById('fileIn').click();});
+// Dosya — CSV
+document.getElementById('btnDosya').addEventListener('click',function(){
+  var fi=document.getElementById('fileIn');
+  fi._mod='csv'; fi.click();
+});
+// Dosya — Excel
+document.getElementById('btnDosyaXlsx').addEventListener('click',function(){
+  var fi=document.getElementById('fileIn');
+  fi._mod='xlsx'; fi.click();
+});
 document.getElementById('fileIn').addEventListener('change',function(){
   if(!this.files||!this.files[0]) return;
-  var self=this, dosya=this.files[0];
-  if(dosya.name.toLowerCase().slice(-4)==='.csv'){
+  var self=this, dosya=this.files[0], ad=dosya.name.toLowerCase();
+  var modXlsx = ad.slice(-5)==='.xlsx'||ad.slice(-4)==='.xls'||self._mod==='xlsx';
+  if(modXlsx){
+    // Excel okuma — SheetJS
+    if(typeof XLSX==='undefined'){ bildir('Excel kütüphanesi yüklenmedi, lütfen internet bağlantısını kontrol edin'); self.value=''; return; }
     var r=new FileReader();
-    r.onload=function(e){try{var s=csvIsle(e.target.result);if(!s.length){bildir('Dosya boş');return;}modalAc(s);}catch(err){bildir('CSV okunamadı');}};
-    r.readAsText(dosya,'UTF-8');
-  } else { alert('CSV dosyası seçin.\nExcel: Farklı Kaydet → CSV (UTF-8)'); }
-  self.value='';
+    r.onload=function(e){
+      try{
+        var wb=XLSX.read(e.target.result,{type:'array'});
+        var ws=wb.Sheets[wb.SheetNames[0]];
+        var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        if(!rows||rows.length<2){bildir('Excel boş veya okunamadı');return;}
+        // Başlık satırını bul
+        var baslik=rows[0].map(function(c){return (c+'').trim().toLowerCase();});
+        var iAd=-1,iSinif=-1,iSube=-1,iNo=-1;
+        baslik.forEach(function(b,i){
+          if(b==='ad'||b==='adsoyad'||b==='ad soyad'||b==='isim'||b==='name'||b==='öğrenci adı'||b==='ogrenci adi') iAd=i;
+          if(b==='sınıf'||b==='sinif'||b==='class'||b==='sınıf/şube'||b==='sinif/sube') iSinif=i;
+          if(b==='şube'||b==='sube'||b==='branch'||b==='section'||b==='grup') iSube=i;
+          if(b==='no'||b==='numara'||b==='number'||b==='num'||b==='öğrenci no'||b==='ogrenci no'||b==='okul no') iNo=i;
+        });
+        // Ad sütununu daha geniş ara (içinde 'ad' geçiyorsa)
+        if(iAd===-1) baslik.forEach(function(b,i){ if(b.indexOf('ad')!==-1&&iAd===-1) iAd=i; });
+        // Sınıf sütununu daha geniş ara
+        if(iSinif===-1) baslik.forEach(function(b,i){ if((b.indexOf('sın')!==-1||b.indexOf('sin')!==-1)&&iSinif===-1) iSinif=i; });
+        if(iAd===-1||iSinif===-1){bildir('Excel\'de "ad" ve "sınıf" sütunları bulunamadı');return;}
+        var sonuc=[];
+        for(var i=1;i<rows.length;i++){
+          var row=rows[i];
+          var ad2=(row[iAd]+'').trim();
+          var sinif=(row[iSinif]+'').trim();
+          if(!ad2||!sinif) continue;
+          // Şube ayrı sütundaysa birleştir: "5" + "A" → "5-A"
+          var sube=iSube!==-1?((row[iSube]||'')+'').trim():'';
+          var sinifTam=sube?sinif+'-'+sube:sinif;
+          var obj={ad:ad2,sinif:sinifTam};
+          if(iNo!==-1&&row[iNo]!==''&&row[iNo]!==undefined) obj.numara=(row[iNo]+'').trim();
+          sonuc.push(obj);
+        }
+        if(!sonuc.length){bildir('Excel\'de geçerli öğrenci satırı bulunamadı');return;}
+        modalAc(sonuc);
+      }catch(err){bildir('Excel okunamadı: '+err.message);}
+    };
+    r.readAsArrayBuffer(dosya);
+  } else if(ad.slice(-4)==='.csv'||self._mod==='csv'){
+    var r2=new FileReader();
+    r2.onload=function(e){try{var s=csvIsle(e.target.result);if(!s.length){bildir('Dosya boş');return;}modalAc(s);}catch(err){bildir('CSV okunamadı');}};
+    r2.readAsText(dosya,'UTF-8');
+  } else { bildir('CSV veya Excel (.xlsx) dosyası seçin'); }
+  self.value=''; self._mod='';
 });
 
 // CSV modal
@@ -6148,7 +6201,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.4.3';
+var APP_VER_SABIT = '2.4.5';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
