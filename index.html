@@ -6188,7 +6188,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.4.7';
+var APP_VER_SABIT = '2.4.8';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
@@ -6252,7 +6252,7 @@ function logEkle(tip, detay, ogrAd){
   // UI anlık güncelle
   try{
     var el = document.getElementById('_aktLogIcerik');
-    if(el && el.offsetParent !== null){ el.innerHTML = _aktLogHTML(); }
+    if(el){ el.innerHTML = _aktLogHTML(); }
   }catch(e){}
 }
 
