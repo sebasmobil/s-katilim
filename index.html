@@ -297,7 +297,7 @@ body{padding:0 0 72px}
 .prog-rst{font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--ok);background:none;border:1.5px solid var(--ok);border-radius:6px;padding:4px 10px;cursor:pointer}
 
 /* ── SONUÇ KARTI ── */
-.rcard{background:var(--rb);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 16px 20px;margin-bottom:10px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background .15s,box-shadow .2s;box-shadow:var(--shadow)}
+.rcard{background:var(--rb);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 16px 20px;margin-bottom:10px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background .15s,box-shadow .2s;box-shadow:var(--shadow);overflow:hidden;box-sizing:border-box;width:100%}
 @media(min-width:480px){.rcard{padding:36px 24px 24px}}
 .rcard.flash{background:var(--ac2);box-shadow:var(--shadow2)}
 .r-empty{font-size:13px;color:var(--t3);font-family:JetBrains Mono,monospace}
@@ -306,8 +306,8 @@ body{padding:0 0 72px}
 .r-name{font-size:clamp(28px,7vw,44px);font-weight:900;color:var(--t1);line-height:1.1;word-break:break-word;letter-spacing:-.5px}
 
 /* ── SEÇİLEN ÖĞRENCİ PUAN KUTUSU ── */
-.r-puan-section{width:100%;margin-top:14px}
-.r-puan-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;user-select:none;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:10px 14px;transition:border-color .15s,background .15s}
+.r-puan-section{width:100%;max-width:100%;margin-top:14px;box-sizing:border-box}
+.r-puan-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;cursor:pointer;user-select:none;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:8px 12px;transition:border-color .15s,background .15s;box-sizing:border-box;width:100%}
 .r-puan-toggle-row:hover{border-color:var(--ac);background:var(--bg)}
 .r-puan-toggle-row.open{border-color:var(--ac);border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none}
 .r-puan-toggle-left{display:flex;align-items:center;gap:8px}
@@ -319,21 +319,21 @@ body{padding:0 0 72px}
 .r-puan-tog-m{font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--minus);background:var(--minusbg);padding:2px 8px;border-radius:6px}
 .r-puan-toggle-arrow{font-size:10px;color:var(--t3);transition:transform .2s;display:inline-block;flex-shrink:0}
 .r-puan-toggle-arrow.open{transform:rotate(180deg)}
-.r-puan-body{background:var(--bg);border:1.5px solid var(--ac);border-top:none;border-bottom-left-radius:var(--r-sm);border-bottom-right-radius:var(--r-sm);padding:10px 12px;display:none}
+.r-puan-body{background:var(--bg);border:1.5px solid var(--ac);border-top:none;border-bottom-left-radius:var(--r-sm);border-bottom-right-radius:var(--r-sm);padding:8px 10px;display:none;overflow:hidden;box-sizing:border-box}
 .r-puan-body.open{display:block}
-.r-puan-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap}
-.r-puan-item{display:flex;flex-direction:row;align-items:center;gap:5px;padding:0 10px}
-.r-puan-val{font-size:20px;font-weight:900;line-height:1}
-.r-puan-lbl{font-family:JetBrains Mono,monospace;font-size:15px;font-weight:800;line-height:1}
+.r-puan-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.r-puan-item{display:flex;flex-direction:row;align-items:center;gap:4px;padding:0 6px}
+.r-puan-val{font-size:18px;font-weight:900;line-height:1}
+.r-puan-lbl{font-family:JetBrains Mono,monospace;font-size:13px;font-weight:800;line-height:1}
 .r-puan-plus .r-puan-val{color:var(--plus)}
 .r-puan-plus .r-puan-lbl{color:var(--plus)}
 .r-puan-minus .r-puan-val{color:var(--minus)}
 .r-puan-minus .r-puan-lbl{color:var(--minus)}
-.r-puan-fark .r-puan-val{font-size:20px;font-weight:900}
+.r-puan-fark .r-puan-val{font-size:18px;font-weight:900}
 .r-puan-fark .r-puan-lbl{color:var(--t2);font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
 .r-puan-sep{width:1px;height:28px;background:var(--bd);flex-shrink:0}
-.r-puan-btns{display:flex;gap:8px;margin-top:0;margin-left:auto;flex-shrink:0}
-.r-puan-btn{font-size:18px;font-weight:900;width:38px;height:38px;border-radius:50%;border:2px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.r-puan-btns{display:flex;gap:6px;margin-top:0;margin-left:auto;flex-shrink:0}
+.r-puan-btn{font-size:16px;font-weight:900;width:34px;height:34px;border-radius:50%;border:2px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .r-puan-btn-plus{border-color:var(--plus);color:var(--plus)}
 .r-puan-btn-plus:active{background:var(--plusbg)}
 .r-puan-btn-minus{border-color:var(--minus);color:var(--minus)}
@@ -4168,7 +4168,7 @@ function gecmisiGoster(){
     h+='<div style="flex:1;min-width:0">';
     // Ust satir: ad + sinif + tekrar badge
     h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
-    h+='<span style="font-size:14px;font-weight:800;color:var(--t1)">'+g.ad+'</span>';
+    h+='<span class="gecmis-ogr-ad" data-oi="'+(g._i!==undefined?g._i:-1)+'" data-ad="'+encodeURIComponent(g.ad||'')+'" style="font-size:14px;font-weight:800;color:var(--ac);cursor:pointer;text-decoration:underline dotted" title="Puan ver">'+g.ad+'</span>';
     h+='<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--ac);background:var(--ac2);padding:1px 6px;border-radius:4px">'+g.sinif+'</span>';
     if(g.numara) h+='<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3)">No:'+g.numara+'</span>';
     if(g.tekrar) h+='<span class="badge">TEKRAR</span>';
@@ -4187,11 +4187,40 @@ function gecmisiGoster(){
       h+='</div>';
     }
     h+='</div>';
-    // Sil butonu
-    h+='<button class="btn-sil-row" data-idx="'+gercekIdx+'" title="Kaydi sil" style="flex-shrink:0;margin-top:2px">✕</button>';
+    // Sağ: not ver butonları + sil
+    h+='<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;margin-top:2px">';
+    if(g._i!==undefined){
+      h+='<div style="display:flex;gap:3px">';
+      h+='<button class="btn-hist-puan" data-oi="'+g._i+'" data-ad="'+encodeURIComponent(g.ad||'')+'" data-tip="+" title="Puan ver (+)" style="background:var(--okb);color:var(--ok);border:1px solid var(--ok);border-radius:5px;padding:2px 7px;font-size:13px;font-weight:900;cursor:pointer">+</button>';
+      h+='<button class="btn-hist-puan" data-oi="'+g._i+'" data-ad="'+encodeURIComponent(g.ad||'')+'" data-tip="-" title="Puan düş (−)" style="background:var(--errbg);color:var(--err);border:1px solid var(--err);border-radius:5px;padding:2px 7px;font-size:13px;font-weight:900;cursor:pointer">−</button>';
+      h+='</div>';
+    }
+    h+='<button class="btn-sil-row" data-idx="'+gercekIdx+'" title="Kaydi sil">✕</button>';
+    h+='</div>';
     h+='</div>';
   });
   w.innerHTML=h;
+  w.querySelectorAll('.btn-hist-puan').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!yetkiVar()){ _yetkiKontrol(null); return; }
+      var ogrIdx=parseInt(this.dataset.oi);
+      var tip=this.dataset.tip;
+      var ad=decodeURIComponent(this.dataset.ad||'');
+      if(!ogr[ogrIdx]||ogr[ogrIdx].ad!==ad){ bildir('Öğrenci artık bulunamadı (silinmiş olabilir)'); return; }
+      puanVerEtiketli(ogrIdx, tip);
+    });
+  });
+  w.querySelectorAll('.gecmis-ogr-ad').forEach(function(span){
+    span.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!yetkiVar()){ _yetkiKontrol(null); return; }
+      var ogrIdx=parseInt(this.dataset.oi);
+      var ad=decodeURIComponent(this.dataset.ad||'');
+      if(ogrIdx<0||!ogr[ogrIdx]||ogr[ogrIdx].ad!==ad){ bildir('Öğrenci artık bulunamadı (silinmiş olabilir)'); return; }
+      puanVerEtiketli(ogrIdx, '+');
+    });
+  });
   w.querySelectorAll('.btn-sil-row').forEach(function(btn){
     btn.addEventListener('click',function(){
       if(!yetkiVar()){ _yetkiKontrol(null); return; }
@@ -5671,8 +5700,9 @@ function puanGecmisGoster(){
     var tarih=new Date(g.ts);
     var tarihStr=tarih.toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit'})+' '+tarih.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
     h+='<tr>';
+    var ogrMevcut=g.idx!==undefined&&ogr[g.idx]&&ogr[g.idx].ad===g.ad;
     h+='<td style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t3);white-space:nowrap">'+tarihStr+'</td>';
-    h+='<td class="td-name" style="cursor:pointer" onclick="profilKartAc('+g.idx+')">'+g.ad+'<br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)">'+g.sinif+'</span></td>';
+    h+='<td class="td-name"><span style="cursor:pointer" onclick="profilKartAc('+g.idx+')">'+g.ad+'</span><br><span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)">'+g.sinif+'</span>'+(ogrMevcut?'<br><span style="display:inline-flex;gap:2px;margin-top:2px"><button class="btn-pgecmis-puan" data-oi="'+g.idx+'" data-ad="'+encodeURIComponent(g.ad||'')+'" data-tip="+" style="background:var(--okb);color:var(--ok);border:1px solid var(--ok);border-radius:4px;padding:0px 5px;font-size:12px;font-weight:900;cursor:pointer;line-height:1.4">+</button><button class="btn-pgecmis-puan" data-oi="'+g.idx+'" data-ad="'+encodeURIComponent(g.ad||'')+'" data-tip="-" style="background:var(--errbg);color:var(--err);border:1px solid var(--err);border-radius:4px;padding:0px 5px;font-size:12px;font-weight:900;cursor:pointer;line-height:1.4">−</button></span>':'')+'</td>';
     h+='<td title="'+katObj.ad+'">'+katObj.emoji+'</td>';
     h+='<td style="font-weight:800;color:'+(g.tip==='+'?'var(--plus)':'var(--minus)')+'">'+( g.tip==='+'?'+1':'−1')+'</td>';
     h+='<td style="font-size:11px;color:var(--t2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(g.not?'💬 '+g.not:'')+'</td>';
@@ -5681,6 +5711,17 @@ function puanGecmisGoster(){
   if(filtre.length>50) h+='<tr><td colspan="4" style="text-align:center;padding:8px;font-size:11px;color:var(--t3);font-family:JetBrains Mono,monospace">...ve '+(filtre.length-50)+' kayıt daha</td></tr>';
   h+='</tbody></table>';
   wrap.innerHTML=h;
+  wrap.querySelectorAll('.btn-pgecmis-puan').forEach(function(btn){
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(!yetkiVar()){ _yetkiKontrol(null); return; }
+      var ogrIdx=parseInt(this.dataset.oi);
+      var tip=this.dataset.tip;
+      var ad=decodeURIComponent(this.dataset.ad||'');
+      if(!ogr[ogrIdx]||ogr[ogrIdx].ad!==ad){ bildir('Öğrenci artık bulunamadı'); return; }
+      puanVer(ogrIdx, tip, null, null);
+    });
+  });
 }
 
 
@@ -6107,7 +6148,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.3.9';
+var APP_VER_SABIT = '2.4.1';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
