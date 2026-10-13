@@ -683,6 +683,10 @@ body{padding:0 0 72px}
       <div class="map-item"><div class="map-lbl">Şube</div><select class="map-sel" id="mSube"></select></div>
     </div>
     <div class="map-note">* zorunlu alan</div>
+    <label style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2);cursor:pointer;margin-top:8px;user-select:none">
+      <input type="checkbox" id="mHdrCk" style="width:15px;height:15px;accent-color:var(--ac);cursor:pointer">
+      <span>İlk satır başlık — aktarma</span>
+    </label>
     <div class="mbtns">
       <button class="btn-s" id="btnIptal">İptal</button>
       <button class="btn-s primary" id="btnOnayla">Yükle</button>
@@ -2748,14 +2752,20 @@ function modalAc(rows){
   for(var i=0;i<et.length;i++) opts+='<option value="'+et[i].i+'">'+et[i].l+'</option>';
   ['mNo','mAd','mSinif','mSube'].forEach(function(id){document.getElementById(id).innerHTML=bos+opts;});
   if(hdr) for(var i=0;i<hdr.length;i++){
-    var h=(hdr[i]||'').toLowerCase();
-    if(h.indexOf('no')>=0||h.indexOf('numara')>=0) sOpt('mNo',i);
-    if(h.indexOf('ad')>=0||h.indexOf('isim')>=0) sOpt('mAd',i);
-    if(h.indexOf('n\u0131f')>=0||h.indexOf('nif')>=0||h.indexOf('sinif')>=0) sOpt('mSinif',i);
-    if(h.indexOf('ube')>=0) sOpt('mSube',i);
+    var h=(hdr[i]||'').toLowerCase().replace(/\s+/g,'');
+    if(h.indexOf('okulno')>=0||h==='no'||h==='numara'||h==='ogrencino'||h==='\u00f6\u011frencino') sOpt('mNo',i);
+    else if(h.indexOf('no')>=0||h.indexOf('numara')>=0) sOpt('mNo',i);
+    if(h==='adsoyad'||h==='ad\u0131soyad'||h==='isim'||h==='ad'||h==='name') sOpt('mAd',i);
+    else if(h.indexOf('soyad')>=0||h.indexOf('isim')>=0) sOpt('mAd',i);
+    else if(h.indexOf('ad')>=0&&h.indexOf('no')<0&&h.indexOf('sinif')<0&&h.indexOf('s\u0131n\u0131f')<0) sOpt('mAd',i);
+    if(h==='s\u0131n\u0131f'||h==='sinif'||h==='class'||h==='s\u0131n\u0131f/\u015fube'||h==='sinif/sube') sOpt('mSinif',i);
+    else if(h.indexOf('n\u0131f')>=0||h.indexOf('nif')>=0) sOpt('mSinif',i);
+    if(h==='\u015fube'||h==='sube'||h==='branch'||h==='section') sOpt('mSube',i);
+    else if(h.indexOf('ube')>=0&&h.indexOf('sinif')<0&&h.indexOf('s\u0131n\u0131f')<0) sOpt('mSube',i);
   } else if(cols>=4){sOpt('mNo',0);sOpt('mSinif',1);sOpt('mSube',2);sOpt('mAd',3);}
   else if(cols===3){sOpt('mSinif',0);sOpt('mNo',1);sOpt('mAd',2);}
   document.getElementById('modal').dataset.hdr=hasHdr?'1':'0';
+  document.getElementById('mHdrCk').checked=hasHdr;
   document.getElementById('modal').style.display='flex';
 }
 function sOpt(id,v){ var s=document.getElementById(id); for(var i=0;i<s.options.length;i++) if(parseInt(s.options[i].value)===v){s.value=v;return;} }
@@ -2766,7 +2776,7 @@ function modalOnayla(){
   var iSf=parseInt(document.getElementById('mSinif').value);
   var iSb=parseInt(document.getElementById('mSube').value);
   if(iAd<0||iSf<0){bildir('Ad Soyad ve Sınıf zorunlu');return;}
-  var isHdr=document.getElementById('modal').dataset.hdr==='1';
+  var isHdr=document.getElementById('mHdrCk').checked;
   var data=isHdr?modalSatirlar.slice(1):modalSatirlar;
   var yuk=[];
   for(var i=0;i<data.length;i++){
@@ -5269,37 +5279,14 @@ document.getElementById('fileIn').addEventListener('change',function(){
       try{
         var wb=XLSX.read(e.target.result,{type:'array'});
         var ws=wb.Sheets[wb.SheetNames[0]];
+        // Ham satır dizisi olarak al — modalAc zaten başlıkları eşleştiriyor
         var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        // Boş satırları temizle
+        rows=rows.filter(function(r){ return r.some(function(c){ return (c+'').trim()!==''; }); });
         if(!rows||rows.length<2){bildir('Excel boş veya okunamadı');return;}
-        // Başlık satırını bul
-        var baslik=rows[0].map(function(c){return (c+'').trim().toLowerCase();});
-        var iAd=-1,iSinif=-1,iSube=-1,iNo=-1;
-        baslik.forEach(function(b,i){
-          if(b==='ad'||b==='adsoyad'||b==='ad soyad'||b==='isim'||b==='name'||b==='öğrenci adı'||b==='ogrenci adi') iAd=i;
-          if(b==='sınıf'||b==='sinif'||b==='class'||b==='sınıf/şube'||b==='sinif/sube') iSinif=i;
-          if(b==='şube'||b==='sube'||b==='branch'||b==='section'||b==='grup') iSube=i;
-          if(b==='no'||b==='numara'||b==='number'||b==='num'||b==='öğrenci no'||b==='ogrenci no'||b==='okul no') iNo=i;
-        });
-        // Ad sütununu daha geniş ara (içinde 'ad' geçiyorsa)
-        if(iAd===-1) baslik.forEach(function(b,i){ if(b.indexOf('ad')!==-1&&iAd===-1) iAd=i; });
-        // Sınıf sütununu daha geniş ara
-        if(iSinif===-1) baslik.forEach(function(b,i){ if((b.indexOf('sın')!==-1||b.indexOf('sin')!==-1)&&iSinif===-1) iSinif=i; });
-        if(iAd===-1||iSinif===-1){bildir('Excel\'de "ad" ve "sınıf" sütunları bulunamadı');return;}
-        var sonuc=[];
-        for(var i=1;i<rows.length;i++){
-          var row=rows[i];
-          var ad2=(row[iAd]+'').trim();
-          var sinif=(row[iSinif]+'').trim();
-          if(!ad2||!sinif) continue;
-          // Şube ayrı sütundaysa birleştir: "5" + "A" → "5-A"
-          var sube=iSube!==-1?((row[iSube]||'')+'').trim():'';
-          var sinifTam=sube?sinif+'-'+sube:sinif;
-          var obj={ad:ad2,sinif:sinifTam};
-          if(iNo!==-1&&row[iNo]!==''&&row[iNo]!==undefined) obj.numara=(row[iNo]+'').trim();
-          sonuc.push(obj);
-        }
-        if(!sonuc.length){bildir('Excel\'de geçerli öğrenci satırı bulunamadı');return;}
-        modalAc(sonuc);
+        // Tüm değerleri string'e çevir (sayısal sütunlar için)
+        rows=rows.map(function(r){ return r.map(function(c){ return c===null||c===undefined?'':c+''; }); });
+        modalAc(rows);
       }catch(err){bildir('Excel okunamadı: '+err.message);}
     };
     r.readAsArrayBuffer(dosya);
@@ -6201,7 +6188,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.4.5';
+var APP_VER_SABIT = '2.4.7';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
