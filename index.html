@@ -297,7 +297,7 @@ body{padding:0 0 72px}
 .prog-rst{font-family:JetBrains Mono,monospace;font-size:11px;font-weight:700;color:var(--ok);background:none;border:1.5px solid var(--ok);border-radius:6px;padding:4px 10px;cursor:pointer}
 
 /* ── SONUÇ KARTI ── */
-.rcard{background:var(--rb);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 16px 20px;margin-bottom:10px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background .15s,box-shadow .2s;box-shadow:var(--shadow);overflow:hidden;box-sizing:border-box;width:100%}
+.rcard{background:var(--rb);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 16px 20px;margin-bottom:10px;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background .15s,box-shadow .2s;box-shadow:var(--shadow);overflow:visible;box-sizing:border-box;width:100%}
 @media(min-width:480px){.rcard{padding:36px 24px 24px}}
 .rcard.flash{background:var(--ac2);box-shadow:var(--shadow2)}
 .r-empty{font-size:13px;color:var(--t3);font-family:JetBrains Mono,monospace}
@@ -319,12 +319,12 @@ body{padding:0 0 72px}
 .r-puan-tog-m{font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;color:var(--minus);background:var(--minusbg);padding:2px 8px;border-radius:6px}
 .r-puan-toggle-arrow{font-size:10px;color:var(--t3);transition:transform .2s;display:inline-block;flex-shrink:0}
 .r-puan-toggle-arrow.open{transform:rotate(180deg)}
-.r-puan-body{background:var(--bg);border:1.5px solid var(--ac);border-top:none;border-bottom-left-radius:var(--r-sm);border-bottom-right-radius:var(--r-sm);padding:8px 10px;display:none;overflow:hidden;box-sizing:border-box}
+.r-puan-body{background:var(--bg);border:1.5px solid var(--ac);border-top:none;border-bottom-left-radius:var(--r-sm);border-bottom-right-radius:var(--r-sm);padding:8px 10px;display:none;overflow:visible;box-sizing:border-box}
 .r-puan-body.open{display:block}
 .r-puan-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
 .r-puan-item{display:flex;flex-direction:row;align-items:center;gap:4px;padding:0 6px}
-.r-puan-val{font-size:18px;font-weight:900;line-height:1}
-.r-puan-lbl{font-family:JetBrains Mono,monospace;font-size:13px;font-weight:800;line-height:1}
+.r-puan-val{font-size:clamp(14px,4vw,18px);font-weight:900;line-height:1}
+.r-puan-lbl{font-family:JetBrains Mono,monospace;font-size:clamp(10px,3vw,13px);font-weight:800;line-height:1}
 .r-puan-plus .r-puan-val{color:var(--plus)}
 .r-puan-plus .r-puan-lbl{color:var(--plus)}
 .r-puan-minus .r-puan-val{color:var(--minus)}
@@ -333,7 +333,7 @@ body{padding:0 0 72px}
 .r-puan-fark .r-puan-lbl{color:var(--t2);font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
 .r-puan-sep{width:1px;height:28px;background:var(--bd);flex-shrink:0}
 .r-puan-btns{display:flex;gap:6px;margin-top:0;margin-left:auto;flex-shrink:0}
-.r-puan-btn{font-size:16px;font-weight:900;width:34px;height:34px;border-radius:50%;border:2px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.r-puan-btn{font-size:clamp(14px,4vw,16px);font-weight:900;width:clamp(30px,8vw,34px);height:clamp(30px,8vw,34px);border-radius:50%;border:2px solid;cursor:pointer;background:none;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .r-puan-btn-plus{border-color:var(--plus);color:var(--plus)}
 .r-puan-btn-plus:active{background:var(--plusbg)}
 .r-puan-btn-minus{border-color:var(--minus);color:var(--minus)}
@@ -976,8 +976,8 @@ body{padding:0 0 72px}
           </div>
         </div>
         <div class="r-puan-body" id="rPuanBody">
-          <div style="display:flex;align-items:center;gap:0">
-            <div class="r-puan-row" style="flex:1">
+          <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap">
+            <div class="r-puan-row" style="flex:1;min-width:160px">
               <div class="r-puan-item r-puan-plus">
                 <div class="r-puan-val" id="rPuanPlus">0</div>
                 <div class="r-puan-lbl">+</div>
@@ -6148,7 +6148,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.4.1';
+var APP_VER_SABIT = '2.4.3';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
@@ -6209,6 +6209,11 @@ function logEkle(tip, detay, ogrAd){
   try{ localStorage.setItem(_aktLogKey(), JSON.stringify(_aktiviteLog)); }catch(e){}
   // Şüpheli işlem anlık tespiti
   try{ _supheTespitEt(kayit); }catch(e){}
+  // UI anlık güncelle
+  try{
+    var el = document.getElementById('_aktLogIcerik');
+    if(el && el.offsetParent !== null){ el.innerHTML = _aktLogHTML(); }
+  }catch(e){}
 }
 
 function _logZaman(ts){
