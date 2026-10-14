@@ -724,14 +724,6 @@ body{padding:0 0 72px}
         <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
         <span class="ticon-lbl">Tema</span>
       </div>
-      <div class="ticon-wrap" onclick="yaziBoyutuDegistir(-1)" title="Yazıyı Küçült">
-        <div class="ticon" style="font-size:11px;font-weight:900">A−</div>
-        <span class="ticon-lbl">Küçült</span>
-      </div>
-      <div class="ticon-wrap" onclick="yaziBoyutuDegistir(1)" title="Yazıyı Büyüt">
-        <div class="ticon" style="font-size:14px;font-weight:900">A+</div>
-        <span class="ticon-lbl">Büyüt</span>
-      </div>
     </div>
   </div>
 
@@ -2932,11 +2924,13 @@ function subToggleRestore(){
     try{
       var saved = localStorage.getItem('_subToggle_'+tip);
       if(saved==='1'){
-        // Durumu restore et ama içeriği hemen render etme — sinifSec sonra çağırır
         _subToggleState[tip] = true;
+        var panel = document.getElementById(tip+'Panel');
         var track = document.getElementById(tip+'ToggleTrack');
         var thumb = document.getElementById(tip+'ToggleThumb');
         var head  = document.getElementById(tip+'ToggleHead');
+        // Paneli görünür yap
+        if(panel) panel.style.display = 'block';
         if(track) track.style.background = 'var(--ok)';
         if(thumb) thumb.style.left = '21px';
         if(head){ head.style.borderRadius='var(--r-sm) var(--r-sm) 0 0'; head.style.borderBottom='1px solid var(--bd)'; }
@@ -5440,6 +5434,7 @@ if(yukle()){
   puanOzetGoster();
   hizliPuanGoster();
   modAyarla(mod);
+  subToggleRestore(); // panel display:block ÖNCE yapılmalı, yoklamaGoster/gruplamaGoster görsün
   if(seciliSinif){ sinifSec(seciliSinif); yoklamaGoster(); gruplamaGoster(seciliSinif); }
   katButonlariGoster();
   if(cokluMod&&seciliSiniflar.length>0) ilerlemeGuncelle();
@@ -6188,7 +6183,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.4.8';
+var APP_VER_SABIT = '2.5.0';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
