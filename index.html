@@ -6186,7 +6186,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.5.1';
+var APP_VER_SABIT = '2.5.2';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
@@ -6573,6 +6573,7 @@ function folderInit(){
       var arrow = document.getElementById('folder'+id+'Arrow');
       if(body) body.classList.add('open');
       if(arrow) arrow.classList.add('open');
+      if(id === 'AktLog') setTimeout(aktLogGoster, 0);
     }
   });
 }
