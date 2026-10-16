@@ -709,23 +709,23 @@ body{padding:0 0 72px}
     </div>
     <div class="hdr-right">
       <div class="ticon-wrap" onclick="kilitModalAc()">
-        <div class="ticon" id="kilitBtn" title="Yönetici Kilidi" style="font-size:13px">🔒</div>
+        <div class="ticon" id="kilitBtn" title="Yönetici Kilidi" style="font-size:13px">🔐</div>
         <span class="ticon-lbl">Kilit</span>
+      </div>
+      <div class="ticon-wrap" onclick="kilitSureModalAc()">
+        <div class="ticon" title="Kilit Süresi">⏱</div>
+        <span class="ticon-lbl">Süre</span>
       </div>
       <div class="ticon-wrap" onclick="projektorAc()">
         <div class="ticon" id="projBtn" title="Projektör Modu">🖥️</div>
         <span class="ticon-lbl">Proj.</span>
-      </div>
-      <div class="ticon-wrap" onclick="renkTemaModalAc()">
-        <div class="ticon" id="paletBtn" title="Renk teması">🎨</div>
-        <span class="ticon-lbl">Renk</span>
       </div>
       <div class="ticon-wrap" id="temaBtnWrap">
         <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
         <span class="ticon-lbl">Tema</span>
       </div>
       <div class="ticon-wrap" onclick="ayarlarModalAc()">
-        <div class="ticon" title="Ayarlar">🛠️</div>
+        <div class="ticon" title="Ayarlar">🔧</div>
         <span class="ticon-lbl">Ayarlar</span>
       </div>
     </div>
@@ -1307,11 +1307,30 @@ body{padding:0 0 72px}
     <!-- Handle + Başlık -->
     <div style="display:flex;justify-content:center;padding:10px 0 4px;flex-shrink:0"><div style="width:40px;height:4px;border-radius:2px;background:var(--bd2)"></div></div>
     <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 20px 14px;border-bottom:1.5px solid var(--bd);flex-shrink:0">
-      <div style="font-size:16px;font-weight:900;color:var(--t1)">🛠️ Ayarlar</div>
+      <div style="font-size:16px;font-weight:900;color:var(--t1)">🔧 Ayarlar</div>
       <button onclick="ayarlarModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
     <!-- Kaydırılabilir içerik -->
     <div style="overflow-y:auto;flex:1;padding:14px 16px 24px">
+
+      <!-- RENK TEMASI -->
+      <div class="folder-card" style="margin-bottom:10px">
+        <div class="folder-head" id="folderRenkHead">
+          <div class="folder-title"><span class="folder-icon-wrap">🎨</span> Renk Teması</div>
+          <span class="folder-arrow" id="folderRenkArrow">▼</span>
+        </div>
+        <div class="folder-body" id="folderRenkBody">
+          <div style="margin-top:12px">
+            <div id="renkTemaWrap2" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:4px">
+              <button data-tema="indigo" onclick="renkTemaUygula('indigo')" style="width:44px;height:44px;border-radius:50%;background:#4f6ef7;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="İndigo"></button>
+              <button data-tema="mor" onclick="renkTemaUygula('mor')" style="width:44px;height:44px;border-radius:50%;background:#7c3aed;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Mor"></button>
+              <button data-tema="yesil" onclick="renkTemaUygula('yesil')" style="width:44px;height:44px;border-radius:50%;background:#059669;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Yeşil"></button>
+              <button data-tema="turuncu" onclick="renkTemaUygula('turuncu')" style="width:44px;height:44px;border-radius:50%;background:#d97706;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Turuncu"></button>
+              <button data-tema="kirmizi" onclick="renkTemaUygula('kirmizi')" style="width:44px;height:44px;border-radius:50%;background:#dc2626;border:3px solid transparent;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .15s" title="Kırmızı"></button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- SEÇİM MODU -->
       <div class="folder-card" style="margin-bottom:10px">
@@ -1921,7 +1940,7 @@ function _kilitUIGuncelle(){
   if(!kayit){
     _kilitGeriSayimDurdur();
     // Sifre yok — ikonu goster ki kullanici kurulum yapabilsin
-    btn.textContent = '⚙️';
+    btn.textContent = '🔐';
     btn.title = 'Kilit kurulmamis — sifre belirlemek icin tikla';
     btn.style.display = '';
     btn.style.borderColor = 'var(--err)';
@@ -1935,7 +1954,7 @@ function _kilitUIGuncelle(){
     }
   } else if(_KILITLI){
     _kilitGeriSayimDurdur(); // kilitlenince geri sayımı sıfırla
-    btn.textContent = '🔒';
+    btn.textContent = '🔐';
     btn.title = 'Kilitli — şifre ile aç';
     btn.style.display = '';
     btn.style.borderColor = '';
@@ -5819,6 +5838,14 @@ function renkTemaModalKapat(){
   var overlay=document.getElementById('renkTemaOverlay');
   if(overlay) overlay.style.display='none';
 }
+function kilitSureModalAc(){
+  var mevcutSureDk = parseInt(depo.al(_kKey('sure'))) || 30;
+  _kilitSureUIGuncelle(mevcutSureDk);
+  document.getElementById('kilitSureOverlay').style.display='flex';
+}
+function kilitSureModalKapat(){
+  document.getElementById('kilitSureOverlay').style.display='none';
+}
 function ayarlarModalAc(){
   var overlay=document.getElementById('ayarlarOverlay');
   var drawer=document.getElementById('ayarlarDrawer');
@@ -6219,7 +6246,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.5.4';
+var APP_VER_SABIT = '2.5.8';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
@@ -6585,7 +6612,7 @@ function profilKeyOlustur(profilId, dataKey){
   return profilId+'_'+dataKey;
 }
 /* ===================== FOLDER TOGGLE ===================== */
-var folderIds = ['Secim','Anim','YaziBoyutu','Ses','Sinif','Hizli','Geri','VeriYukle','OgrenciEkle','Kayitli','ListePuan','DisaAktar','SinifGuncelle','Tehlikeli','AktLog'];
+var folderIds = ['Renk','Secim','Anim','YaziBoyutu','Ses','Sinif','Hizli','Geri','VeriYukle','OgrenciEkle','Kayitli','ListePuan','DisaAktar','SinifGuncelle','Tehlikeli','AktLog'];
 function folderToggle(id){
   var body = document.getElementById('folder'+id+'Body');
   var arrow = document.getElementById('folder'+id+'Arrow');
@@ -6668,6 +6695,32 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
 
 </script>
 
+<!-- KİLİT SÜRESİ MODAL -->
+<div id="kilitSureOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9770;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)kilitSureModalKapat()">
+  <div style="background:var(--bg);border-radius:var(--r);width:100%;max-width:340px;box-shadow:var(--shadow2);border:1.5px solid var(--bd);padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:15px;font-weight:900;color:var(--t1)">⏱ Otomatik Kilit Süresi</div>
+      <button onclick="kilitSureModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="kilitSureHizliWrap">
+      <button onclick="kilitSureSecHizli(5)" class="kilit-sure-btn" data-sure="5">5 dk</button>
+      <button onclick="kilitSureSecHizli(10)" class="kilit-sure-btn" data-sure="10">10 dk</button>
+      <button onclick="kilitSureSecHizli(20)" class="kilit-sure-btn" data-sure="20">20 dk</button>
+      <button onclick="kilitSureSecHizli(30)" class="kilit-sure-btn" data-sure="30">30 dk</button>
+      <button onclick="kilitSureSecHizli(40)" class="kilit-sure-btn" data-sure="40">40 dk</button>
+      <button onclick="kilitSureOzelGoster()" class="kilit-sure-btn" id="kilitSureOzelBtn">Özel</button>
+    </div>
+    <div id="kilitSureOzelWrap" style="display:none;align-items:center;gap:8px;margin-bottom:8px">
+      <input id="kilitSureInp" type="number" min="1" max="480" value="30"
+        style="flex:1;padding:8px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg2);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;text-align:center">
+      <span style="font-size:13px;color:var(--t2);white-space:nowrap;font-weight:700">dakika</span>
+      <button onclick="kilitSureOzelKaydet()" style="padding:8px 12px;border:none;border-radius:var(--r-sm);background:var(--ac);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;white-space:nowrap">Ayarla</button>
+    </div>
+    <div id="kilitSureGosterge" style="font-size:12px;color:var(--ac);font-weight:700;text-align:center;padding:4px 0 2px"></div>
+    <button onclick="kilitSureModalKapat()" class="btn-s" style="width:100%;text-align:center;margin-top:10px">Tamam</button>
+  </div>
+</div>
+
 <!-- KİLİT MODU OVERLAY -->
 <div id="kilitModalOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9800;align-items:flex-start;justify-content:center;padding:12px;overflow-y:auto">
   <div style="background:var(--bg);border-radius:var(--r);width:100%;max-width:380px;box-shadow:var(--shadow2);border:1.5px solid var(--bd);margin:auto;position:relative">
@@ -6697,25 +6750,6 @@ renkTemaUygula(pdepo.al('renkTema') || aktifRenkTema);
       <div id="kilitGirisWrap">
         <!-- Ayarlar formu -->
         <div id="kilitAyarlarWrap" style="display:none">
-          <!-- BÖLÜM 1: Otomatik Kilit Süresi (bağımsız) -->
-          <div style="background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);padding:12px;margin-bottom:12px">
-            <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px">⏱ Otomatik Kilit Süresi</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px" id="kilitSureHizliWrap">
-              <button onclick="kilitSureSecHizli(5)" class="kilit-sure-btn" data-sure="5">5 dk</button>
-              <button onclick="kilitSureSecHizli(10)" class="kilit-sure-btn" data-sure="10">10 dk</button>
-              <button onclick="kilitSureSecHizli(20)" class="kilit-sure-btn" data-sure="20">20 dk</button>
-              <button onclick="kilitSureSecHizli(30)" class="kilit-sure-btn" data-sure="30">30 dk</button>
-              <button onclick="kilitSureSecHizli(40)" class="kilit-sure-btn" data-sure="40">40 dk</button>
-              <button onclick="kilitSureOzelGoster()" class="kilit-sure-btn" id="kilitSureOzelBtn">Özel</button>
-            </div>
-            <div id="kilitSureOzelWrap" style="display:none;display:flex;align-items:center;gap:8px;margin-bottom:4px">
-              <input id="kilitSureInp" type="number" min="1" max="480" value="30"
-                style="flex:1;padding:8px 12px;border:1.5px solid var(--bd);border-radius:var(--r-sm);background:var(--bg);color:var(--t1);font-size:16px;font-family:Nunito,sans-serif;outline:none;box-sizing:border-box;text-align:center">
-              <span style="font-size:13px;color:var(--t2);white-space:nowrap;font-weight:700">dakika</span>
-              <button onclick="kilitSureOzelKaydet()" style="padding:8px 12px;border:none;border-radius:var(--r-sm);background:var(--ac);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;white-space:nowrap">Ayarla</button>
-            </div>
-            <div id="kilitSureGosterge" style="font-size:11px;color:var(--ac);font-weight:700;text-align:center;padding:3px 0"></div>
-          </div>
           <!-- BÖLÜM 2: Şifre Ayarları -->
           <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:10px;letter-spacing:.5px;text-transform:uppercase">🔑 Sifre Ayarlari</div>
           <input id="kilitYeniSifreInp" type="password" placeholder="Yeni sifre (en az 4 karakter)"
