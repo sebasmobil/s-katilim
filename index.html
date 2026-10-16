@@ -724,122 +724,14 @@ body{padding:0 0 72px}
         <div class="ticon" id="temaBtn" title="Gece/Gündüz">☀️</div>
         <span class="ticon-lbl">Tema</span>
       </div>
+      <div class="ticon-wrap" onclick="ayarlarModalAc()">
+        <div class="ticon" title="Ayarlar">🛠️</div>
+        <span class="ticon-lbl">Ayarlar</span>
+      </div>
     </div>
   </div>
 
   <div class="ana-sol">
-  <!-- SEÇİM MODU * (folder) -->
-  <div class="folder-card">
-    <div class="folder-head" id="folderSecimHead">
-      <div class="folder-title"><span class="folder-icon-wrap">🎯</span> Seçim Modu</div>
-      <span class="folder-arrow" id="folderSecimArrow">▼</span>
-    </div>
-    <div class="folder-body" id="folderSecimBody">
-      <div class="mode-row" style="margin-top:10px">
-        <div class="mopt" id="mRepeat">
-          <div class="mhead"><div class="mdot"></div><div class="mtitle">Tekrarlı</div></div>
-          <div class="mdesc">Aynı öğrenci yeniden seçilebilir</div>
-        </div>
-        <div class="mopt on" id="mUnique">
-          <div class="mhead"><div class="mdot"></div><div class="mtitle">Benzersiz</div></div>
-          <div class="mdesc">Her öğrenci bir kez seçilir</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ANİMASYON * (folder) -->
-  <div class="folder-card">
-    <div class="folder-head" id="folderAnimHead">
-      <div class="folder-title"><span class="folder-icon-wrap">✨</span> Animasyon</div>
-      <span class="folder-arrow" id="folderAnimArrow">▼</span>
-    </div>
-    <div class="folder-body" id="folderAnimBody">
-      <div style="margin-top:10px">
-        <div class="anim-tog-row">
-          <span class="lbl" style="margin-bottom:0">Animasyon</span>
-          <div class="tog" id="togAnim">
-            <span class="tog-txt" id="togTxt">Açık</span>
-            <div class="tog-track" id="togTrack"><div class="tog-thumb" id="togThumb"></div></div>
-          </div>
-        </div>
-        <div class="anim-opts" id="animOpts">
-          <div class="anim-opt on" data-anim="karistir"><span class="anim-opt-emoji">🔀</span><span class="anim-opt-title">Karıştır</span></div>
-          <div class="anim-opt" data-anim="firlatma"><span class="anim-opt-emoji">🎯</span><span class="anim-opt-title">Fırlatma</span></div>
-          <div class="anim-opt" data-anim="konfeti"><span class="anim-opt-emoji">🎉</span><span class="anim-opt-title">Konfeti</span></div>
-          <div class="anim-opt" data-anim="zoom"><span class="anim-opt-emoji">⭐</span><span class="anim-opt-title">Yıldız</span></div>
-          <div class="anim-opt" data-anim="salla"><span class="anim-opt-emoji">🌀</span><span class="anim-opt-title">Salla</span></div>
-          <div class="anim-opt" data-anim="yanip"><span class="anim-opt-emoji">💡</span><span class="anim-opt-title">Yanıp Sönsün</span></div>
-          <div class="anim-opt" data-anim="balon"><span class="anim-opt-emoji">🎈</span><span class="anim-opt-title">Balon</span></div>
-          <div class="anim-opt" data-anim="gomlek"><span class="anim-opt-emoji">🌈</span><span class="anim-opt-title">Gökkuşağı</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- YAZI BOYUTU (folder) -->
-  <div class="folder-card">
-    <div class="folder-head" id="folderYaziBoyutuHead">
-      <div class="folder-title"><span class="folder-icon-wrap">🔤</span> Yazı Boyutu</div>
-      <span class="folder-arrow" id="folderYaziBoyutuArrow">▼</span>
-    </div>
-    <div class="folder-body" id="folderYaziBoyutuBody">
-      <div style="margin-top:10px">
-        <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:10px;line-height:1.5">Tüm uygulama genelinde metin boyutunu ayarlayın. 5 kademe: çok küçük → çok büyük.</div>
-        <div style="display:flex;gap:6px;align-items:flex-end;justify-content:center">
-          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(0);bildir('Yazı: Çok Küçük (13px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:11px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Küçük</span></button>
-          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(1);bildir('Yazı: Küçük (14px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:13px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Küçük</span></button>
-          <button class="yazi-kademe-btn aktif" onclick="yaziBoyutuUygula(2);bildir('Yazı: Normal (15px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:15px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Normal</span></button>
-          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(3);bildir('Yazı: Büyük (%120)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:17px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Büyük</span></button>
-          <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(4);bildir('Yazı: Çok Büyük (%130)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:19px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Büyük</span></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SES AYARLARI (folder) -->
-  <div class="folder-card">
-    <div class="folder-head" id="folderSesHead">
-      <div class="folder-title"><span class="folder-icon-wrap">🔊</span> Ses Ayarları</div>
-      <span class="folder-arrow" id="folderSesArrow">▼</span>
-    </div>
-    <div class="folder-body" id="folderSesBody">
-      <div style="margin-top:10px">
-        <!-- Seçim Sesi -->
-        <div style="margin-bottom:14px">
-          <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:6px">🎲 Öğrenci Seçim Sesi</div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div class="tog-track" id="sesSecimTrack" onclick="sesAyarla('secim',!sesAyarlar.secimAcik)" style="cursor:pointer"><div class="tog-thumb" id="sesSecimThumb"></div></div>
-            <span class="tog-txt off" id="sesSecimTxt">Kapalı</span>
-          </div>
-          <div id="sesSecimOpts" style="display:none;display:flex;flex-wrap:wrap;gap:8px">
-            <button class="ses-opt aktif" data-ses-tip="secim" data-ses="zil" onclick="sesTipSec('secim','zil')">🔔 Zil</button>
-            <button class="ses-opt" data-ses-tip="secim" data-ses="alkis" onclick="sesTipSec('secim','alkis')">👏 Alkış</button>
-            <button class="ses-opt" data-ses-tip="secim" data-ses="pop" onclick="sesTipSec('secim','pop')">💥 Pop</button>
-            <button class="ses-opt" data-ses-tip="secim" data-ses="ding" onclick="sesTipSec('secim','ding')">✨ Ding</button>
-            <button class="ses-opt" data-ses-tip="secim" data-ses="fanfar" onclick="sesTipSec('secim','fanfar')">🎺 Fanfar</button>
-          </div>
-        </div>
-        <div class="divider"></div>
-        <!-- Geri Sayım Sesi -->
-        <div style="margin-top:14px">
-          <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:6px">⏱ Geri Sayım Bitiş Sesi</div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-            <div class="tog-track" id="sesGeriTrack" onclick="sesAyarla('geri',!sesAyarlar.geriAcik)" style="cursor:pointer"><div class="tog-thumb" id="sesGeriThumb"></div></div>
-            <span class="tog-txt off" id="sesGeriTxt">Kapalı</span>
-          </div>
-          <div id="sesGeriOpts" style="display:none;display:flex;flex-wrap:wrap;gap:8px">
-            <button class="ses-opt aktif" data-ses-tip="geri" data-ses="alarm" onclick="sesTipSec('geri','alarm')">🚨 Alarm</button>
-            <button class="ses-opt" data-ses-tip="geri" data-ses="zil" onclick="sesTipSec('geri','zil')">🔔 Zil</button>
-            <button class="ses-opt" data-ses-tip="geri" data-ses="bitis" onclick="sesTipSec('geri','bitis')">🏁 Bitiş</button>
-            <button class="ses-opt" data-ses-tip="geri" data-ses="fanfar" onclick="sesTipSec('geri','fanfar')">🎺 Fanfar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- SINIFLAR * (folder) -->
   <div class="folder-card">
     <div class="folder-head" id="folderSinifHead">
@@ -1408,6 +1300,131 @@ body{padding:0 0 72px}
 </div>
 
 
+
+<!-- AYARLAR DRAWER -->
+<div id="ayarlarOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9760;align-items:flex-end;justify-content:center" onclick="if(event.target===this)ayarlarModalKapat()">
+  <div id="ayarlarDrawer" style="background:var(--bg);width:100%;max-width:600px;max-height:88vh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(0,0,0,.25);transform:translateY(100%);transition:transform .32s cubic-bezier(.22,1,.36,1);overflow:hidden">
+    <!-- Handle + Başlık -->
+    <div style="display:flex;justify-content:center;padding:10px 0 4px;flex-shrink:0"><div style="width:40px;height:4px;border-radius:2px;background:var(--bd2)"></div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 20px 14px;border-bottom:1.5px solid var(--bd);flex-shrink:0">
+      <div style="font-size:16px;font-weight:900;color:var(--t1)">🛠️ Ayarlar</div>
+      <button onclick="ayarlarModalKapat()" style="border:none;background:var(--bg2);color:var(--t2);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Kaydırılabilir içerik -->
+    <div style="overflow-y:auto;flex:1;padding:14px 16px 24px">
+
+      <!-- SEÇİM MODU -->
+      <div class="folder-card" style="margin-bottom:10px">
+        <div class="folder-head" id="folderSecimHead">
+          <div class="folder-title"><span class="folder-icon-wrap">🎯</span> Seçim Modu</div>
+          <span class="folder-arrow" id="folderSecimArrow">▼</span>
+        </div>
+        <div class="folder-body" id="folderSecimBody">
+          <div class="mode-row" style="margin-top:10px">
+            <div class="mopt" id="mRepeat">
+              <div class="mhead"><div class="mdot"></div><div class="mtitle">Tekrarlı</div></div>
+              <div class="mdesc">Aynı öğrenci yeniden seçilebilir</div>
+            </div>
+            <div class="mopt on" id="mUnique">
+              <div class="mhead"><div class="mdot"></div><div class="mtitle">Benzersiz</div></div>
+              <div class="mdesc">Her öğrenci bir kez seçilir</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANİMASYON -->
+      <div class="folder-card" style="margin-bottom:10px">
+        <div class="folder-head" id="folderAnimHead">
+          <div class="folder-title"><span class="folder-icon-wrap">✨</span> Animasyon</div>
+          <span class="folder-arrow" id="folderAnimArrow">▼</span>
+        </div>
+        <div class="folder-body" id="folderAnimBody">
+          <div style="margin-top:10px">
+            <div class="anim-tog-row">
+              <span class="lbl" style="margin-bottom:0">Animasyon</span>
+              <div class="tog" id="togAnim">
+                <span class="tog-txt" id="togTxt">Açık</span>
+                <div class="tog-track" id="togTrack"><div class="tog-thumb" id="togThumb"></div></div>
+              </div>
+            </div>
+            <div class="anim-opts" id="animOpts">
+              <div class="anim-opt on" data-anim="karistir"><span class="anim-opt-emoji">🔀</span><span class="anim-opt-title">Karıştır</span></div>
+              <div class="anim-opt" data-anim="firlatma"><span class="anim-opt-emoji">🎯</span><span class="anim-opt-title">Fırlatma</span></div>
+              <div class="anim-opt" data-anim="konfeti"><span class="anim-opt-emoji">🎉</span><span class="anim-opt-title">Konfeti</span></div>
+              <div class="anim-opt" data-anim="zoom"><span class="anim-opt-emoji">⭐</span><span class="anim-opt-title">Yıldız</span></div>
+              <div class="anim-opt" data-anim="salla"><span class="anim-opt-emoji">🌀</span><span class="anim-opt-title">Salla</span></div>
+              <div class="anim-opt" data-anim="yanip"><span class="anim-opt-emoji">💡</span><span class="anim-opt-title">Yanıp Sönsün</span></div>
+              <div class="anim-opt" data-anim="balon"><span class="anim-opt-emoji">🎈</span><span class="anim-opt-title">Balon</span></div>
+              <div class="anim-opt" data-anim="gomlek"><span class="anim-opt-emoji">🌈</span><span class="anim-opt-title">Gökkuşağı</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YAZI BOYUTU -->
+      <div class="folder-card" style="margin-bottom:10px">
+        <div class="folder-head" id="folderYaziBoyutuHead">
+          <div class="folder-title"><span class="folder-icon-wrap">🔤</span> Yazı Boyutu</div>
+          <span class="folder-arrow" id="folderYaziBoyutuArrow">▼</span>
+        </div>
+        <div class="folder-body" id="folderYaziBoyutuBody">
+          <div style="margin-top:10px">
+            <div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2);margin-bottom:10px;line-height:1.5">Tüm uygulama genelinde metin boyutunu ayarlayın. 5 kademe: çok küçük → çok büyük.</div>
+            <div style="display:flex;gap:6px;align-items:flex-end;justify-content:center">
+              <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(0);bildir('Yazı: Çok Küçük (13px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:11px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Küçük</span></button>
+              <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(1);bildir('Yazı: Küçük (14px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:13px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Küçük</span></button>
+              <button class="yazi-kademe-btn aktif" onclick="yaziBoyutuUygula(2);bildir('Yazı: Normal (15px)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:15px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Normal</span></button>
+              <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(3);bildir('Yazı: Büyük (%120)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:17px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Büyük</span></button>
+              <button class="yazi-kademe-btn" onclick="yaziBoyutuUygula(4);bildir('Yazı: Çok Büyük (%130)')" style="flex:1;padding:8px 4px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg2);cursor:pointer;font-family:inherit;color:var(--fg);transition:.15s;font-size:19px;font-weight:700">A<br><span style="font-size:9px;color:var(--t2)">Çok Büyük</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SES AYARLARI -->
+      <div class="folder-card">
+        <div class="folder-head" id="folderSesHead">
+          <div class="folder-title"><span class="folder-icon-wrap">🔊</span> Ses Ayarları</div>
+          <span class="folder-arrow" id="folderSesArrow">▼</span>
+        </div>
+        <div class="folder-body" id="folderSesBody">
+          <div style="margin-top:10px">
+            <div style="margin-bottom:14px">
+              <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:6px">🎲 Öğrenci Seçim Sesi</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                <div class="tog-track" id="sesSecimTrack" onclick="sesAyarla('secim',!sesAyarlar.secimAcik)" style="cursor:pointer"><div class="tog-thumb" id="sesSecimThumb"></div></div>
+                <span class="tog-txt off" id="sesSecimTxt">Kapalı</span>
+              </div>
+              <div id="sesSecimOpts" style="display:none;display:flex;flex-wrap:wrap;gap:8px">
+                <button class="ses-opt aktif" data-ses-tip="secim" data-ses="zil" onclick="sesTipSec('secim','zil')">🔔 Zil</button>
+                <button class="ses-opt" data-ses-tip="secim" data-ses="alkis" onclick="sesTipSec('secim','alkis')">👏 Alkış</button>
+                <button class="ses-opt" data-ses-tip="secim" data-ses="pop" onclick="sesTipSec('secim','pop')">💥 Pop</button>
+                <button class="ses-opt" data-ses-tip="secim" data-ses="ding" onclick="sesTipSec('secim','ding')">✨ Ding</button>
+                <button class="ses-opt" data-ses-tip="secim" data-ses="fanfar" onclick="sesTipSec('secim','fanfar')">🎺 Fanfar</button>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div style="margin-top:14px">
+              <div style="font-size:12px;font-weight:800;color:var(--t1);margin-bottom:6px">⏱ Geri Sayım Bitiş Sesi</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                <div class="tog-track" id="sesGeriTrack" onclick="sesAyarla('geri',!sesAyarlar.geriAcik)" style="cursor:pointer"><div class="tog-thumb" id="sesGeriThumb"></div></div>
+                <span class="tog-txt off" id="sesGeriTxt">Kapalı</span>
+              </div>
+              <div id="sesGeriOpts" style="display:none;display:flex;flex-wrap:wrap;gap:8px">
+                <button class="ses-opt aktif" data-ses-tip="geri" data-ses="alarm" onclick="sesTipSec('geri','alarm')">🚨 Alarm</button>
+                <button class="ses-opt" data-ses-tip="geri" data-ses="zil" onclick="sesTipSec('geri','zil')">🔔 Zil</button>
+                <button class="ses-opt" data-ses-tip="geri" data-ses="bitis" onclick="sesTipSec('geri','bitis')">🏁 Bitiş</button>
+                <button class="ses-opt" data-ses-tip="geri" data-ses="fanfar" onclick="sesTipSec('geri','fanfar')">🎺 Fanfar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end scroll -->
+  </div>
+</div>
 
 <!-- ÖĞRENCİ PROFİL KARTI -->
 <div id="profilOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9600;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)">
@@ -5802,6 +5819,22 @@ function renkTemaModalKapat(){
   var overlay=document.getElementById('renkTemaOverlay');
   if(overlay) overlay.style.display='none';
 }
+function ayarlarModalAc(){
+  var overlay=document.getElementById('ayarlarOverlay');
+  var drawer=document.getElementById('ayarlarDrawer');
+  if(!overlay||!drawer) return;
+  overlay.style.display='flex';
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ drawer.style.transform='translateY(0)'; });
+  });
+}
+function ayarlarModalKapat(){
+  var overlay=document.getElementById('ayarlarOverlay');
+  var drawer=document.getElementById('ayarlarDrawer');
+  if(!overlay||!drawer) return;
+  drawer.style.transform='translateY(100%)';
+  setTimeout(function(){ overlay.style.display='none'; }, 340);
+}
 
 /* ===================== FOTOĞRAF SİSTEMİ ===================== */
 // fotoğraflar ayrı saklanır: {idx: dataURL}
@@ -6186,7 +6219,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.5.2';
+var APP_VER_SABIT = '2.5.4';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
