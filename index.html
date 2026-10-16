@@ -764,7 +764,7 @@ body{padding:0 0 72px}
             <!-- Devamsız özet bölümü -->
             <div id="yoklamaDevamsizBlok" style="display:none;margin-bottom:10px;padding:8px 10px;background:var(--errbg);border:1.5px solid var(--err);border-radius:8px">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-                <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:800;color:var(--err);letter-spacing:.5px">⛔ DEVAMSİZ ÖĞRENCİLER</span>
+                <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:800;color:var(--err);letter-spacing:.5px">⛔ GELMEYENLER</span>
                 <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px;border-color:var(--err);color:var(--err)">Tümünü Getir</button>
               </div>
               <div id="yoklamaDevamsizList"></div>
@@ -3058,7 +3058,7 @@ function yoklamaGoster(){
     if(isYok){
       h+='<button class="yok-btn yok-btn-getir" data-idx="'+s._i+'" title="Devamsızlığı kaldır — derse getir">✓ Geldi</button>';
     } else {
-      h+='<button class="yok-btn yok-btn-kaldir" data-idx="'+s._i+'" title="Devamsız işaretle — bugün yok">✕ Devamsız</button>';
+      h+='<button class="yok-btn yok-btn-kaldir" data-idx="'+s._i+'" title="Bugün gelmedi olarak işaretle">✕ Gelmedi</button>';
     }
     h+='</div>';
   });
@@ -6283,7 +6283,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.6.0';
+var APP_VER_SABIT = '2.6.1';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
