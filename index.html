@@ -587,9 +587,11 @@ body{padding:0 0 72px}
 /* ── YOKLAMA ── */
 .yok-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)}
 .yok-row:last-child{border-bottom:none}
+.yok-row{display:flex;align-items:center;justify-content:space-between;padding:6px 4px;border-bottom:1px solid var(--bd)}
+.yok-row:last-child{border-bottom:none}
 .yok-ad{flex:1;font-size:13px;font-weight:700;color:var(--t1)}
 .yok-meta{font-family:JetBrains Mono,monospace;font-size:10px;color:var(--t2)}
-.yok-btn{font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px;border:1.5px solid;cursor:pointer;background:none;font-family:'Nunito',sans-serif;transition:all .15s}
+.yok-btn{font-size:11px;font-weight:800;padding:4px 10px;border-radius:6px;border:1.5px solid;cursor:pointer;background:none;font-family:'Nunito',sans-serif;transition:all .15s;white-space:nowrap}
 .yok-btn-kaldir{border-color:var(--err);color:var(--err)}
 .yok-btn-kaldir:active{background:var(--errbg)}
 .yok-btn-getir{border-color:var(--ok);color:var(--ok)}
@@ -759,8 +761,17 @@ body{padding:0 0 72px}
             </div>
           </div>
           <div id="yoklamaPanel" style="display:none;margin-top:6px;padding:10px 12px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r-sm);border-top:none;border-radius:0 0 var(--r-sm) var(--r-sm)">
-            <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px">
-              <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px">Hepsini Getir</button>
+            <!-- Devamsız özet bölümü -->
+            <div id="yoklamaDevamsizBlok" style="display:none;margin-bottom:10px;padding:8px 10px;background:var(--errbg);border:1.5px solid var(--err);border-radius:8px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:800;color:var(--err);letter-spacing:.5px">⛔ DEVAMSİZ ÖĞRENCİLER</span>
+                <button id="btnYoklamaSifirla" class="prog-rst" style="font-size:10px;border-color:var(--err);color:var(--err)">Tümünü Getir</button>
+              </div>
+              <div id="yoklamaDevamsizList"></div>
+            </div>
+            <!-- Tüm sınıf listesi -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <span style="font-family:JetBrains Mono,monospace;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.5px">TÜM SINIF</span>
             </div>
             <div id="yoklamaList"></div>
           </div>
@@ -3010,26 +3021,52 @@ function yoklamaGoster(){
   var panel = document.getElementById('yoklamaPanel');
   if(!panel || panel.style.display==='none') return;
   var liste=document.getElementById('yoklamaList');
+  var devamsizListe=document.getElementById('yoklamaDevamsizList');
+  var devamsizBlok=document.getElementById('yoklamaDevamsizBlok');
   var tumSinif=sinifOgrTum();
   var yok=yoklama[seciliSinif]||new Set();
+
+  // --- Devamsız öğrenciler özet bloğu ---
+  var devamsizlar = tumSinif.filter(function(s){ return yok.has(s._i); });
+  if(devamsizlar.length > 0){
+    devamsizBlok.style.display='block';
+    var hd='';
+    devamsizlar.forEach(function(s){
+      hd+='<div class="yok-row" style="background:rgba(0,0,0,.04);border-radius:6px;margin-bottom:4px">';
+      hd+='<div>';
+      hd+='<div class="yok-ad" style="color:var(--err)">⛔ '+s.ad+'</div>';
+      hd+='<div class="yok-meta">'+s.sinif+(s.numara?' · No: '+s.numara:'')+'</div>';
+      hd+='</div>';
+      hd+='<button class="yok-btn yok-btn-getir" data-idx="'+s._i+'" title="Devamsızlığı kaldır — derse getir">✓ Geldi</button>';
+      hd+='</div>';
+    });
+    devamsizListe.innerHTML=hd;
+  } else {
+    devamsizBlok.style.display='none';
+    devamsizListe.innerHTML='';
+  }
+
+  // --- Tüm sınıf listesi ---
   var h='';
   tumSinif.forEach(function(s){
     var isYok=yok.has(s._i);
     h+='<div class="yok-row">';
     h+='<div>';
-    h+='<div class="yok-ad">'+(isYok?'<span style="color:var(--err);margin-right:4px">✕</span>':'')+s.ad+'</div>';
+    h+='<div class="yok-ad">'+(isYok?'<span style="color:var(--err);margin-right:4px">⛔</span><span style="color:var(--err)">':'')+s.ad+(isYok?'</span>':'')+'</div>';
     h+='<div class="yok-meta">'+s.sinif+(s.numara?' · No: '+s.numara:'')+'</div>';
     h+='</div>';
     if(isYok){
-      h+='<button class="yok-btn yok-btn-getir" data-idx="'+s._i+'" title="Bugün getir">Getir</button>';
+      h+='<button class="yok-btn yok-btn-getir" data-idx="'+s._i+'" title="Devamsızlığı kaldır — derse getir">✓ Geldi</button>';
     } else {
-      h+='<button class="yok-btn yok-btn-kaldir" data-idx="'+s._i+'" title="Bugün yok">Yok</button>';
+      h+='<button class="yok-btn yok-btn-kaldir" data-idx="'+s._i+'" title="Devamsız işaretle — bugün yok">✕ Devamsız</button>';
     }
     h+='</div>';
   });
   if(!tumSinif.length) h='<div class="tbl-empty">Sınıf boş</div>';
   liste.innerHTML=h;
-  liste.querySelectorAll('.yok-btn').forEach(function(btn){
+
+  // Tüm yok-btn'lere (hem devamsız listesinde hem tüm sınıf listesinde) event ekle
+  document.getElementById('yoklamaPanel').querySelectorAll('.yok-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
       var idx=parseInt(this.dataset.idx);
       if(!yoklama[seciliSinif]) yoklama[seciliSinif]=new Set();
@@ -6246,7 +6283,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.5.8';
+var APP_VER_SABIT = '2.6.0';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
@@ -6599,6 +6636,7 @@ function aktLogFiltrele(){
 }
 
 function aktLogTemizle(){
+  if(!yetkiVar()){ _yetkiKontrol(function(){ aktLogTemizle(); }); return; }
   if(!confirm('Tüm aktivite logu silinecek. Emin misiniz?')) return;
   _aktiviteLog = [];
   try{ localStorage.removeItem(_aktLogKey()); }catch(e){}
