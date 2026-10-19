@@ -2679,12 +2679,20 @@ function scDurdur(){ if(SC.timer){ clearInterval(SC.timer); SC.timer=null; } }
 /* ===================== TEMA ===================== */
 function temauygula(t){
   // className yerine classList kullan — diğer sınıfları (tema-xxx) koru
+  var gece = t==='gece' || (t==='sistem' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.classList.remove('gece');
-  if(t==='gece') document.body.classList.add('gece');
+  if(gece) document.body.classList.add('gece');
   var btn=document.getElementById('temaBtn');
-  if(btn) btn.textContent=t==='gece'?'🌙':'☀️';
+  if(btn) btn.innerHTML = t==='gece'?'🌙': t==='sistem'?'<span style="display:inline-block;width:1em;height:1em;border-radius:50%;background:linear-gradient(to right,#1a1a2e 50%,#fff9c4 50%);border:1.5px solid currentColor;vertical-align:middle;position:relative;top:-0.05em"></span>':'☀️';
   pdepo.yaz('tema',t);
 }
+// Sistem teması değişince otomatik güncelle
+(function(){
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function _sistemTakip(){ if((pdepo.al('tema')||'gece')==='sistem') temauygula('sistem'); }
+  if(mq.addEventListener) mq.addEventListener('change', _sistemTakip);
+  else if(mq.addListener) mq.addListener(_sistemTakip); // eski iOS
+})();
 
 /* ===================== ANİMASYON ===================== */
 function animAyarla(ac){
@@ -5267,11 +5275,13 @@ function bildir(msg){
 }
 
 /* ===================== OLAYLAR ===================== */
-// Tek tema butonu
+// Tema butonu — 3 durumlu döngü: acik → gece → sistem
 document.getElementById('temaBtn').addEventListener('click',function(){
   var mevcutTema=pdepo.al('tema')||'gece';
-  var yeniTema=mevcutTema==='gece'?'acik':'gece';
+  var yeniTema = mevcutTema==='acik'?'gece': mevcutTema==='gece'?'sistem':'acik';
   temauygula(yeniTema);
+  var etiket = yeniTema==='acik'?'Aydınlık': yeniTema==='gece'?'Karanlık':'Sistem Teması';
+  bildir('🎨 '+etiket+' modu');
 });
 
 // Puan detay toggle
@@ -6289,7 +6299,7 @@ function profilModalGuncelle(){
 var AKTIF_PROFIL_KEY = 'profil_varsayilan';
 
 /* ===================== VERSİYON ===================== */
-var APP_VER_SABIT = '2.6.7';
+var APP_VER_SABIT = '2.6.9';
 function appVerStr(){ return APP_VER_SABIT; }
 function appVerYukselt(){ return APP_VER_SABIT; }
 function appVerGuncelle(){
